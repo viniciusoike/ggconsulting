@@ -1,0 +1,29 @@
+url: https://viniciusoike.github.io/ggconsulting/
+
+template:
+  bootstrap: 5
+
+development:
+  mode: auto
+
+reference:
+- title: Themes
+  desc: >
+    Composable theme builder and archetype presets.
+  contents:
+  - ct_theme
+  - theme_strategy
+
+- title: Geom wrappers
+  desc: >
+    Drop-in replacements for `ggplot2::geom_col()`, `geom_line()`, and
+    `geom_point()` with consulting-grade defaults baked in at the call site.
+  contents:
+  - ct_geoms
+
+- title: Defaults
+  desc: >
+    Aesthetic defaults applied on library attach via
+    `ggplot2::update_geom_defaults()`, with an opt-out path.
+  contents:
+  - ct_defaults

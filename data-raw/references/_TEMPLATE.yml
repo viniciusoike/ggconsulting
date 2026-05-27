@@ -1,0 +1,51 @@
+# =============================================================================
+# TEMPLATE — not a real reference, do NOT count toward archetype targets.
+# Copy this file alongside a real ref-NNN-<slug>.png and fill it in.
+# Delete or keep as canonical schema example; the leading underscore keeps it
+# sorted to the top of the folder listing.
+# =============================================================================
+
+id: ref-XXX
+archetype: strategy             # strategy | finance | editorial
+
+source:
+  url: https://example.com/report-page
+  publisher: "Public report — large strategy consultancy"   # generic; never name firms
+  date_accessed: 2026-05-27
+
+chart:
+  type: waterfall               # bar | line | waterfall | slope | dumbbell | scatter | area | stacked_bar | other
+  title_observed: "Generic description; do NOT copy verbatim from the source"
+  aspect_ratio: "16:9"          # or 4:3 | square | custom
+
+colors:
+  - "#1B3A5C"                   # observed hex values (sample from image, 2+ points per color)
+  - "#2E86AB"
+  - "#F18F01"
+
+font:
+  observed: "geometric sans, condensed, weights 400 and 700"
+  approximated_free_equivalent: "Inter or Source Sans 3"
+
+typography:
+  title_weight: "bold, larger than body, left-aligned, dark color"
+  subtitle_treatment: "lighter weight, gray, sentence case"
+  axis_labels: "small, gray, no bold"
+  data_labels: "above bars, bold, primary color"
+
+spacing:
+  gridlines: "horizontal major only, very light gray"
+  panel_margin: "generous"
+  legend_position: "top, left-aligned"
+
+annotation_style:
+  data_labels: "shown on key bars only, formatted with thousand separator"
+  callouts: "small arrow + text box pointing to one bar"
+  source_note: "bottom-left, small, gray"
+
+image_path: strategy/ref-XXX-<slug>.png
+
+notes: |
+  Free-text observations. Anything distinctive about this chart that informs
+  the archetype theme — sort order conventions, color encoding for positive
+  vs negative deltas, whether endpoints are labeled, etc.

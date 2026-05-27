@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>consultr — Refined Design (v2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0D0F12;
+    --surface: #151820;
+    --surface-raised: #1C2029;
+    --border: #2A2E3A;
+    --text: #E0E2E8;
+    --text-muted: #8B90A0;
+    --accent: #4F8CFF;
+    --accent-glow: rgba(79, 140, 255, 0.15);
+    --green: #3DDC84;
+    --amber: #FFB347;
+    --rose: #FF6B8A;
+    --violet: #A78BFA;
+    --teal: #2DD4BF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(13, 15, 18, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+  nav .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  nav .brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  nav .brand span { color: var(--text-muted); }
+  nav .nav-links { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+  nav .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  nav .nav-links a:hover { color: var(--text); }
+
+  /* --- HERO --- */
+  .hero {
+    padding: 9rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 4rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero .subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 640px;
+    margin: 0 auto 2rem;
+    font-weight: 300;
+  }
+  .hero .badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* --- SECTIONS --- */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section { padding: 3.5rem 0; }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin: 2rem 0 0.75rem;
+  }
+
+  h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .section-intro {
+    color: var(--text-muted);
+    font-size: 1rem;
+    max-width: 740px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  p { color: var(--text-muted); margin-bottom: 1rem; }
+  p.tight { margin-bottom: 0; }
+
+  /* --- CARDS --- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: #3A3F50; }
+  .card .card-tag {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.5rem;
+  }
+  .card ul li {
+    padding: 0.25rem 0 0.25rem 1.2rem;
+    position: relative;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+  .card ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    background: var(--surface-raised);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+
+  /* --- TWO COL --- */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 1rem 0 2rem;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  /* --- CALLOUT --- */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: rgba(79,140,255,0.06);
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    margin: 1.5rem 0;
+  }
+  .callout.warn {
+    border-left-color: var(--amber);
+    background: rgba(255,179,71,0.06);
+  }
+  .callout.cut {
+    border-left-color: var(--rose);
+    background: rgba(255,107,138,0.06);
+  }
+  .callout h4 { color: var(--text); margin-bottom: 0.5rem; }
+  .callout p { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 0; }
+
+  /* --- CODE BLOCK --- */
+  .code-block {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.25rem 0;
+    overflow-x: auto;
+  }
+  .code-block pre {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+  .code-block .comment { color: #555B6E; }
+  .code-block .fn { color: var(--accent); }
+  .code-block .str { color: var(--green); }
+  .code-block .arg { color: var(--amber); }
+  .code-block .op { color: var(--rose); }
+  .code-block .pkg { color: var(--violet); }
+  .code-block .kw { color: var(--teal); }
+
+  /* --- TABLES --- */
+  .pkg-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.88rem;
+  }
+  .pkg-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 0.74rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .pkg-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(42, 46, 58, 0.5);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+  .pkg-table tr:last-child td { border-bottom: none; }
+  .pkg-table td:first-child {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* --- STATUS PILLS --- */
+  .pill {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .pill.lock { background: rgba(61,220,132,0.15); color: var(--green); }
+  .pill.open { background: rgba(255,179,71,0.15); color: var(--amber); }
+  .pill.cut { background: rgba(255,107,138,0.15); color: var(--rose); }
+  .pill.later { background: rgba(167,139,250,0.15); color: var(--violet); }
+  .pill.now { background: rgba(79,140,255,0.15); color: var(--accent); }
+
+  /* --- TIMELINE --- */
+  .timeline {
+    position: relative;
+    margin: 2rem 0;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.75rem;
+    padding-left: 1.5rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+  }
+  .timeline-phase {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .timeline-item h4 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .timeline-item p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* --- ARROW DIAGRAM --- */
+  .pkg-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+  .pkg-node {
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    text-align: center;
+    min-width: 180px;
+  }
+  .pkg-node.primary { border-color: var(--accent); background: rgba(79,140,255,0.06); }
+  .pkg-node.next { border-color: var(--amber); background: rgba(255,179,71,0.06); }
+  .pkg-node.later { border-color: var(--violet); background: rgba(167,139,250,0.06); opacity: 0.7; }
+  .pkg-node h4 { margin-bottom: 0.25rem; }
+  .pkg-node p { font-size: 0.78rem; margin: 0; color: var(--text-muted); }
+  .pkg-arrow {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+  }
+
+  /* --- KV LIST --- */
+  .kv-list {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0.6rem 1.5rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  .kv-list dt {
+    color: var(--text);
+    font-weight: 500;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+  }
+  .kv-list dd {
+    color: var(--text-muted);
+  }
+
+  /* --- DIVIDER --- */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 3rem 0;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2.6rem; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .kv-list { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">consultr<span>::</span>v2</div>
+    <div class="nav-links">
+      <a href="#vision">Vision</a>
+      <a href="#arch">Architecture</a>
+      <a href="#ggconsulting">ggconsulting</a>
+      <a href="#ctplot">ctplot</a>
+      <a href="#cross">Cross-cutting</a>
+      <a href="#decisions">Decisions</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#deferred">Deferred</a>
+      <a href="#open">Open</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>The <em>consultr</em> Suite — <em>refined</em></h1>
+  <p class="subtitle">
+    Two focused R packages instead of four. ggplot2-native, PPT-aware, locale-honest. Built bottom-up: themes first, charts second.
+  </p>
+  <div class="badge-row">
+    <span class="badge"><span class="dot" style="background:var(--accent)"></span> 2 packages</span>
+    <span class="badge"><span class="dot" style="background:var(--green)"></span> ggplot2 native</span>
+    <span class="badge"><span class="dot" style="background:var(--amber)"></span> pt-BR + en-US</span>
+    <span class="badge"><span class="dot" style="background:var(--violet)"></span> archetype themes</span>
+    <span class="badge"><span class="dot" style="background:var(--rose)"></span> dogfooded</span>
+  </div>
+</section>
+
+<!-- VISION SHIFT -->
+<section id="vision">
+<div class="container">
+  <div class="section-label">Vision shift</div>
+  <h2>What changed from v1</h2>
+  <p class="section-intro">
+    The v1 plan was a 4-package, 30-week suite covering viz, analysis, reports, and dashboards. After critical review, scope collapsed to where the genuine value-add lives: opinionated themes and the hard-to-build consulting chart types. Everything else is either solved by existing tools or out of scope for one developer.
+  </p>
+
+  <table class="pkg-table">
+    <thead>
+      <tr><th>Element</th><th>v1 Plan</th><th>v2 Decision</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Package count</td>
+        <td>4 (chartr, exploR, reportr, dashr) + meta</td>
+        <td>2 (ggconsulting, ctplot)</td>
+      </tr>
+      <tr>
+        <td>Timeline</td>
+        <td>30 weeks</td>
+        <td>~10–12 weeks for ggconsulting v0.1; ctplot v0.1 after</td>
+      </tr>
+      <tr>
+        <td>Brand engine</td>
+        <td>Custom <code>brand.yml</code> superset</td>
+        <td>Dropped — use ggplot2 conventions; revisit only if needed</td>
+      </tr>
+      <tr>
+        <td>EDA package (exploR)</td>
+        <td>Profiling + trend + forecasting + clustering</td>
+        <td>Cut entirely — skimr, fable, modelsummary already do this</td>
+      </tr>
+      <tr>
+        <td>Quarto extension (reportr)</td>
+        <td>SCSS themes + 5 templates + shortcodes</td>
+        <td>Cut — Quarto compatibility handled by theme <code>context</code> arg</td>
+      </tr>
+      <tr>
+        <td>Shiny modules (dashr)</td>
+        <td>KPI, filter, chart, table, explorer + scaffold</td>
+        <td>Cut — bslib already covers consulting use cases</td>
+      </tr>
+      <tr>
+        <td>Esquisse integration</td>
+        <td>Custom RStudio addin (ct_studio)</td>
+        <td>Cut — can't deliver consulting charts through esquisse backend</td>
+      </tr>
+      <tr>
+        <td>Data ingestion</td>
+        <td>Not addressed</td>
+        <td>Deferred — recommend <code>tidyxl</code> + <code>unpivotr</code> in vignettes</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="arch">
+<div class="container">
+  <div class="section-label">Architecture</div>
+  <h2>Two packages, sequenced</h2>
+  <p class="section-intro">
+    ggconsulting is standalone — useful for any ggplot2 user, with no ctplot dependency. ctplot depends on ggconsulting for defaults and themes, and adds the chart constructors that ggplot2 can't easily express.
+  </p>
+
+  <div class="pkg-flow">
+    <div class="pkg-node primary">
+      <h4>ggconsulting</h4>
+      <p>v0.1 — Built first</p>
+      <p style="margin-top:0.25rem;"><span class="pill now">NOW</span></p>
+    </div>
+    <div class="pkg-arrow">→</div>
+    <div class="pkg-node next">
+      <h4>ctplot</h4>
+      <p>v0.1 — Built second</p>
+      <p style="margin-top:0.25rem;"><span class="pill later">NEXT</span></p>
+    </div>
+    <div class="pkg-arrow">→</div>
+    <div class="pkg-node later">
+      <h4>ctplot v1.0</h4>
+      <p>Editable PPT (rvg)</p>
+      <p style="margin-top:0.25rem;"><span class="pill later">LATER</span></p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-tag" style="background:rgba(79,140,255,0.12); color:var(--accent);">P1 — ggconsulting</div>
+      <h3 style="margin-top:0;">Theme layer</h3>
+      <p>Themes, palettes, scale helpers, geom defaults, locale-aware label helpers, polish layer. Standalone — works with any ggplot.</p>
+      <ul>
+        <li>3 archetypes: <code>theme_strategy()</code>, <code>theme_finance()</code>, <code>theme_editorial()</code></li>
+        <li><code>ct_theme(palette, font, density, context)</code> builder</li>
+        <li>Scale helpers: <code>scale_color_ct()</code>, <code>scale_fill_ct()</code></li>
+        <li>Geom defaults: lwd, column width, expansion — autoload + opt-out</li>
+        <li><code>ct_finish()</code> data-aware polish layer</li>
+        <li>Brazilian + US locale label helpers</li>
+        <li><strong>License: MIT</strong></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-tag" style="background:rgba(255,179,71,0.12); color:var(--amber);">P2 — ctplot</div>
+      <h3 style="margin-top:0;">Chart layer</h3>
+      <p>Constructors for charts ggplot2 can't express cleanly + PPT export. Imports ggconsulting for defaults.</p>
+      <ul>
+        <li><code>ct_waterfall()</code> — McKinsey-style bridge chart</li>
+        <li><code>ct_slope()</code> — before/after comparison</li>
+        <li><code>ct_dumbbell()</code> — gap analysis</li>
+        <li><code>ct_to_pptx()</code> — single chart → PPTX (Level 1)</li>
+        <li>Template injection — chart into existing deck (Level 2 target)</li>
+        <li><strong>v0.1 License: MIT</strong> (officer only)</li>
+        <li><strong>v1.0 License: GPL-3</strong> (when rvg arrives for editable vectors)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <h4>License trajectory</h4>
+    <p>
+      ggplot2, scales, officer, systemfonts are MIT. <code>rvg</code> (which gives editable PPT vectors) is GPL-3. ctplot v0.1 uses officer-only and ships rasterized charts → MIT is fine. When ctplot v1.0 adds rvg for editable vector charts, the package becomes GPL-3. Communicate this trajectory upfront in README.
+    </p>
+  </div>
+</div>
+</section>
+
+<!-- GGCONSULTING -->
+<section id="ggconsulting">
+<div class="container">
+  <div class="section-label">Package 01</div>
+  <h2>ggconsulting</h2>
+  <p class="section-intro">
+    Opinionated ggplot2 extension for executive-grade output. Three archetypes capture ~80% of corporate consulting visual identity. Builder API for the rest. Locale-aware labels. Font management without footguns.
+  </p>
+
+  <h3>Three archetypes</h3>
+  <p>Conservative business visual identities collapse into three families. Function names are generic; documentation hints at firm-style inspiration without naming.</p>
+
+  <div class="three-col">
+    <div class="card">
+      <h4 style="color:var(--accent);">theme_strategy()</h4>
+      <p style="font-size:0.88rem; color:var(--text-muted);">
+        Minimal, generous whitespace, sans-serif, navy default. Inspired by top-tier global strategy consultancies.
+      </p>
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.5rem;">
+        <code>main_color</code> arg covers most variants in this family.
+      </p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--green);">theme_finance()</h4>
+      <p style="font-size:0.88rem; color:var(--text-muted);">
+        Denser, subtle gridlines, serif body, classical typography. Suits Big 4 transaction services, bank advisory.
+      </p>
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.5rem;">
+        Designed to sit comfortably in financial reports and pitch books.
+      </p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--amber);">theme_editorial()</h4>
+      <p style="font-size:0.88rem; color:var(--text-muted);">
+        Warmer palette, italics in subtitles, typographic personality. Economist/FT/Bloomberg-style analyst note look.
+      </p>
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.5rem;">
+        For client-facing memos and market commentary, not transactional decks.
+      </p>
+    </div>
+  </div>
+
+  <h3>The ct_theme() builder</h3>
+  <p>Underlying flexible API. The three archetypes are pre-set paths through this builder.</p>
+
+  <div class="code-block">
+<pre><span class="comment"># Flexible builder — every theme arg exposed</span>
+<span class="fn">ct_theme</span>(
+  <span class="arg">palette</span>     <span class="op">=</span> <span class="str">"navy"</span>,         <span class="comment"># named palette or hex vector</span>
+  <span class="arg">font</span>        <span class="op">=</span> <span class="str">"Inter"</span>,        <span class="comment"># with fallback chain</span>
+  <span class="arg">density</span>     <span class="op">=</span> <span class="str">"normal"</span>,       <span class="comment"># "tight" | "normal" | "loose"</span>
+  <span class="arg">context</span>     <span class="op">=</span> <span class="str">"presentation"</span>, <span class="comment"># "presentation" | "report" | "screen"</span>
+  <span class="arg">base_size</span>   <span class="op">=</span> 12
+)
+
+<span class="comment"># Archetypes are presets over the builder</span>
+<span class="fn">theme_strategy</span>(<span class="arg">main_color</span> <span class="op">=</span> <span class="str">"navy"</span>)
+<span class="fn">theme_finance</span>()
+<span class="fn">theme_editorial</span>()</pre>
+  </div>
+
+  <h3>Context-aware sizing</h3>
+  <p>Single theme, three contexts. Avoids parallel <code>theme_strategy_pdf()</code>/<code>theme_strategy_html()</code> families.</p>
+
+  <div class="kv-list">
+    <dt>presentation</dt><dd>base_size 14, generous plot.margin, bold titles, high-contrast gridlines (16:9 slides)</dd>
+    <dt>report</dt><dd>base_size 10, tight margins, lighter gridlines (Quarto body text, A4/Letter PDF)</dd>
+    <dt>screen</dt><dd>base_size 11, default ggplot2-like behavior (interactive exploration)</dd>
+  </div>
+
+  <h3>Scales and palettes</h3>
+  <ul style="color:var(--text-muted); list-style:none; padding-left:0;">
+    <li style="padding:0.3rem 0;"><code>scale_color_ct()</code> / <code>scale_fill_ct()</code> — discrete + continuous variants</li>
+    <li style="padding:0.3rem 0;">~6 palettes total: 3 archetype defaults + 3 CVD-safe variants, tagged in docs</li>
+    <li style="padding:0.3rem 0;">Categorical palette behavior: interpolate + warn when n &gt; palette size (not silent cycle)</li>
+    <li style="padding:0.3rem 0;"><code>ct_palette_show()</code> for quick visual preview</li>
+  </ul>
+
+  <h3>Geom defaults — autoload pattern</h3>
+  <p>The systematic ggplot2 fixes (line width, column width, expansion) ship as global defaults applied at <code>library()</code> time. Loud message + opt-out path.</p>
+
+  <div class="code-block">
+<pre><span class="comment"># On library(ggconsulting):</span>
+<span class="kw">ℹ</span> ggconsulting set ggplot2 geom defaults (lwd, col width, ...)
+<span class="kw">i</span> Opt out: <span class="fn">ct_unset_defaults</span>() or <span class="fn">options</span>(<span class="arg">ggconsulting.autoload</span> <span class="op">=</span> FALSE)
+
+<span class="comment"># User controls</span>
+<span class="fn">ct_set_defaults</span>()    <span class="comment"># reapply</span>
+<span class="fn">ct_unset_defaults</span>()  <span class="comment"># revert to pre-load state (not ggplot2 baseline)</span></pre>
+  </div>
+
+  <div class="callout warn">
+    <h4>Known risk</h4>
+    <p>
+      Autoload changes global ggplot2 state, affecting plots that didn't ask for the theme. Honors <code>options(ggconsulting.autoload = FALSE)</code> set in <code>.Rprofile</code>. If user feedback is hostile, flip default to opt-in.
+    </p>
+  </div>
+
+  <h3>ct_finish() — data-aware polish</h3>
+  <p>Complements <code>theme()</code> by doing what theme can't: post-hoc, data-aware finishing. Sort, label, format, highlight, set scale expansion — all after the geom layer is built. Auto-detects the geom to pick sensible expansion.</p>
+
+  <div class="code-block">
+<pre><span class="fn">ggplot</span>(d, <span class="fn">aes</span>(category, value)) <span class="op">+</span>
+  <span class="fn">geom_col</span>() <span class="op">+</span>
+  <span class="fn">ct_finish</span>(
+    <span class="arg">values</span>      <span class="op">=</span> TRUE,        <span class="comment"># value labels above bars</span>
+    <span class="arg">sort</span>        <span class="op">=</span> <span class="str">"desc"</span>,      <span class="comment"># reorder by value</span>
+    <span class="arg">label_fmt</span>   <span class="op">=</span> <span class="str">"brl"</span>,       <span class="comment"># locale formatter</span>
+    <span class="arg">highlight</span>   <span class="op">=</span> <span class="str">"Acme"</span>,      <span class="comment"># de-emphasize others</span>
+    <span class="arg">end_labels</span>  <span class="op">=</span> TRUE,        <span class="comment"># for line charts</span>
+    <span class="arg">expand</span>      <span class="op">=</span> <span class="str">"auto"</span>       <span class="comment"># geom-aware scale expansion</span>
+  )</pre>
+  </div>
+
+  <p style="font-size:0.88rem;">
+    Scale expansion is handled <strong>inside</strong> <code>ct_finish()</code> rather than via separate <code>ct_scale_*()</code> wrappers. Auto-detection: <code>geom_col</code> → <code>expansion(mult = c(0, 0.15))</code> on y (room for value labels above bars); <code>geom_line</code> with dates → right-side x expansion for end labels; etc. Users can override per-call.
+  </p>
+
+  <h3>Locale</h3>
+  <p>Brazilian formatting is the default; US fallback always available. Does not rely on <code>Sys.setlocale()</code> (breaks on Windows CI).</p>
+
+  <div class="kv-list">
+    <dt>Thousand sep</dt><dd>"." (period) — 1.000.000</dd>
+    <dt>Decimal sep</dt><dd>"," (comma) — 1,5</dd>
+    <dt>Currency</dt><dd>"R$ " (with non-breaking space)</dd>
+    <dt>Negative (default)</dt><dd>Minus prefix — <code>-R$ 1.000,00</code> / <code>-1.000,00</code></dd>
+    <dt>Negative (accounting)</dt><dd>Parens — <code>(R$ 1.000,00)</code>. <strong>Money only</strong>, opt-in via <code>style = "accounting"</code></dd>
+    <dt>Date months</dt><dd>"ago/24" — ship internal Portuguese month tables (don't rely on LC_TIME)</dd>
+    <dt>Switch</dt><dd><code>ct_locale("pt-BR")</code> / <code>ct_locale("en-US")</code></dd>
+  </div>
+
+  <h3>Font strategy</h3>
+  <p>Assume installed + helpers. Modern tooling (<code>systemfonts</code>, ragg-aligned). No font shipping in the package.</p>
+
+  <ul style="color:var(--text-muted); list-style:none; padding-left:0;">
+    <li style="padding:0.3rem 0;"><code>install_consulting_fonts()</code> downloads Google Fonts (Inter, Source Sans 3, Lato, Source Serif 4, IBM Plex Sans — all OFL/Apache)</li>
+    <li style="padding:0.3rem 0;"><code>has_font(name)</code> — for graceful test/example skipping</li>
+    <li style="padding:0.3rem 0;">Fallback chain in every theme: <code>c("Inter", "Helvetica Neue", "Arial", "sans")</code></li>
+    <li style="padding:0.3rem 0;">Document <code>showtext</code> vs <code>ragg</code> gotchas in a vignette</li>
+  </ul>
+
+  <h3>Dependencies (Imports)</h3>
+  <p>Ruthlessly minimal. Faster CRAN checks, fewer install failures.</p>
+
+  <div class="code-block">
+<pre><span class="comment"># DESCRIPTION Imports</span>
+<span class="pkg">ggplot2</span>      <span class="comment"># obvious</span>
+<span class="pkg">scales</span>       <span class="comment"># label formatting</span>
+<span class="pkg">systemfonts</span>  <span class="comment"># modern font handling (ragg-aligned)</span>
+<span class="pkg">cli</span>          <span class="comment"># load messages, ct_palette_show output</span>
+<span class="pkg">rlang</span>        <span class="comment"># only if NSE used; otherwise drop</span></pre>
+  </div>
+</div>
+</section>
+
+<!-- CTPLOT -->
+<section id="ctplot">
+<div class="container">
+  <div class="section-label">Package 02</div>
+  <h2>ctplot</h2>
+  <p class="section-intro">
+    The hard charts ggplot2 can't express cleanly + a PPT export path. Deliberately small surface — three constructors, one export function. Imports ggconsulting for defaults; works without it but looks plain.
+  </p>
+
+  <h3>Core constructors</h3>
+  <table class="pkg-table">
+    <thead>
+      <tr><th>Function</th><th>Purpose</th><th>Why it earns its keep</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>ct_waterfall()</code></td>
+        <td>McKinsey-style bridge chart with connectors and totals</td>
+        <td>Genuinely hard in ggplot — running sums, connector lines, total bars, value labels above/below by sign</td>
+      </tr>
+      <tr>
+        <td><code>ct_slope()</code></td>
+        <td>Before/after comparison with category labels at both ends</td>
+        <td>Used heavily in consulting; ggplot can do it but takes ~30 lines per chart</td>
+      </tr>
+      <tr>
+        <td><code>ct_dumbbell()</code></td>
+        <td>Gap analysis with two points + connecting segment</td>
+        <td>Two geom layers + manual coord_flip + labels — wrapper saves real time</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>PPT export</h3>
+  <p>Two levels, sequenced. Honest about what works.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-tag" style="background:rgba(79,140,255,0.12); color:var(--accent);">Level 1 — v0.1</div>
+      <h4>Single chart → PPTX from scratch</h4>
+      <ul>
+        <li>Raster PNG embedded in new slide</li>
+        <li>Title + subtitle text in slide layout</li>
+        <li><code>officer</code> only — MIT-compatible</li>
+        <li>~1 week of work</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag" style="background:rgba(255,179,71,0.12); color:var(--amber);">Level 2 — v0.x target</div>
+      <h4>Chart → existing template slide</h4>
+      <ul>
+        <li>Drop chart into slide N of branded deck</li>
+        <li>Match placeholder layout (size, position)</li>
+        <li>Still raster — editable vectors deferred to v1.0</li>
+        <li>~3–4 weeks of work</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout cut">
+    <h4>Deferred: editable vector PPT (rvg)</h4>
+    <p>
+      Promised "editable vector" charts only work cleanly for plain ggplots. Waterfall, marimekko, ggtext annotations break the rvg pipeline. Deferred to ctplot v1.0 with documented caveats — only after Level 2 has real users.
+    </p>
+  </div>
+
+  <h3>Out of public scope — ekioplot</h3>
+  <p>The simple wrappers (<code>ct_bar</code>, <code>ct_line</code>, <code>ct_scatter</code>) live in <code>ekioplot</code> — a personal/company package named after Ekio. GitHub-only, no CRAN discipline, evolves fast. Imports ggconsulting and (later) ctplot. ctplot public surface stays small and disciplined.</p>
+</div>
+</section>
+
+<!-- CROSS-CUTTING -->
+<section id="cross">
+<div class="container">
+  <div class="section-label">Cross-cutting</div>
+  <h2>Decisions that span both packages</h2>
+
+  <h3>Naming</h3>
+  <ul style="color:var(--text-muted); list-style:none; padding-left:0;">
+    <li style="padding:0.3rem 0;"><code>ggconsulting</code> — follows <code>gg*</code> extension convention (ggthemes, ggtext, ggrepel). Self-describing.</li>
+    <li style="padding:0.3rem 0;"><code>ctplot</code> — short prefix, no collision with <code>base::chartr()</code></li>
+    <li style="padding:0.3rem 0;"><strong>Action before scaffolding:</strong> run <code>available::available("ggconsulting")</code> and <code>available::available("ctplot")</code> to check CRAN, Bioconductor, GitHub, and rude-word lists</li>
+  </ul>
+
+  <h3>Trademark and visual identity</h3>
+  <ul style="color:var(--text-muted); list-style:none; padding-left:0;">
+    <li style="padding:0.3rem 0;">Generic function names — never <code>theme_bcg()</code></li>
+    <li style="padding:0.3rem 0;">Docs use phrases like "inspired by top-tier global strategy consultancies"</li>
+    <li style="padding:0.3rem 0;">Vignettes use a fake firm ("Acme Strategy Partners") with realistic chart titles</li>
+    <li style="padding:0.3rem 0;">README does <em>not</em> name real firms in the body; one-line hints OK in vignettes</li>
+    <li style="padding:0.3rem 0;">No real firm logos, ever</li>
+    <li style="padding:0.3rem 0;">No proprietary fonts shipped — only Google Fonts free alternatives</li>
+  </ul>
+
+  <h3>Reference collection</h3>
+  <ul style="color:var(--text-muted); list-style:none; padding-left:0;">
+    <li style="padding:0.3rem 0;">Location: <code>data-raw/references/</code> + listed in <code>.Rbuildignore</code> (not shipped to CRAN)</li>
+    <li style="padding:0.3rem 0;">Per-reference fields: source URL, observed hex colors, observed/approximated font, spacing notes, geom used, annotation style</li>
+    <li style="padding:0.3rem 0;">Target: 30–50 references across 3 archetypes</li>
+    <li style="padding:0.3rem 0;">When reproducing: change data and titles; never use logos verbatim</li>
+  </ul>
+
+  <h3>Testing</h3>
+  <ul style="color:var(--text-muted); list-style:none; padding-left:0;">
+    <li style="padding:0.3rem 0;"><code>vdiffr</code> for visual regression — but font-dependent snapshots must <code>skip_on_cran()</code></li>
+    <li style="padding:0.3rem 0;">Two-tier baseline: layout baseline (CRAN-runnable, <code>base_family = ""</code>) + font baseline (local-only)</li>
+    <li style="padding:0.3rem 0;">Wrap font-styled tests in <code>skip_if_not(has_font("Inter"))</code></li>
+    <li style="padding:0.3rem 0;">Budget ~20% of dev time for tests</li>
+  </ul>
+
+  <h3>Versioning and lifecycle</h3>
+  <ul style="color:var(--text-muted); list-style:none; padding-left:0;">
+    <li style="padding:0.3rem 0;">Start at <code>0.0.0.9000</code> in DESCRIPTION (tidyverse dev convention)</li>
+    <li style="padding:0.3rem 0;">Use <code>lifecycle</code> badges: <code>ct_finish()</code> and <code>ct_theme()</code> builder as experimental</li>
+    <li style="padding:0.3rem 0;">Stable from day one: archetype themes, <code>scale_color_ct</code>/<code>scale_fill_ct</code></li>
+  </ul>
+
+  <h3>Documentation</h3>
+  <ul style="color:var(--text-muted); list-style:none; padding-left:0;">
+    <li style="padding:0.3rem 0;">README with visual gallery (3 archetypes × 2 chart types = 6 example plots)</li>
+    <li style="padding:0.3rem 0;">Vignette: <em>"Choosing a theme"</em> — side-by-side comparisons</li>
+    <li style="padding:0.3rem 0;">Vignette: <em>"Locale and number formatting"</em></li>
+    <li style="padding:0.3rem 0;">Vignette: <em>"Fonts: installing, fallbacks, ragg vs showtext"</em></li>
+    <li style="padding:0.3rem 0;">pkgdown reference page with archetype gallery</li>
+    <li style="padding:0.3rem 0;">Doc effort ≈ 15% of total</li>
+  </ul>
+</div>
+</section>
+
+<!-- DECISIONS LOG -->
+<section id="decisions">
+<div class="container">
+  <div class="section-label">Decisions log</div>
+  <h2>Locked decisions</h2>
+  <p class="section-intro">
+    Every meaningful design choice made across the planning rounds. Locked = decided; open = listed in the next section.
+  </p>
+
+  <table class="pkg-table">
+    <thead>
+      <tr><th>Decision</th><th>Choice</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Package count</td><td>Two: ggconsulting + ctplot</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Build order</td><td>ggconsulting first, standalone</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>ggconsulting license</td><td>MIT</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>ctplot v0.1 license</td><td>MIT (officer only, no rvg)</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>ctplot v1.0 license</td><td>GPL-3 (when rvg arrives)</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Theme strategy</td><td>3 archetypes (strategy, finance, editorial) + builder</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Theme naming</td><td>Generic names — never firm-named</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>API style</td><td>Builder + preset paths (not wrappers vs grammar)</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Context handling</td><td>Single theme, <code>context = c("presentation","report","screen")</code></td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Locale default</td><td>pt-BR; en-US fallback always available</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Locale switch</td><td><code>ct_locale("pt-BR")</code> sets internal options; no <code>Sys.setlocale</code></td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Font strategy</td><td>Assume installed + <code>install_consulting_fonts()</code> + <code>has_font()</code></td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Font tooling</td><td><code>systemfonts</code> (ragg-aligned), not <code>showtext</code></td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Geom defaults</td><td>Autoload on <code>library()</code> + loud message + opt-out option/function</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>CVD palettes</td><td>Mix of presentation + CVD-safe, tagged in docs</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Palette overflow</td><td>Interpolate + warn when n &gt; palette size</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Dark mode</td><td>Deferred to v0.2+</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Number formatting API</td><td>Helpers (<code>fmt_brl</code>) that wrap scale-level functions</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Quarto compatibility</td><td>Yes — via <code>context = "report"</code></td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Personal wrappers</td><td>Personal package, not ctplot public surface</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>ctplot v0.1 charts</td><td><code>ct_waterfall</code>, <code>ct_slope</code>, <code>ct_dumbbell</code> only</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>PPT export sequencing</td><td>Level 1 (scratch) → Level 2 (template) → v1.0 (editable vector)</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Data ingestion</td><td>Out of scope; recommend <code>tidyxl</code>/<code>unpivotr</code> in docs</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Reference collection</td><td><code>data-raw/references/</code>, structured fields, <code>.Rbuildignore</code></td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Lifecycle badges</td><td><code>ct_finish()</code> + <code>ct_theme()</code> builder marked experimental</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Scale expansion</td><td>Handled inside <code>ct_finish()</code> with geom auto-detection; no <code>ct_scale_*()</code> wrappers</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Negative number format</td><td>Minus prefix default; <code>style = "accounting"</code> parens for money only</td><td><span class="pill lock">LOCKED</span></td></tr>
+      <tr><td>Personal wrapper package</td><td><code>ekioplot</code> — GitHub-only, named after Ekio</td><td><span class="pill lock">LOCKED</span></td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+<div class="container">
+  <div class="section-label">Roadmap</div>
+  <h2>ggconsulting v0.1 — ~10 weeks</h2>
+  <p class="section-intro">
+    Single developer, part-time. Calendar time may be ~12 weeks with normal life buffer. Hard gate before ctplot: ship ggconsulting and dogfood it on at least one real consulting deck.
+  </p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-phase">Week 1 — Phase 0</div>
+      <h4>Scaffolding and final calls</h4>
+      <p><code>usethis::create_package()</code>. Naming availability check. License files. Confirm font fallback chain. Resolve open questions (scale expansion, negative number format). Write one-page design summary in repo.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">Weeks 2–4 — Phase 1</div>
+      <h4>Theme builder + 3 archetypes</h4>
+      <p><code>ct_theme()</code> builder with all args. Three archetype themes as preset paths. <code>base_size</code> and <code>context</code> sizing logic. Initial vdiffr baselines (layout only).</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">Weeks 5–6 — Phase 2</div>
+      <h4>Palettes and scales</h4>
+      <p>6 palettes (3 archetype defaults + 3 CVD-safe). <code>scale_color_ct()</code> / <code>scale_fill_ct()</code> with discrete + continuous. Interpolation behavior with warning. <code>ct_palette_show()</code>.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">Week 7 — Phase 3</div>
+      <h4>Geom defaults and locale</h4>
+      <p><code>update_geom_defaults()</code> on load + opt-out machinery. Brazilian + US number formatters. <code>ct_locale()</code>. Internal Portuguese month tables. <code>ct_finish()</code> initial implementation.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">Week 8 — Phase 4</div>
+      <h4>Fonts and references</h4>
+      <p><code>install_consulting_fonts()</code>. <code>has_font()</code>. Test font registration paths on macOS/Linux/Windows. Build reference catalog in <code>data-raw/references/</code>.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-phase">Weeks 9–10 — Phase 5</div>
+      <h4>Tests, docs, polish, CRAN prep</h4>
+      <p>vdiffr suite with two-tier baselines. Three vignettes. pkgdown site with gallery. README with example plots. <code>R CMD check --as-cran</code> clean. Optionally submit to CRAN.</p>
+    </div>
+  </div>
+
+  <h3>ctplot v0.1 — after ggconsulting</h3>
+  <p>Estimated ~6–8 weeks. <code>ct_waterfall</code> + <code>ct_slope</code> + <code>ct_dumbbell</code> + <code>ct_to_pptx()</code> Level 1. Heavily dogfooded against real decks. Level 2 deferred to v0.2.</p>
+</div>
+</section>
+
+<!-- DEFERRED -->
+<section id="deferred">
+<div class="container">
+  <div class="section-label">Deferred</div>
+  <h2>What we cut and why</h2>
+  <p class="section-intro">
+    Tracked here so the cuts stay deliberate, not forgotten. Some are flat "no"; others are "not in v0.1, revisit after dogfooding."
+  </p>
+
+  <table class="pkg-table">
+    <thead>
+      <tr><th>Item</th><th>Status</th><th>Reasoning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>exploR (EDA package)</td><td><span class="pill cut">CUT</span></td><td>skimr + DataExplorer + modelsummary + fable already cover this well</td></tr>
+      <tr><td>reportr (Quarto extension)</td><td><span class="pill cut">CUT</span></td><td>Themes handle Quarto via <code>context = "report"</code>; templates premature</td></tr>
+      <tr><td>dashr (Shiny modules)</td><td><span class="pill cut">CUT</span></td><td>bslib + manual modules cover the consulting use case</td></tr>
+      <tr><td>Esquisse integration</td><td><span class="pill cut">CUT</span></td><td>Backend can't render the consulting-specific charts — flagship feature was broken</td></tr>
+      <tr><td>Custom brand.yml engine</td><td><span class="pill cut">CUT</span></td><td>Adopt Posit's brand.yml if/when needed; don't fragment the spec</td></tr>
+      <tr><td>Forecasting helpers</td><td><span class="pill cut">CUT</span></td><td>fable already auto-ranks; thin wrapper adds no value</td></tr>
+      <tr><td>Spatial clustering</td><td><span class="pill cut">CUT</span></td><td>Niche; DBSCAN and LISA are different objects, leaky abstraction to combine</td></tr>
+      <tr><td>Editable vector PPT (rvg)</td><td><span class="pill later">v1.0</span></td><td>Breaks on custom geoms and annotations — needs honest scope</td></tr>
+      <tr><td>Dark mode themes</td><td><span class="pill later">v0.2+</span></td><td>Rare in target domain; doubles palette and snapshot work</td></tr>
+      <tr><td>theme_executive() / theme_deck()</td><td><span class="pill later">v0.2+</span></td><td><code>context = "presentation"</code> covers the main case</td></tr>
+      <tr><td>Excel ingestion helper</td><td><span class="pill later">Maybe</span></td><td>Revisit after ggconsulting + ctplot ship; gauge real pain</td></tr>
+      <tr><td>marimekko, bump, treemap, heatmap geoms</td><td><span class="pill later">v0.2+</span></td><td>Decorative or already covered by existing extensions</td></tr>
+      <tr><td>Simple chart wrappers (<code>ct_bar</code>, <code>ct_line</code>)</td><td><span class="pill cut">Personal</span></td><td>Don't generalize across consultants; keep in personal package</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- OPEN QUESTIONS -->
+<section id="open">
+<div class="container">
+  <div class="section-label">Ready to scaffold</div>
+  <h2>Pre-flight check</h2>
+  <p class="section-intro">
+    All API-shaping decisions are locked. Only logistical items remain — none block writing code.
+  </p>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-tag" style="background:rgba(61,220,132,0.12); color:var(--green);">CONFIRMED</div>
+      <h4>Name availability</h4>
+      <p style="color:var(--text-muted); font-size:0.9rem;">
+        Verified via <code>available::available()</code>:
+      </p>
+      <ul>
+        <li><code>ggconsulting</code> — CRAN ✓ Bioconductor ✓ GitHub ✓</li>
+        <li><code>ctplot</code> — CRAN ✓ Bioconductor ✓ GitHub ✓</li>
+        <li><code>ekioplot</code> — to verify before scaffolding</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-tag" style="background:rgba(167,139,250,0.12); color:var(--violet);">LOGISTICAL</div>
+      <h4>Repo layout</h4>
+      <p style="color:var(--text-muted); font-size:0.9rem;">
+        Two options, each with tradeoffs:
+      </p>
+      <ul>
+        <li><strong>Separate repos</strong> — clean CI per package, independent release cadence, slower context-switching across packages</li>
+        <li><strong>Monorepo</strong> (e.g., <code>consultr/ggconsulting</code>, <code>consultr/ctplot</code> as sibling dirs) — faster cross-package edits, but harder to onboard contributors and ship to CRAN</li>
+      </ul>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.75rem;">
+        <strong>Suggested:</strong> separate repos. CRAN expects one package per repo; release independence matters more than edit speed.
+      </p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SUCCESS CRITERIA -->
+<section>
+<div class="container">
+  <div class="section-label">Success criteria</div>
+  <h2>How we'll know v0.1 worked</h2>
+  <p class="section-intro">
+    A single dogfooding criterion. Stars, downloads, and CRAN status follow from real use; they don't substitute for it.
+  </p>
+
+  <div class="callout">
+    <h4>v0.1 success</h4>
+    <p>
+      <em>I use ggconsulting on three real consulting decks within a month of v0.1 release, and don't need to monkey-patch anything to make it work.</em>
+    </p>
+  </div>
+
+  <p style="font-size:0.9rem;">
+    If monkey-patching is needed, the API is wrong — fix it before announcing. If three decks happen smoothly, ggconsulting has earned a wider release and ctplot scaffolding can start.
+  </p>
+</div>
+</section>
+
+<footer>
+  <div class="container">
+    <p style="font-family:'IBM Plex Mono', monospace; color:var(--accent); margin-bottom:0.5rem;">consultr::plan::v2</p>
+    <p>Refined design document — May 2026</p>
+    <p style="font-size:0.75rem; margin-top:0.5rem;">Supersedes <code>consultr_plan.html</code> (v1). Original kept for diff context.</p>
+  </div>
+</footer>
+
+</body>
+</html>

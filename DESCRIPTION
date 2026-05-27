@@ -1,0 +1,31 @@
+Package: ggconsulting
+Type: Package
+Title: Executive-Grade Themes and Helpers for 'ggplot2'
+Version: 0.0.0.9000
+Authors@R: c(
+    person(
+      "Vinicius", "Reginatto",
+      email = "viniciusoike@gmail.com",
+      role = c("aut", "cre")
+    )
+  )
+Description: An opinionated 'ggplot2' extension for executive-grade
+    consulting output. Ships archetype themes, palettes, scale helpers,
+    locale-aware label helpers, and a data-aware polish layer.
+License: MIT + file LICENSE
+URL: https://github.com/viniciusoike/ggconsulting
+BugReports: https://github.com/viniciusoike/ggconsulting/issues
+Encoding: UTF-8
+Imports:
+    cli,
+    ggplot2,
+    rlang,
+    scales,
+    systemfonts
+Suggests:
+    lifecycle,
+    testthat (>= 3.0.0),
+    vdiffr
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3

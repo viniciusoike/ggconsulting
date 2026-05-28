@@ -37,9 +37,13 @@ jobs:
           covr::to_cobertura(cov)
         shell: Rscript {0}
 
-      - uses: codecov/codecov-action@v4
+      - name: Upload coverage to Codecov
+        # Non-fatal: Codecov v4 needs a token even for public repos.
+        # Set CODECOV_TOKEN as a repo secret to enable actual uploads.
+        continue-on-error: true
+        uses: codecov/codecov-action@v4
         with:
-          fail_ci_if_error: ${{ github.event_name != 'pull_request' && true || false }}
+          fail_ci_if_error: false
           files: ./cobertura.xml
           plugins: noop
           disable_search: true

@@ -1,0 +1,70 @@
+id: ref-003
+archetype: strategy
+
+source:
+  url: https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/global-economics-intelligence-2025
+  publisher: "Public report — large strategy consultancy, global economics executive summary (October 2025 issue)"
+  date_accessed: 2026-05-27
+
+chart:
+  type: bar
+  title_observed: "Sorted vertical bar chart of single-quarter real GDP growth for five economies, descending; one negative-value bar at the right is encoded by color and value sign rather than position alone."
+  aspect_ratio: "16:10"
+
+colors:
+  - "#00A9F4"   # bright cyan — positive growth bars (4 of 5 bars)
+  - "#0B1F33"   # very dark navy / near-black — negative growth bar; also title text and data-label color above the negative bar
+  - "#FFFFFF"   # white — data labels printed INSIDE the cyan bars (color-inverted labels)
+  - "#6E6E6E"   # mid-gray — source note
+
+font:
+  observed: "geometric humanist sans-serif; bold weight for title and subtitle; regular for category names; tabular numerals for data labels"
+  approximated_free_equivalent: "Inter or Source Sans 3"
+
+typography:
+  title_weight: "very bold, large, left-aligned, near-black; full-takeaway statement, two lines"
+  subtitle_treatment: "bold, dark, sits in a dedicated LEFT margin column (same pattern as ref-002); states series name, time period, and units across three lines"
+  axis_labels: "category names below bars, regular weight, dark; no y-axis tick labels at all"
+  data_labels: "single-decimal numbers; printed INSIDE each positive bar in white near the top; for the negative bar, printed BELOW the bar in dark navy (matching the bar color)"
+
+spacing:
+  gridlines: "no gridlines anywhere; no y-axis; no chart border; the bar baseline is implicit (only the bars draw the axis)"
+  panel_margin: "very generous whitespace, particularly above bars; left margin reserved for the subtitle block"
+  legend_position: "no legend — single-series chart, color encodes sign not category"
+
+annotation_style:
+  data_labels: "every bar labeled; positives inside bars (color-inverted), negative below the bar (color-matched); no '%' sign on the labels (units carried by subtitle)"
+  callouts: "none; the headline title carries the analytic takeaway, naming both the leaders ('eurozone and China') and the loser ('US contracted by 0.3 percent')"
+  source_note: "single line at bottom-left, light gray, very small; 'Source: ...' attribution; here the source is a third-party data source (national statistical offices) plus the publisher's own analysis"
+  negative_value_treatment: "color (dark navy vs cyan) + minus sign on the data label; no parentheses, no red"
+
+image_path: strategy/ref-003-gdp-growth-bars.png
+
+notes: |
+  Confirms the recurring strategy-archetype pattern: takeaway headline +
+  left-margin subtitle + no gridlines + minimal axis + color-encoded variants.
+
+  Negative-value encoding is the most archetype-specific signal here. The
+  reference does NOT use red for the negative bar (a common journalistic
+  default). Instead, it inverts the brightness — bright cyan for positives,
+  dark navy/black for the negative — and lets the minus sign on the label
+  do the redundant signaling. This is a key choice for the strategy
+  archetype: red is reserved or absent; negative encoded by dark.
+
+  Data-label placement uses color-inversion: white labels INSIDE the bright
+  bars, dark labels OUTSIDE the dark bar. ggconsulting's `ct_bar()` or
+  `ct_label()` should compute label color from bar fill luminance.
+
+  Sort order is descending by value (best at left, worst at right) — the
+  classic dramaturgy of 'lead with strength, end with the surprise'. The
+  negative bar sits at the right end where its narrative weight is highest.
+
+  Single-color positive treatment (all cyan, no category palette) emphasizes
+  that the comparison is across one variable, not across categories with
+  different identities. This is a `monochromatic` palette idiom — the
+  ggconsulting `strategy_mono` palette should support a 1-color qualitative
+  use case like this.
+
+  Y-axis completely omitted; bar heights + data labels carry all numeric
+  information. Very low ink-per-data-point. Worth replicating as an option
+  in `ct_finish(axis_y = "implicit")`.

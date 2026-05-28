@@ -1,0 +1,66 @@
+id: ref-002
+archetype: strategy
+
+source:
+  url: https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/global-economics-intelligence
+  publisher: "Public report — large strategy consultancy, global economics executive summary"
+  date_accessed: 2026-05-27
+
+chart:
+  type: line
+  title_observed: "Multi-series line-with-markers chart tracking five perceived growth risks across six survey waves; one series dominates the upper band while two others sharply cross in the final wave."
+  aspect_ratio: "4:3"
+
+colors:
+  - "#0B1F33"   # darkest navy — primary 'Geopolitical conflicts' line and markers; also title text
+  - "#0078D4"   # mid azure blue — 'Changes in trade policy' line
+  - "#00A9F4"   # bright cyan — used as a hollow-marker accent on the 'Energy prices' series
+  - "#4ED4BE"   # teal/aqua — 'Supply chain disruptions' line
+  - "#A03060"   # muted burgundy/magenta — 'Economic volatility' line
+  - "#6E6E6E"   # mid-gray — source note + faint gridlines
+
+font:
+  observed: "geometric humanist sans-serif, two weights (regular and bold); title is bold; series labels regular; condensed feel on axis dates"
+  approximated_free_equivalent: "Inter or Source Sans 3"
+
+typography:
+  title_weight: "bold, large, left-aligned, near-black; two-line takeaway statement spanning the full chart width"
+  subtitle_treatment: "bold, dark, sits to the LEFT of the plot area (in a left-column margin) — not above the plot; multi-line, with units on the final line; uses a superscript footnote marker"
+  axis_labels: "small, dark, no rotation; date label is a two-line stack ('Mar / 2025'); month-only on intermediate ticks"
+  data_labels: "no per-point data labels; series identified by inline text label at the right end of each line (no legend block)"
+
+spacing:
+  gridlines: "very faint horizontal major gridlines at 0/20/40/60/80; no vertical gridlines; no chart border; y-axis tick values are right-aligned"
+  panel_margin: "generous; subtitle occupies a dedicated left margin column rather than stealing top vertical space"
+  legend_position: "inline at end-of-line on the right side; no separate legend element"
+
+annotation_style:
+  data_labels: "none on the data points themselves; legend-as-end-label pattern"
+  callouts: "none; takeaway is delegated entirely to the headline title"
+  source_note: "two-line block at bottom-left, light gray, very small; 'note' line then 'Source: ...' line"
+  marker_style: "two distinct treatments — primary series use FILLED circle markers; secondary/derivative series use HOLLOW (white-fill + colored stroke) circle markers. This is a low-cost visual hierarchy device worth replicating."
+
+image_path: strategy/ref-002-risks-multi-line.png
+
+notes: |
+  Reinforces the patterns seen in ref-001: takeaway-as-title, left-margin
+  subtitle that carries scope + units, source-attribution block at bottom-left,
+  no chart border, no vertical gridlines, and inline series labels in place
+  of a legend.
+
+  Distinctive feature: the open-vs-filled marker hierarchy. Series the
+  designer wants the eye drawn to (Geopolitical conflicts, Supply chain,
+  Economic volatility) use filled circles; series shown as
+  contextual/comparison (Trade policy, Energy prices) use hollow circles.
+  ggconsulting could expose this as a `prominence` argument on
+  `ct_line()` / `geom_line()` defaults.
+
+  Five-color qualitative palette: navy / azure blue / cyan / teal / burgundy.
+  Notably keeps blue dominance (3 of 5 series), with teal and burgundy as
+  warm-end accents. Burgundy is the only warm color and carries the lowest-
+  prominence series — i.e., warm accent is reserved, not primary.
+
+  Subtitle-in-left-margin layout is the most unusual element. It saves
+  vertical space (no separate subtitle line above the plot) but only works
+  when the chart has a wide aspect ratio. Worth flagging as an experimental
+  `ct_finish(subtitle_position = "left")` option.

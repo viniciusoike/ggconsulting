@@ -1,0 +1,62 @@
+id: ref-001
+archetype: strategy
+
+source:
+  url: https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/global-economics-intelligence
+  publisher: "Public report — large strategy consultancy, global economics executive summary"
+  date_accessed: 2026-05-27
+
+chart:
+  type: stacked_bar
+  title_observed: "100% stacked column chart of executive economic sentiment across three survey waves; two side-by-side panels split current view vs. expected six-month outlook."
+  aspect_ratio: "4:3"
+
+colors:
+  - "#051C2C"   # darkest near-navy/black, top segment ('Worse'); also used for title text
+  - "#B3B3B3"   # warm neutral gray, middle segment ('The same')
+  - "#00A9F4"   # bright cyan/azure blue, bottom segment ('Better')
+  - "#6E6E6E"   # mid-gray, source note text
+
+font:
+  observed: "geometric humanist sans-serif, two weights (regular ~400 and bold ~700); high x-height; tight tracking on the title"
+  approximated_free_equivalent: "Inter or Source Sans 3"
+
+typography:
+  title_weight: "very bold, large, left-aligned, near-black; written as a full takeaway statement spanning two lines"
+  subtitle_treatment: "regular weight, dark, sentence case, slightly smaller than panel headers; embeds a small superscript footnote marker"
+  axis_labels: "small, dark, no rotation, two-line date stacks ('Dec / 2025')"
+  data_labels: "centered inside each colored segment, bold, color-inverted (white on dark, dark on cyan/gray); category labels ('Worse', 'The same', 'Better') sit to the right of the first column only"
+
+spacing:
+  gridlines: "no gridlines; segments sit on an invisible baseline. A single light vertical hairline divides the two panels"
+  panel_margin: "generous whitespace above and below the chart; bars are wide with substantial inter-bar gap"
+  legend_position: "implicit; category labels printed once at the rightmost column of each panel, no legend swatches"
+
+annotation_style:
+  data_labels: "shown on every segment, integer percentage, no '%' character (units carried by subtitle)"
+  callouts: "none; the takeaway is carried by the headline title rather than in-chart annotation"
+  source_note: "two-line block at bottom-left, light gray, very small; format is 'Note: ...' followed by 'Source: ...'"
+
+image_path: strategy/ref-001-sentiment-stacked-bars.png
+
+notes: |
+  Headline-as-takeaway pattern (the title states the conclusion, not just the
+  topic). 'Subtitle' is purely a units/scope descriptor — the editorial weight
+  sits in the title.
+
+  Category labels appear once per panel, attached to the rightmost column —
+  not a separate legend block. This removes a typical chart-junk element and
+  is worth replicating in `ct_finish()` for the strategy archetype.
+
+  Color encoding is ordinal (bad → neutral → good = dark → gray → bright
+  blue), with the lightest/most saturated color carrying the most positive
+  meaning. Mid-category uses pure gray (no hue) — useful pattern for the
+  monochrome palette in this archetype.
+
+  No gridlines at all. The two panels are separated only by a single thin
+  vertical hairline. Subhead labels ('Current, compared with 6 months ago' /
+  'Expected, next 6 months') sit above each panel and act as panel facet
+  titles.
+
+  Source caption uses a leading 'Note:' for caveats then 'Source:' for
+  attribution — two separate lines, both light gray.

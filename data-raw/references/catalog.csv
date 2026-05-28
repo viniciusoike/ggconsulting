@@ -1,1 +1,4 @@
 id,archetype,chart_type,source_url,image_path
+ref-001,strategy,stacked_bar,https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/global-economics-intelligence,strategy/ref-001-sentiment-stacked-bars.png
+ref-002,strategy,line,https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/global-economics-intelligence,strategy/ref-002-risks-multi-line.png
+ref-003,strategy,bar,https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/global-economics-intelligence-2025,strategy/ref-003-gdp-growth-bars.png

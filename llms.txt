@@ -145,6 +145,21 @@ with consulting-grade defaults baked in at the call site.
   [`ct_point()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md)
   : Drop-in replacements for geom_col(), geom_line(), and geom_point()
 
+## Locale and formatters
+
+Locale-aware number, currency, percentage, and date formatters, plus a
+session-scoped locale switch.
+
+- [`ct_locale()`](https://viniciusoike.github.io/ggconsulting/reference/ct_locale.md)
+  : Set the active ggconsulting locale
+- [`fmt_number()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  [`fmt_brl()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  [`fmt_currency()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  [`fmt_pct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  [`fmt_delta()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  [`fmt_month()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  : Locale-aware label formatters
+
 ## Defaults
 
 Aesthetic defaults applied on library attach via

@@ -74,3 +74,26 @@
   `finance_burgundy`, `editorial_warm`, `editorial_clay`,
   `editorial_oxide`. The catalog is now 11 palettes (5 strategy + 3
   finance + 3 editorial).
+
+### Locale and formatters (prompt 05)
+
+- `ct_locale("pt-BR" | "en-US")` — session-scoped locale switch stored
+  in `options(ggconsulting.locale)`. Does *not* touch
+  [`Sys.setlocale()`](https://rdrr.io/r/base/locales.html); portable
+  across Windows / Linux / macOS CI.
+- [`fmt_number()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  — locale-aware number formatter (`1.234,5` / `1,234.5`).
+- [`fmt_brl()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  — Brazilian Real formatter; always renders as `R$` with a non-breaking
+  space, regardless of active locale. Supports `style = "accounting"`
+  for parens-wrapped negatives.
+- [`fmt_currency()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  — uses the active locale’s currency symbol.
+- [`fmt_pct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  — fraction-to-percent (`0.5` → `"50%"`).
+- [`fmt_delta()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  — always-signed percentage-point-style deltas (`+1,2pp` / `-0,3pp` /
+  `0,0pp`).
+- [`fmt_month()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  — `Date` / `POSIXct` → localised month string; ships its own pt-BR and
+  en-US month tables (no `LC_TIME` reliance).

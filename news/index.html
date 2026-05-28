@@ -76,6 +76,23 @@
 <code><a href="../reference/ct_theme.html">ct_theme()</a></code> gained a <code>font_fallback</code> argument; <code>.resolve_font()</code> now recognises <code>"sans"</code>, <code>"serif"</code>, and <code>"mono"</code> as guaranteed terminal fallbacks.</li>
 <li>Six new palettes: <code>finance_classic</code>, <code>finance_steel</code>, <code>finance_burgundy</code>, <code>editorial_warm</code>, <code>editorial_clay</code>, <code>editorial_oxide</code>. The catalog is now 11 palettes (5 strategy + 3 finance + 3 editorial).</li>
 </ul></div>
+<div class="section level3">
+<h3 id="locale-and-formatters-prompt-development-version">Locale and formatters (prompt 05)<a class="anchor" aria-label="anchor" href="#locale-and-formatters-prompt-development-version"></a></h3>
+<ul><li>
+<code>ct_locale("pt-BR" | "en-US")</code> — session-scoped locale switch stored in <code>options(ggconsulting.locale)</code>. Does <em>not</em> touch <code><a href="https://rdrr.io/r/base/locales.html" class="external-link">Sys.setlocale()</a></code>; portable across Windows / Linux / macOS CI.</li>
+<li>
+<code><a href="../reference/ct_formatters.html">fmt_number()</a></code> — locale-aware number formatter (<code>1.234,5</code> / <code>1,234.5</code>).</li>
+<li>
+<code><a href="../reference/ct_formatters.html">fmt_brl()</a></code> — Brazilian Real formatter; always renders as <code>R$</code> with a non-breaking space, regardless of active locale. Supports <code>style = "accounting"</code> for parens-wrapped negatives.</li>
+<li>
+<code><a href="../reference/ct_formatters.html">fmt_currency()</a></code> — uses the active locale’s currency symbol.</li>
+<li>
+<code><a href="../reference/ct_formatters.html">fmt_pct()</a></code> — fraction-to-percent (<code>0.5</code> → <code>"50%"</code>).</li>
+<li>
+<code><a href="../reference/ct_formatters.html">fmt_delta()</a></code> — always-signed percentage-point-style deltas (<code>+1,2pp</code> / <code>-0,3pp</code> / <code>0,0pp</code>).</li>
+<li>
+<code><a href="../reference/ct_formatters.html">fmt_month()</a></code> — <code>Date</code> / <code>POSIXct</code> → localised month string; ships its own pt-BR and en-US month tables (no <code>LC_TIME</code> reliance).</li>
+</ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

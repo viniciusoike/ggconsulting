@@ -1,4 +1,4 @@
-# ggconsulting (development version)
+# ggconsulting 0.0.0.9000
 
 ## Foundation (prompt 01)
 
@@ -83,3 +83,14 @@
   - label the last point of each line series (`end_labels = TRUE`)
   - geom-aware scale expansion (`expand = "auto"`) — y room above
     columns, right-side room for line endpoints
+
+## Visual gallery (prompt 07)
+
+* `inst/gallery/` ships a small portfolio of example scripts for visual
+  QA of themes, palettes, geoms, and formatters. Each file groups
+  related plots into a single `library(...) + assignments + print`
+  source-it-and-eyeball workflow. Files: `lines.R`, `columns.R`,
+  `columns-finished.R`, `facets.R`, `points.R`, `themes.R`, `palettes.R`,
+  `formatters.R`. Reachable post-install via
+  `system.file("gallery", package = "ggconsulting")` — intended as the
+  data source for a future Shiny gallery app.

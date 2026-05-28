@@ -60,10 +60,13 @@ ct_theme(
 
 - main_color:
 
-  Colour used for the plot title and routed into the theme `geom`
-  element's `ink` slot, so unmapped geoms pick it up via
+  Routed into the theme `geom` element's `ink` slot, so unmapped geoms
+  pick it up via
   [`from_theme()`](https://ggplot2.tidyverse.org/reference/aes_eval.html).
-  `NULL` falls back to the palette's first colour.
+  `NULL` falls back to the palette's first colour. Title colour is a
+  fixed neutral near-black (`#1A1A1A`); override with a follow-on
+  [`theme()`](https://ggplot2.tidyverse.org/reference/theme.html) call
+  if you want it palette-tinted.
 
 ## Value
 

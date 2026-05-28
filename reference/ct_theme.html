@@ -102,9 +102,11 @@ default <code>base_size</code> and <code>plot.margin</code>.</p></dd>
 
 
 <dt id="arg-main-color">main_color<a class="anchor" aria-label="anchor" href="#arg-main-color"></a></dt>
-<dd><p>Colour used for the plot title and routed into the
-theme <code>geom</code> element's <code>ink</code> slot, so unmapped geoms pick it up via
-<code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code>. <code>NULL</code> falls back to the palette's first colour.</p></dd>
+<dd><p>Routed into the theme <code>geom</code> element's <code>ink</code> slot,
+so unmapped geoms pick it up via <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code>. <code>NULL</code> falls back
+to the palette's first colour. Title colour is a fixed neutral
+near-black (<code>#1A1A1A</code>); override with a follow-on <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme()</a></code> call
+if you want it palette-tinted.</p></dd>
 
 </dl></div>
     <div class="section level2">

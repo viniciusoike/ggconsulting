@@ -53,9 +53,10 @@ strategy consultancies.</p>
 
 
 <dl><dt id="arg-main-color">main_color<a class="anchor" aria-label="anchor" href="#arg-main-color"></a></dt>
-<dd><p>Colour used for the plot title. Defaults to the
-<code>strategy_navy</code> palette's primary so the title matches downstream
-data marks. Pass any value <code><a href="https://rdrr.io/r/grDevices/col2rgb.html" class="external-link">grDevices::col2rgb()</a></code> accepts to override.</p></dd>
+<dd><p>Routed into the theme <code>geom</code> <code>ink</code> slot so unmapped
+geoms pick it up via <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code>. Defaults to <code>strategy_navy[1]</code>.
+Pass any value <code><a href="https://rdrr.io/r/grDevices/col2rgb.html" class="external-link">grDevices::col2rgb()</a></code> accepts to override. Does not
+affect title colour (a fixed neutral near-black).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

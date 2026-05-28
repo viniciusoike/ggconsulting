@@ -17,8 +17,10 @@ theme_editorial(main_color = NULL, ...)
 
 - main_color:
 
-  Colour for the title and the theme `geom` `ink` slot. `NULL` (default)
-  falls back to `editorial_warm[1]`.
+  Routed into the theme `geom` `ink` slot for
+  [`from_theme()`](https://ggplot2.tidyverse.org/reference/aes_eval.html)
+  linkage. `NULL` (default) falls back to `editorial_warm[1]`. Title
+  colour is a fixed neutral near-black.
 
 - ...:
 

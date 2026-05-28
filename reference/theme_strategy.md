@@ -15,11 +15,13 @@ theme_strategy(main_color = NULL, ...)
 
 - main_color:
 
-  Colour used for the plot title. Defaults to the `strategy_navy`
-  palette's primary so the title matches downstream data marks. Pass any
-  value
+  Routed into the theme `geom` `ink` slot so unmapped geoms pick it up
+  via
+  [`from_theme()`](https://ggplot2.tidyverse.org/reference/aes_eval.html).
+  Defaults to `strategy_navy[1]`. Pass any value
   [`grDevices::col2rgb()`](https://rdrr.io/r/grDevices/col2rgb.html)
-  accepts to override.
+  accepts to override. Does not affect title colour (a fixed neutral
+  near-black).
 
 - ...:
 

@@ -7,6 +7,11 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/viniciusoike/ggconsulting/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/viniciusoike/ggconsulting/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/viniciusoike/ggconsulting/graph/badge.svg)](https://app.codecov.io/gh/viniciusoike/ggconsulting)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 An opinionated ggplot2 extension for executive-grade consulting output.

@@ -15,9 +15,8 @@ MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/
 <!-- badges: end -->
 
 An opinionated ggplot2 extension for executive-grade consulting output.
-Ships archetype themes, palettes, mechanical geom wrappers, and (in
-later releases) locale-aware label helpers and a data-aware polish
-layer.
+Ships three archetype themes, eleven palettes, locale-aware label
+helpers (pt-BR + en-US), and a data-aware polish layer.
 
 > **Heads up:** ggconsulting is in early development. The public API is
 > being shaped against real consulting decks; expect breaking changes
@@ -69,21 +68,69 @@ options(ggconsulting.autoload = FALSE)
 ct_unset_defaults()
 ```
 
-## What’s inside (v0.1 foundation)
+## What’s inside
 
-- **`ct_theme()` / `theme_strategy()`** — composable theme builder and
-  archetype preset. Built with ggplot2 4.x `theme_sub_*()` helpers and
-  routed through `element_geom()` for `from_theme()` linkage.
-- **Five starter palettes** — `strategy_navy`, `strategy_emerald`,
-  `strategy_crimson`, `strategy_azure`, `strategy_slate`.
-- **`ct_col()` / `ct_line()` / `ct_point()`** — mechanical wrappers with
+**Themes**
+
+- `ct_theme()` — composable theme builder with `palette`, `font`,
+  `density`, and `context` arguments. Built on ggplot2 4.x
+  `theme_sub_*()` helpers and routed through `element_geom()` for
+  `from_theme()` linkage.
+- `theme_strategy()` — minimal, generous-whitespace, navy-default preset
+  inspired by top-tier global strategy consultancies.
+- `theme_finance()` — serif preset with denser defaults
+  (`density = "tight"`, `context = "report"`) tuned for printed pages
+  and pitch books.
+- `theme_editorial()` — serif preset with italic subtitles and a warmer
+  palette for client memos and market commentary.
+
+**Palettes and scales**
+
+- Eleven shipped palettes — five strategy (`strategy_navy`,
+  `strategy_emerald`, `strategy_crimson`, `strategy_azure`,
+  `strategy_slate`), three finance (`finance_classic`, `finance_steel`,
+  `finance_burgundy`), and three editorial (`editorial_warm`,
+  `editorial_clay`, `editorial_oxide`).
+- `scale_color_ct()` / `scale_fill_ct()` — discrete scales backed by the
+  palettes; interpolate and warn when `n` exceeds the palette size.
+- `scale_color_ct_c()` / `scale_fill_ct_c()` — continuous variants.
+  British-spelling aliases (`scale_colour_ct*`) are also exported.
+- `ct_palette_show()` — quick swatch preview for a single palette, a
+  custom hex vector, or every shipped palette faceted.
+
+**Locale-aware labels**
+
+- `ct_locale("pt-BR" | "en-US")` — session-scoped locale switch stored
+  in `options(ggconsulting.locale)`. Does not touch `Sys.setlocale()`;
+  portable across Windows / Linux / macOS CI.
+- `fmt_number()`, `fmt_pct()`, `fmt_delta()`, `fmt_currency()` —
+  locale-aware formatters.
+- `fmt_brl()` — always renders Brazilian Real with `R$` and a
+  non-breaking space, regardless of active locale. Supports
+  `style = "accounting"` for parens-wrapped negatives.
+- `fmt_month()` — `Date` / `POSIXct` → localised month string, using
+  internal pt-BR and en-US tables (no `LC_TIME` reliance).
+
+**Data-aware polish layer**
+
+- `ct_finish()` — runs *after* the geom layer is built and can inject
+  value labels above bars or next to points, reorder a categorical x by
+  y, format labels via shortcut names (`"brl"`, `"number"`, `"pct"`,
+  `"delta"`) or a user-supplied function, highlight specific x values
+  while muting the rest, label the last point of each line series, and
+  apply geom-aware scale expansion.
+
+**Mechanical wrappers**
+
+- `ct_col()`, `ct_line()`, `ct_point()` — thin wrappers with
   consulting-grade defaults for call-site overrides.
-- **`ct_set_defaults()` / `ct_unset_defaults()`** —
+- `ct_set_defaults()` / `ct_unset_defaults()` —
   `update_geom_defaults()`-driven aesthetic baseline with honest revert.
 
 ## Roadmap
 
-Next prompts will add `theme_finance()` / `theme_editorial()`
-archetypes, `scale_color_ct()` / `scale_fill_ct()`, `ct_finish()` polish
-layer, locale-aware label helpers (`fmt_brl`, `ct_locale`),
-`install_consulting_fonts()`, vignettes, and a polished gallery.
+`install_consulting_fonts()`, three vignettes (theme comparison, locale
+and number formatting, font setup), and a polished pkgdown gallery. The
+companion package `ctplot` — `ct_waterfall()`, `ct_slope()`,
+`ct_dumbbell()`, and PPT export via `officer` — will follow in a
+separate repo.

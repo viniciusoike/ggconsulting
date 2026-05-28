@@ -27,7 +27,7 @@ The original plan called for setting `geom_col` width and `geom_line` linewidth 
 
 The new pattern, in three buckets:
 
-1. **Theme element**: linewidth is set inside `ct_theme()` via `theme(line = element_line(linewidth = 0.8))`. `geom_line()` picks it up through `from_theme()` automatically. No autoload, no mutation.
+1. **Theme element**: linewidth is set inside `ct_theme()` via `theme(geom = element_geom(linewidth = 0.8))`. `geom_line()` picks it up through `from_theme()` automatically. No autoload, no mutation. **Note**: empirically (verified during build), ggplot2 4.x's `from_theme(linewidth)` reads `theme$geom` (an `element_geom`), *not* `theme$line`. Setting it on `line` does not propagate to `geom_line()`; setting it on `geom` does. `theme$line` is still used for axis/grid lines and should stay at its standard linewidth (~0.4).
 2. **`update_geom_defaults()`**: use this only for true aesthetics (e.g., `geom_point` size, alpha). `ct_set_defaults()` / `ct_unset_defaults()` operate via this API only.
 3. **Public wrappers**: ship `ct_col()` (width override) and `ct_line()` (literal linewidth override for users who want it independent of theme). Three-line pass-throughs, exported.
 
@@ -52,21 +52,21 @@ The new pattern, in three buckets:
      main_color = NULL        # optional palette override
    )
    ```
-   Returns a `ggplot2::theme` object built on `theme_minimal()` with consulting-grade overrides: no minor gridlines, subtle major gridlines, left-aligned plot.title, plot.title.position = "plot", and font family applied via the resolved fallback chain. **Set `line = element_line(linewidth = 0.8)` and `rect = element_rect(linewidth = 0.5)` so `geom_line()` and friends pick up theme linewidth via `from_theme()` in ggplot2 4.x — do not override linewidth via `update_geom_defaults()`.** `context` controls `base_size` defaults (presentation 14, report 10, screen 11) and `plot.margin`. `density` controls `panel.spacing` and `axis.text` margins. Font fallback chain: `c(font, "Helvetica Neue", "Arial", "sans")` — resolve to first available via `has_font()`.
+   Returns a `ggplot2::theme` object built on `theme_minimal()` with consulting-grade overrides: no minor gridlines, subtle major gridlines, left-aligned plot.title with a fixed neutral near-black colour (`#1A1A1A`), plot.title.position = "plot", and font family applied via the resolved fallback chain. **Set `geom = element_geom(ink = resolved_main, linewidth = 0.8)` so `geom_line()` and friends pick up theme linewidth (and ink colour) via `from_theme()` in ggplot2 4.x — do not override linewidth via `update_geom_defaults()`.** Keep `line = element_line(linewidth = 0.4)` and `rect = element_rect(linewidth = 0.5)` for axis/grid/border elements; those are *not* the from_theme() source. `context` controls `base_size` defaults (presentation 14, report 10, screen 11) and `plot.margin`. `density` controls `panel.spacing` and `axis.text` margins. Font fallback chain: `c(font, "Helvetica Neue", "Arial", "sans")` — resolve to first available via `has_font()`. `main_color` is routed into the `geom` element's `ink` slot only; it does *not* drive the title colour.
 7. **R/theme-strategy.R** — `theme_strategy(main_color = "navy", ...)`: thin wrapper that calls `ct_theme(palette = "strategy_navy", font = "Inter", ...)`. Pass `...` through. Export. roxygen2 docs with one `@examples` block using `mtcars` and `ggplot()`.
-8. **R/ct-col-line.R** — public mechanical wrappers, exported:
+8. **R/ct-wrappers.R** — public mechanical wrappers, exported:
    ```r
    #' @export
-   ct_col <- function(..., width = 0.7) {
+   ct_col <- function(..., width = 0.8) {
      ggplot2::geom_col(..., width = width)
    }
 
    #' @export
-   ct_line <- function(..., linewidth = 0.8) {
+   ct_line <- function(..., linewidth = 0.7) {
      ggplot2::geom_line(..., linewidth = linewidth)
    }
    ```
-   Document briefly: "drop-in replacements for `geom_col()` and `geom_line()` with consulting-grade defaults. Use these when you want the defaults explicitly; plain `geom_line()` will also pick up linewidth from `ct_theme()` via `from_theme()`."
+   Document briefly: "drop-in replacements for `geom_col()` and `geom_line()` with consulting-grade defaults. Use these when you want the defaults explicitly; plain `geom_line()` will also pick up linewidth from `ct_theme()` via `from_theme()`." Ship `ct_point(..., size = 2.5)` alongside the other two for symmetry — `ct_set_defaults()` autoloads the same point size, but the wrapper is useful at the call site when autoload is off.
 9. **R/ct-defaults.R** — `ct_set_defaults()` and `ct_unset_defaults()`. Use `update_geom_defaults()` **only** (no `assignInNamespace`, no formals mutation). Use a package-level environment (created in zzz) to store originals at first call. **For v0.1 foundation: just set `geom_point` `size = 2.5`** as a small, true-aesthetic example to validate the round-trip mechanism. Other true-aesthetic defaults can be added later. Honest revert: `ct_unset_defaults()` restores whatever was there before `ct_set_defaults()` first ran, not ggplot2 baseline.
 10. **R/zzz.R** — `.onAttach()` hook:
     - Honor `options("ggconsulting.autoload")` — default TRUE
@@ -84,12 +84,14 @@ The new pattern, in three buckets:
     - `ct_theme()` returns an object inheriting from `"theme"` and `"gg"`
     - `theme_strategy()` returns an object inheriting from `"theme"` and `"gg"`
     - `ct_theme(base_size = 20)` produces a theme with `text$size == 20`
-    - `ct_theme()` sets `line` element with linewidth ≈ 0.8
+    - `ct_theme()` sets `geom` element with `linewidth == 0.8` (this is what `from_theme()` reads in ggplot2 4.x — not `line$linewidth`)
     - Skip font-dependent assertions if `!has_font("Inter")`
-13. **tests/testthat/test-wrappers.R** — smoke tests for `ct_col` / `ct_line`:
-    - Both return objects inheriting from `"Layer"`
-    - `ct_col()` produces a layer whose stat has `width = 0.7` by default
-    - User can override: `ct_col(width = 0.9)` carries through
+13. **tests/testthat/test-wrappers.R** — smoke tests for `ct_col` / `ct_line` / `ct_point`:
+    - All three return objects inheriting from `"Layer"`
+    - `ct_col()` produces a layer with `aes_params$width == 0.8` by default
+    - `ct_line()` produces a layer with `aes_params$linewidth == 0.7` by default
+    - `ct_point()` produces a layer with `aes_params$size == 2.5` by default
+    - Each accepts an explicit override that carries through
 14. **tests/testthat/test-defaults.R** — smoke tests for `ct_set_defaults` / `ct_unset_defaults`:
     - `ct_set_defaults()` then `ct_unset_defaults()` returns `geom_point`'s default `size` to the pre-set value
     - Round-trip doesn't error
@@ -113,9 +115,10 @@ These are decided in `consultr_plan_v2.html`. Do not re-litigate them; if you fi
 - **Imports**: ruthlessly minimal — `ggplot2`, `scales`, `systemfonts`, `cli`, `rlang` only. No `dplyr`, `purrr`, or `tidyselect`.
 - **Font tooling**: `systemfonts` (ragg-aligned), not `showtext` or `extrafont`
 - **Geom defaults — three buckets, no namespace mutation**:
-  - Theme element (linewidth, rect borders) → inside `ct_theme()` via `theme(line = ...)`
+  - Theme element (linewidth, ink colour for from_theme()-aware geoms) → inside `ct_theme()` via `theme(geom = element_geom(...))`. `theme$line` / `theme$rect` still cover axis/grid/border, but they are *not* the from_theme() source.
   - `update_geom_defaults()` → true aesthetics only (size, alpha) — autoload via `ct_set_defaults()` + opt-out
-  - Public wrappers `ct_col()` / `ct_line()` → formal-argument overrides (width, literal linewidth)
+  - Public wrappers `ct_col()` / `ct_line()` / `ct_point()` → formal-argument overrides (width 0.8, literal linewidth 0.7, size 2.5)
+- **Title colour**: fixed neutral near-black (`#1A1A1A`), independent of palette. `main_color` only drives the `geom` element's `ink` slot. Archetypes can override title face/size/leading but should not re-introduce a palette-tinted title.
 - **Forbidden**: `assignInNamespace()` on ggplot2 objects; mutating `formals(ggplot2::geom_*)`; literal-value overrides for `linewidth` via `update_geom_defaults("line", ...)` in ggplot2 4.x (severs `from_theme()` linkage)
 - **Theme API**: `ct_theme()` is the builder; archetypes (`theme_strategy`, etc.) are preset paths
 - **Context arg**: single theme with `context = c("presentation", "report", "screen")` — not separate theme functions per output medium
@@ -139,8 +142,9 @@ These are decided in `consultr_plan_v2.html`. Do not re-litigate them; if you fi
 - Picking the 6 hex values for the `strategy_navy` palette
 - Wording of the autoload message (cli format and exact phrasing)
 - Any deviation from the `ct_theme()` signature above
-- Any deviation from the `ct_col` / `ct_line` wrapper signatures
+- Any deviation from the `ct_col` / `ct_line` / `ct_point` wrapper signatures (defaults: width 0.8, linewidth 0.7, size 2.5)
 - Adding any `update_geom_defaults()` call beyond `geom_point` `size = 2.5` (the foundation example)
+- Changing the title colour away from the locked neutral near-black
 
 ## Acceptance criteria
 

@@ -9,3 +9,5 @@ docs/
 .DS_Store
 .claude/
 .positai/
+prompts/
+consultr_plan_v2.html

@@ -17,6 +17,6 @@
   packageStartupMessage(cli::format_message(c(
     "v" = "ggconsulting set ggplot2 aesthetic defaults",
     "i" = "Opt out: {.code ct_unset_defaults()} or {.code options(ggconsulting.autoload = FALSE)}",
-    "i" = "Column width / linewidth: use {.code ct_col()} / {.code ct_line()}, or apply {.code ct_theme()}/{.code theme_strategy()} for linewidth via {.code from_theme()}"
+    "i" = "Column width / linewidth: use {.code ct_col()} / {.code ct_line()}, or apply a {.code theme_*()} archetype for linewidth via {.code from_theme()}"
   )))
 }

@@ -222,18 +222,30 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
   if (is.null(x_var) || is.null(group_var)) return(plot)
 
   d <- plot$data
+  x_col <- d[[x_var]]
+  if (!is.numeric(x_col)) {
+    cli::cli_abort(c(
+      "{.fun ct_finish} {.arg end_labels} requires a numeric x aesthetic.",
+      "i" = "Got {.cls {class(x_col)[1]}}. Coerce dates with {.code as.numeric()} or use a numeric x."
+    ))
+  }
+
   ends <- do.call(rbind, lapply(split(d, d[[group_var]]), function(grp) {
     grp[which.max(grp[[x_var]]), , drop = FALSE]
   }))
 
-  plot + ggplot2::geom_text(
-    data = ends,
-    ggplot2::aes(label = .data[[group_var]]),
-    hjust = 0,
-    nudge_x = 0,
-    size = 3,
-    show.legend = FALSE
-  )
+  nudge <- as.numeric(diff(range(x_col, na.rm = TRUE))) * 0.01
+
+  plot +
+    ggplot2::geom_text(
+      data = ends,
+      ggplot2::aes(label = .data[[group_var]]),
+      hjust = 0,
+      nudge_x = nudge,
+      size = 3,
+      show.legend = FALSE
+    ) +
+    ggplot2::scale_x_continuous(expand = ggplot2::expansion(mult = c(0, 0.12)))
 }
 
 .ct_apply_expansion <- function(plot, geom_info, expand) {
@@ -245,9 +257,14 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
   }
   if (geom_info$type %in% c("GeomLine", "GeomPath") && !is.null(geom_info$layer)) {
     x_var <- .aes_var(plot, geom_info$layer, "x")
-    if (!is.null(x_var) && !is.null(plot$data) &&
-        inherits(plot$data[[x_var]], c("Date", "POSIXt"))) {
-      return(plot + ggplot2::scale_x_date(expand = ggplot2::expansion(mult = c(0, 0.08))))
+    if (!is.null(x_var) && !is.null(plot$data)) {
+      x_col <- plot$data[[x_var]]
+      if (inherits(x_col, "POSIXt")) {
+        return(plot + ggplot2::scale_x_datetime(expand = ggplot2::expansion(mult = c(0, 0.08))))
+      }
+      if (inherits(x_col, "Date")) {
+        return(plot + ggplot2::scale_x_date(expand = ggplot2::expansion(mult = c(0, 0.08))))
+      }
     }
   }
   plot

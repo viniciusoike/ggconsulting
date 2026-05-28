@@ -79,3 +79,53 @@ test_that("ct_finish(expand = FALSE) leaves scales untouched", {
 test_that("ct_finish(sort = 'wrong') errors", {
   expect_error(ct_finish(sort = "wrong"), "sort")
 })
+
+test_that("ct_finish(expand = 'auto') on geom_line with POSIXct x adds a datetime scale", {
+  d <- data.frame(
+    x = as.POSIXct(c("2024-01-01", "2024-06-01", "2024-12-01"), tz = "UTC"),
+    y = c(1, 2, 3)
+  )
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish(expand = "auto")
+  has_datetime <- any(vapply(
+    p$scales$scales,
+    function(s) inherits(s, "ScaleContinuousDatetime"),
+    logical(1)
+  ))
+  expect_true(has_datetime)
+})
+
+test_that("ct_finish(end_labels = TRUE) on numeric geom_line adds geom_text + x expansion", {
+  d <- data.frame(
+    x = rep(1:5, 2),
+    y = c(1:5, 6:10),
+    g = rep(c("A", "B"), each = 5)
+  )
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = g)) +
+    ggplot2::geom_line() +
+    ct_finish(end_labels = TRUE)
+  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  expect_true(any(has_text))
+
+  has_x_scale <- any(vapply(
+    p$scales$scales,
+    function(s) "x" %in% s$aesthetics,
+    logical(1)
+  ))
+  expect_true(has_x_scale)
+})
+
+test_that("ct_finish(end_labels = TRUE) errors on non-numeric x", {
+  d <- data.frame(
+    x = as.Date(c("2024-01-01", "2024-06-01")),
+    y = c(1, 2),
+    g = c("A", "A")
+  )
+  expect_error(
+    ggplot2::ggplot(d, ggplot2::aes(x, y, group = g)) +
+      ggplot2::geom_line() +
+      ct_finish(end_labels = TRUE),
+    "numeric"
+  )
+})

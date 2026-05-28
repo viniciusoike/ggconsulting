@@ -7,8 +7,9 @@
 #' Times / serif fallback chain), a slightly larger title with tighter
 #' leading, and italic subtitles for typographic personality.
 #'
-#' @param main_color Colour for the title and the theme `geom` `ink` slot.
-#'   `NULL` (default) falls back to `editorial_warm[1]`.
+#' @param main_color Routed into the theme `geom` `ink` slot for
+#'   `from_theme()` linkage. `NULL` (default) falls back to
+#'   `editorial_warm[1]`. Title colour is a fixed neutral near-black.
 #' @param ... Forwarded to [ct_theme()] — e.g. `density`, `context`,
 #'   `base_size`, or an explicit `palette` override.
 #'

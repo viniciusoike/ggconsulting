@@ -4,14 +4,21 @@
 \alias{theme_finance}
 \title{Finance archetype theme}
 \usage{
-theme_finance(main_color = NULL, ...)
+theme_finance(main_color = NULL, density = "tight", context = "report", ...)
 }
 \arguments{
-\item{main_color}{Colour for the title and the theme \code{geom} \code{ink} slot.
-\code{NULL} (default) falls back to \code{finance_classic[1]}.}
+\item{main_color}{Routed into the theme \code{geom} \code{ink} slot for
+\code{from_theme()} linkage. \code{NULL} (default) falls back to
+\code{finance_classic[1]}. Title colour is a fixed neutral near-black.}
 
-\item{...}{Forwarded to \code{\link[=ct_theme]{ct_theme()}} — e.g. \code{density}, \code{context},
-\code{base_size}, or an explicit \code{palette} override.}
+\item{density}{Passed to \code{\link[=ct_theme]{ct_theme()}}. Defaults to \code{"tight"} — finance
+reports favour denser layouts than presentation slides.}
+
+\item{context}{Passed to \code{\link[=ct_theme]{ct_theme()}}. Defaults to \code{"report"} — drives
+a smaller \code{base_size} and tighter \code{plot.margin}.}
+
+\item{...}{Forwarded to \code{\link[=ct_theme]{ct_theme()}} — e.g. \code{base_size}, or an
+explicit \code{palette} override.}
 }
 \value{
 A \code{\link[ggplot2:theme]{ggplot2::theme()}} object.
@@ -20,8 +27,10 @@ A \code{\link[ggplot2:theme]{ggplot2::theme()}} object.
 Preset path through \code{\link[=ct_theme]{ct_theme()}} tuned for finance reports and pitch
 books: serif typography (\code{"Source Serif 4"} with a Georgia / Times /
 serif fallback chain), regular-weight title (restrained — finance
-reports avoid bold), and a lighter major gridline than the strategy
-archetype.
+reports avoid bold), a lighter major gridline than the strategy
+archetype, and denser defaults (\code{density = "tight"},
+\code{context = "report"}) so plots read closer to a printed page than a
+slide.
 }
 \examples{
 library(ggplot2)

@@ -7,9 +7,10 @@
 theme_strategy(main_color = NULL, ...)
 }
 \arguments{
-\item{main_color}{Colour used for the plot title. Defaults to the
-\code{strategy_navy} palette's primary so the title matches downstream
-data marks. Pass any value \code{grDevices::col2rgb()} accepts to override.}
+\item{main_color}{Routed into the theme \code{geom} \code{ink} slot so unmapped
+geoms pick it up via \code{from_theme()}. Defaults to \code{strategy_navy[1]}.
+Pass any value \code{grDevices::col2rgb()} accepts to override. Does not
+affect title colour (a fixed neutral near-black).}
 
 \item{...}{Forwarded to \code{\link[=ct_theme]{ct_theme()}} — e.g. \code{density}, \code{context},
 \code{base_size}.}

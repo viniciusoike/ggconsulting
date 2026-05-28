@@ -32,9 +32,11 @@ default \code{base_size} and \code{plot.margin}.}
 
 \item{base_size}{Base font size. If \code{NULL}, derived from \code{context}.}
 
-\item{main_color}{Colour used for the plot title and routed into the
-theme \code{geom} element's \code{ink} slot, so unmapped geoms pick it up via
-\code{from_theme()}. \code{NULL} falls back to the palette's first colour.}
+\item{main_color}{Routed into the theme \code{geom} element's \code{ink} slot,
+so unmapped geoms pick it up via \code{from_theme()}. \code{NULL} falls back
+to the palette's first colour. Title colour is a fixed neutral
+near-black (\verb{#1A1A1A}); override with a follow-on \code{theme()} call
+if you want it palette-tinted.}
 }
 \value{
 A \code{\link[ggplot2:theme]{ggplot2::theme()}} object.

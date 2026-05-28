@@ -7,8 +7,9 @@
 theme_editorial(main_color = NULL, ...)
 }
 \arguments{
-\item{main_color}{Colour for the title and the theme \code{geom} \code{ink} slot.
-\code{NULL} (default) falls back to \code{editorial_warm[1]}.}
+\item{main_color}{Routed into the theme \code{geom} \code{ink} slot for
+\code{from_theme()} linkage. \code{NULL} (default) falls back to
+\code{editorial_warm[1]}. Title colour is a fixed neutral near-black.}
 
 \item{...}{Forwarded to \code{\link[=ct_theme]{ct_theme()}} — e.g. \code{density}, \code{context},
 \code{base_size}, or an explicit \code{palette} override.}

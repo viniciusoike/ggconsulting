@@ -6,9 +6,10 @@
 #' generous-whitespace, navy-default look inspired by top-tier global
 #' strategy consultancies.
 #'
-#' @param main_color Colour used for the plot title. Defaults to the
-#'   `strategy_navy` palette's primary so the title matches downstream
-#'   data marks. Pass any value `grDevices::col2rgb()` accepts to override.
+#' @param main_color Routed into the theme `geom` `ink` slot so unmapped
+#'   geoms pick it up via `from_theme()`. Defaults to `strategy_navy[1]`.
+#'   Pass any value `grDevices::col2rgb()` accepts to override. Does not
+#'   affect title colour (a fixed neutral near-black).
 #' @param ... Forwarded to [ct_theme()] — e.g. `density`, `context`,
 #'   `base_size`.
 #'

@@ -23,9 +23,11 @@
 #' @param context One of `"presentation"`, `"report"`, `"screen"`. Drives
 #'   default `base_size` and `plot.margin`.
 #' @param base_size Base font size. If `NULL`, derived from `context`.
-#' @param main_color Colour used for the plot title and routed into the
-#'   theme `geom` element's `ink` slot, so unmapped geoms pick it up via
-#'   `from_theme()`. `NULL` falls back to the palette's first colour.
+#' @param main_color Routed into the theme `geom` element's `ink` slot,
+#'   so unmapped geoms pick it up via `from_theme()`. `NULL` falls back
+#'   to the palette's first colour. Title colour is a fixed neutral
+#'   near-black (`#1A1A1A`); override with a follow-on `theme()` call
+#'   if you want it palette-tinted.
 #'
 #' @return A [ggplot2::theme()] object.
 #' @export
@@ -70,7 +72,7 @@ ct_theme <- function(palette = "strategy_navy",
       title = ggplot2::element_text(
         face   = "bold",
         hjust  = 0,
-        colour = resolved_main,
+        colour = "#1A1A1A",
         margin = ggplot2::margin(b = size * 0.4)
       ),
       title.position = "plot",

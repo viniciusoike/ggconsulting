@@ -36,8 +36,10 @@
 ## Finance and editorial archetypes (prompt 04)
 
 * `theme_finance()` — serif preset (Source Serif 4 → Georgia →
-  Times New Roman → serif) with regular-weight title and a lighter
-  major gridline. Defaults to the `finance_classic` palette.
+  Times New Roman → serif) with regular-weight title, a lighter
+  major gridline, and denser defaults (`density = "tight"`,
+  `context = "report"`) tuned for printed pages over slides.
+  Defaults to the `finance_classic` palette.
 * `theme_editorial()` — serif preset with an italic subtitle and
   slightly larger, tighter-leaded title. Defaults to the
   `editorial_warm` palette.

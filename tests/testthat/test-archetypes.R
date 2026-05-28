@@ -45,3 +45,20 @@ test_that("theme_finance falls back to a generic serif when nothing installed", 
   expect_type(th$text$family, "character")
   expect_true(nchar(th$text$family) > 0)
 })
+
+# Distinctives ----
+
+test_that("theme_finance sets a plain-weight title (no bold)", {
+  th <- theme_finance()
+  expect_equal(th$plot.title$face, "plain")
+})
+
+test_that("theme_editorial sets an italic subtitle", {
+  th <- theme_editorial()
+  expect_equal(th$plot.subtitle$face, "italic")
+})
+
+test_that("theme_finance uses a lighter major gridline than theme_strategy", {
+  expect_equal(theme_finance()$panel.grid.major$colour,  "#EEEEEE")
+  expect_equal(theme_strategy()$panel.grid.major$colour, "#E5E5E5")
+})

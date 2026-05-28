@@ -12,8 +12,9 @@
 #' - `fmt_brl()` — Brazilian Real. Always renders as `R$` regardless of
 #'   active locale; the `locale` argument lets you override marks.
 #' - `fmt_currency()` — uses the active locale's currency symbol.
-#' - `fmt_pct()` — percentages, interpreting input as a fraction
-#'   (`0.5` → `"50%"`).
+#' - `fmt_pct()` — percentages. By default interprets input as a
+#'   fraction (`0.5` → `"50%"`); pass `scale = 1` when the input is
+#'   already in percent units (`50` → `"50%"`).
 #' - `fmt_delta()` — percentage-point-style signed deltas
 #'   (`+1,2pp` / `-0,3pp` / `0,0pp`).
 #' - `fmt_month()` — Date / POSIXct → localised month string.
@@ -28,6 +29,9 @@
 #' @param suffix Suffix for `fmt_delta()`. Defaults to `"pp"`.
 #' @param accuracy Optional explicit accuracy passed to
 #'   [scales::percent()]; overrides `decimals` if set.
+#' @param scale Multiplier applied to the input before rendering, for
+#'   `fmt_pct()` only. Defaults to `100` (input is a fraction). Use
+#'   `scale = 1` when the input is already in percent units.
 #' @param format `"abbr"` (default) or `"full"` for `fmt_month()`.
 #' @param locale Optional locale name. Defaults to the active locale.
 #'
@@ -37,6 +41,7 @@
 #' fmt_number(decimals = 1)(1234.5)
 #' fmt_brl()(c(1000, -500))
 #' fmt_pct(decimals = 0)(0.5)
+#' fmt_pct(decimals = 1, scale = 1)(50)
 #' fmt_delta()(c(1.2, -0.3, 0))
 #' fmt_month()(as.Date("2026-08-15"))
 NULL
@@ -83,11 +88,13 @@ fmt_currency <- function(decimals = 2,
 
 #' @rdname ct_formatters
 #' @export
-fmt_pct <- function(decimals = 1, locale = NULL, accuracy = NULL) {
+fmt_pct <- function(decimals = 1, scale = 100, locale = NULL,
+                    accuracy = NULL) {
   function(x) {
     loc <- .locale_data(locale)
     scales::percent(
       x,
+      scale        = scale,
       accuracy     = if (is.null(accuracy)) .accuracy_from_decimals(decimals) else accuracy,
       big.mark     = loc$big_mark,
       decimal.mark = loc$decimal_mark

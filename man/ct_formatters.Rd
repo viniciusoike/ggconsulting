@@ -16,7 +16,7 @@ fmt_brl(decimals = 2, style = c("minus", "accounting"), locale = NULL)
 
 fmt_currency(decimals = 2, style = c("minus", "accounting"), locale = NULL)
 
-fmt_pct(decimals = 1, locale = NULL, accuracy = NULL)
+fmt_pct(decimals = 1, scale = 100, locale = NULL, accuracy = NULL)
 
 fmt_delta(decimals = 1, suffix = "pp", locale = NULL)
 
@@ -28,6 +28,10 @@ fmt_month(format = c("abbr", "full"), locale = NULL)
 \item{locale}{Optional locale name. Defaults to the active locale.}
 
 \item{style}{\code{"minus"} (default) or \code{"accounting"} for currency.}
+
+\item{scale}{Multiplier applied to the input before rendering, for
+\code{fmt_pct()} only. Defaults to \code{100} (input is a fraction). Use
+\code{scale = 1} when the input is already in percent units.}
 
 \item{accuracy}{Optional explicit accuracy passed to
 \code{\link[scales:percent_format]{scales::percent()}}; overrides \code{decimals} if set.}
@@ -49,8 +53,9 @@ locale, set via \code{\link[=ct_locale]{ct_locale()}}.
 \item \code{fmt_brl()} — Brazilian Real. Always renders as \verb{R$} regardless of
 active locale; the \code{locale} argument lets you override marks.
 \item \code{fmt_currency()} — uses the active locale's currency symbol.
-\item \code{fmt_pct()} — percentages, interpreting input as a fraction
-(\code{0.5} → \code{"50\%"}).
+\item \code{fmt_pct()} — percentages. By default interprets input as a
+fraction (\code{0.5} → \code{"50\%"}); pass \code{scale = 1} when the input is
+already in percent units (\code{50} → \code{"50\%"}).
 \item \code{fmt_delta()} — percentage-point-style signed deltas
 (\verb{+1,2pp} / \verb{-0,3pp} / \verb{0,0pp}).
 \item \code{fmt_month()} — Date / POSIXct → localised month string.
@@ -65,6 +70,7 @@ number so the pair never wraps across lines.
 fmt_number(decimals = 1)(1234.5)
 fmt_brl()(c(1000, -500))
 fmt_pct(decimals = 0)(0.5)
+fmt_pct(decimals = 1, scale = 1)(50)
 fmt_delta()(c(1.2, -0.3, 0))
 fmt_month()(as.Date("2026-08-15"))
 }

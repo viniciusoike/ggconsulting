@@ -10,6 +10,13 @@
 #' linewidth from [ct_theme()] / [theme_strategy()] via `from_theme()`,
 #' and `geom_point()` size is autoloaded by [ct_set_defaults()].
 #'
+#' @section Bar charts with Date x:
+#' `ct_col()`'s default `width = 0.8` is in *x-axis units*. On a Date
+#' x-axis that is 0.8 *days*, which renders bars as slivers when the
+#' data is spaced quarterly or monthly. For bar charts, convert the
+#' x variable to either an ordered factor (e.g. `"21Q1"`, `"21Q2"`, ...)
+#' or a numeric index before plotting; line charts on Date are fine.
+#'
 #' @param ... Forwarded to the underlying ggplot2 constructor.
 #' @param width Column width. Defaults to 0.8 (vs ggplot2's 0.9).
 #' @param linewidth Line width. Defaults to 0.7 (vs ggplot2's 0.5).

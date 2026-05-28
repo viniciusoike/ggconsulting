@@ -33,6 +33,15 @@ baked into the call site; plain \code{geom_line()} will also pick up
 linewidth from \code{\link[=ct_theme]{ct_theme()}} / \code{\link[=theme_strategy]{theme_strategy()}} via \code{from_theme()},
 and \code{geom_point()} size is autoloaded by \code{\link[=ct_set_defaults]{ct_set_defaults()}}.
 }
+\section{Bar charts with Date x}{
+
+\code{ct_col()}'s default \code{width = 0.8} is in \emph{x-axis units}. On a Date
+x-axis that is 0.8 \emph{days}, which renders bars as slivers when the
+data is spaced quarterly or monthly. For bar charts, convert the
+x variable to either an ordered factor (e.g. \code{"21Q1"}, \code{"21Q2"}, ...)
+or a numeric index before plotting; line charts on Date are fine.
+}
+
 \examples{
 library(ggplot2)
 d <- data.frame(g = c("A", "B", "C"), v = c(3, 5, 2))

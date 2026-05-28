@@ -8,6 +8,10 @@ Composable theme builder and archetype presets.
   **\[experimental\]** : Build a consulting-grade ggplot2 theme
 - [`theme_strategy()`](https://viniciusoike.github.io/ggconsulting/reference/theme_strategy.md)
   : Strategy archetype theme
+- [`theme_finance()`](https://viniciusoike.github.io/ggconsulting/reference/theme_finance.md)
+  : Finance archetype theme
+- [`theme_editorial()`](https://viniciusoike.github.io/ggconsulting/reference/theme_editorial.md)
+  : Editorial archetype theme
 
 ## Scales and palettes
 

@@ -89,7 +89,10 @@ ct_unset_defaults()
 
 ## Roadmap
 
-Next prompts will add `theme_finance()` / `theme_editorial()`
+Next prompts will add
+[`theme_finance()`](https://viniciusoike.github.io/ggconsulting/reference/theme_finance.md)
+/
+[`theme_editorial()`](https://viniciusoike.github.io/ggconsulting/reference/theme_editorial.md)
 archetypes,
 [`scale_color_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
 /

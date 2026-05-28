@@ -20,6 +20,7 @@ font with a fallback chain.
 ct_theme(
   palette = "strategy_navy",
   font = "Inter",
+  font_fallback = c("Helvetica Neue", "Arial", "sans"),
   density = c("normal", "tight", "loose"),
   context = c("presentation", "report", "screen"),
   base_size = NULL,
@@ -35,8 +36,13 @@ ct_theme(
 
 - font:
 
-  Preferred font family. Falls back through
-  `c("Helvetica Neue", "Arial", "sans")` if unavailable.
+  Preferred font family.
+
+- font_fallback:
+
+  Character vector of fallback families to try if `font` is unavailable.
+  The generic R families `"sans"`, `"serif"`, and `"mono"` are always
+  recognised as terminal fallbacks.
 
 - density:
 

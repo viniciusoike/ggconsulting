@@ -57,3 +57,20 @@
 - [`ct_palette_show()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette_show.md)
   — swatch preview for a single palette, a custom hex vector, or every
   shipped palette faceted.
+
+### Finance and editorial archetypes (prompt 04)
+
+- [`theme_finance()`](https://viniciusoike.github.io/ggconsulting/reference/theme_finance.md)
+  — serif preset (Source Serif 4 → Georgia → Times New Roman → serif)
+  with regular-weight title and a lighter major gridline. Defaults to
+  the `finance_classic` palette.
+- [`theme_editorial()`](https://viniciusoike.github.io/ggconsulting/reference/theme_editorial.md)
+  — serif preset with an italic subtitle and slightly larger,
+  tighter-leaded title. Defaults to the `editorial_warm` palette.
+- [`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)
+  gained a `font_fallback` argument; `.resolve_font()` now recognises
+  `"sans"`, `"serif"`, and `"mono"` as guaranteed terminal fallbacks.
+- Six new palettes: `finance_classic`, `finance_steel`,
+  `finance_burgundy`, `editorial_warm`, `editorial_clay`,
+  `editorial_oxide`. The catalog is now 11 palettes (5 strategy + 3
+  finance + 3 editorial).

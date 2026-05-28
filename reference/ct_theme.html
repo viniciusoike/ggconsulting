@@ -60,6 +60,7 @@ font with a fallback chain.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ct_theme</span><span class="op">(</span></span>
 <span>  palette <span class="op">=</span> <span class="st">"strategy_navy"</span>,</span>
 <span>  font <span class="op">=</span> <span class="st">"Inter"</span>,</span>
+<span>  font_fallback <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Helvetica Neue"</span>, <span class="st">"Arial"</span>, <span class="st">"sans"</span><span class="op">)</span>,</span>
 <span>  density <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"normal"</span>, <span class="st">"tight"</span>, <span class="st">"loose"</span><span class="op">)</span>,</span>
 <span>  context <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"presentation"</span>, <span class="st">"report"</span>, <span class="st">"screen"</span><span class="op">)</span>,</span>
 <span>  base_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -77,8 +78,13 @@ vector of colours.</p></dd>
 
 
 <dt id="arg-font">font<a class="anchor" aria-label="anchor" href="#arg-font"></a></dt>
-<dd><p>Preferred font family. Falls back through
-<code>c("Helvetica Neue", "Arial", "sans")</code> if unavailable.</p></dd>
+<dd><p>Preferred font family.</p></dd>
+
+
+<dt id="arg-font-fallback">font_fallback<a class="anchor" aria-label="anchor" href="#arg-font-fallback"></a></dt>
+<dd><p>Character vector of fallback families to try if
+<code>font</code> is unavailable. The generic R families <code>"sans"</code>, <code>"serif"</code>,
+and <code>"mono"</code> are always recognised as terminal fallbacks.</p></dd>
 
 
 <dt id="arg-density">density<a class="anchor" aria-label="anchor" href="#arg-density"></a></dt>

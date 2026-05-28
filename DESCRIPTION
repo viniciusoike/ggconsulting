@@ -15,7 +15,10 @@ Description: An opinionated 'ggplot2' extension for executive-grade
 License: MIT + file LICENSE
 URL: https://github.com/viniciusoike/ggconsulting
 BugReports: https://github.com/viniciusoike/ggconsulting/issues
+Depends:
+    R (>= 3.5)
 Encoding: UTF-8
+LazyData: true
 Imports:
     cli,
     ggplot2,

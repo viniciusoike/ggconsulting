@@ -34,7 +34,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="ggconsulting-development-version">ggconsulting (development version)<a class="anchor" aria-label="anchor" href="#ggconsulting-development-version"></a></h2>
-<ul><li>Foundation slice (v0.1 scope):
+<div class="section level3">
+<h3 id="foundation-prompt-development-version">Foundation (prompt 01)<a class="anchor" aria-label="anchor" href="#foundation-prompt-development-version"></a></h3>
 <ul><li>
 <code><a href="../reference/ct_theme.html">ct_theme()</a></code> builder composed via <code>theme_sub_*()</code> helpers and routed through <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_geom()</a></code> so <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code>-aware geoms inherit the palette’s main colour (<code>ink</code>) and a default linewidth.</li>
 <li>
@@ -46,9 +47,28 @@
 <code><a href="../reference/ct_defaults.html">ct_set_defaults()</a></code> / <code><a href="../reference/ct_defaults.html">ct_unset_defaults()</a></code> for true aesthetic defaults (currently <code>geom_point</code> <code>size = 2.5</code>), autoloaded on library attach with an opt-out option.</li>
 <li>
 <code>has_font()</code> internal helper.</li>
-</ul></li>
 </ul></div>
-  </main></div>
+<div class="section level3">
+<h3 id="ci-prompt-development-version">CI (prompt 02)<a class="anchor" aria-label="anchor" href="#ci-prompt-development-version"></a></h3>
+<ul><li>
+<code>R-CMD-check</code> workflow across macOS, Windows, Ubuntu (R release) and Ubuntu (R devel).</li>
+<li>
+<code>test-coverage</code> workflow via covr + Codecov v4.</li>
+<li>README badges: R-CMD-check status, Codecov coverage, License: MIT.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="scales-and-palette-preview-prompt-development-version">Scales and palette preview (prompt 03)<a class="anchor" aria-label="anchor" href="#scales-and-palette-preview-prompt-development-version"></a></h3>
+<ul><li>
+<code><a href="../reference/ct_scales.html">scale_color_ct()</a></code> / <code><a href="../reference/ct_scales.html">scale_fill_ct()</a></code> — discrete scales backed by ggconsulting palettes; interpolate and emit a <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code> when <code>n</code> exceeds the palette size.</li>
+<li>
+<code><a href="../reference/ct_scales.html">scale_color_ct_c()</a></code> / <code><a href="../reference/ct_scales.html">scale_fill_ct_c()</a></code> — continuous variants via <code><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">ggplot2::scale_color_gradientn()</a></code> / <code><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradientn()</a></code>.</li>
+<li>British-spelling aliases: <code><a href="../reference/ct_scales.html">scale_colour_ct()</a></code>, <code><a href="../reference/ct_scales.html">scale_colour_ct_c()</a></code>.</li>
+<li>
+<code><a href="../reference/ct_palette_show.html">ct_palette_show()</a></code> — swatch preview for a single palette, a custom hex vector, or every shipped palette faceted.</li>
+</ul></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

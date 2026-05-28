@@ -9,6 +9,21 @@ Composable theme builder and archetype presets.
 - [`theme_strategy()`](https://viniciusoike.github.io/ggconsulting/reference/theme_strategy.md)
   : Strategy archetype theme
 
+## Scales and palettes
+
+Discrete and continuous colour/fill scales backed by ggconsulting
+palettes, plus a swatch preview helper.
+
+- [`scale_color_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_colour_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_fill_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_color_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_colour_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_fill_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  **\[experimental\]** : Consulting colour and fill scales
+- [`ct_palette_show()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette_show.md)
+  : Preview ggconsulting palettes as a swatch
+
 ## Geom wrappers
 
 Drop-in replacements for

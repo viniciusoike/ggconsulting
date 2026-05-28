@@ -90,6 +90,10 @@ ct_unset_defaults()
 ## Roadmap
 
 Next prompts will add `theme_finance()` / `theme_editorial()`
-archetypes, `scale_color_ct()` / `scale_fill_ct()`, `ct_finish()` polish
-layer, locale-aware label helpers (`fmt_brl`, `ct_locale`),
-`install_consulting_fonts()`, vignettes, and a polished gallery.
+archetypes,
+[`scale_color_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+/
+[`scale_fill_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md),
+`ct_finish()` polish layer, locale-aware label helpers (`fmt_brl`,
+`ct_locale`), `install_consulting_fonts()`, vignettes, and a polished
+gallery.

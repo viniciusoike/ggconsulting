@@ -90,9 +90,13 @@ ct_unset_defaults()
 ## Roadmap
 
 Next prompts will add `theme_finance()` / `theme_editorial()`
-archetypes, `scale_color_ct()` / `scale_fill_ct()`, `ct_finish()` polish
-layer, locale-aware label helpers (`fmt_brl`, `ct_locale`),
-`install_consulting_fonts()`, vignettes, and a polished gallery.
+archetypes,
+[`scale_color_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+/
+[`scale_fill_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md),
+`ct_finish()` polish layer, locale-aware label helpers (`fmt_brl`,
+`ct_locale`), `install_consulting_fonts()`, vignettes, and a polished
+gallery.
 
 # Package index
 
@@ -104,6 +108,21 @@ Composable theme builder and archetype presets.
   **\[experimental\]** : Build a consulting-grade ggplot2 theme
 - [`theme_strategy()`](https://viniciusoike.github.io/ggconsulting/reference/theme_strategy.md)
   : Strategy archetype theme
+
+## Scales and palettes
+
+Discrete and continuous colour/fill scales backed by ggconsulting
+palettes, plus a swatch preview helper.
+
+- [`scale_color_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_colour_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_fill_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_color_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_colour_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  [`scale_fill_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
+  **\[experimental\]** : Consulting colour and fill scales
+- [`ct_palette_show()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette_show.md)
+  : Preview ggconsulting palettes as a swatch
 
 ## Geom wrappers
 

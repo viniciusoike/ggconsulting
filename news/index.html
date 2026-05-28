@@ -93,6 +93,18 @@
 <li>
 <code><a href="../reference/ct_formatters.html">fmt_month()</a></code> — <code>Date</code> / <code>POSIXct</code> → localised month string; ships its own pt-BR and en-US month tables (no <code>LC_TIME</code> reliance).</li>
 </ul></div>
+<div class="section level3">
+<h3 id="data-aware-polish-prompt-development-version">Data-aware polish (prompt 06)<a class="anchor" aria-label="anchor" href="#data-aware-polish-prompt-development-version"></a></h3>
+<ul><li>
+<code><a href="../reference/ct_finish.html">ct_finish()</a></code> — companion to <code><a href="../reference/ct_theme.html">ct_theme()</a></code> that runs <em>after</em> the geom layer is built (via an <code><a href="https://ggplot2.tidyverse.org/reference/update_ggplot.html" class="external-link">ggplot_add()</a></code> S3 method) and can:
+<ul><li>inject value labels above bars / next to points (<code>values = TRUE</code> or <code>"auto"</code>)</li>
+<li>reorder a categorical x by y (<code>sort = "asc" | "desc"</code>)</li>
+<li>format labels via shortcut names (<code>label_fmt = "brl" | "number" | "pct" | "delta"</code>) or a user-supplied function</li>
+<li>highlight specific x values with the theme’s main colour and mute the rest with <code>muted_color</code> (default <code>#A8A4A0</code>, a warm-leaning neutral that reads under both cool and warm palettes)</li>
+<li>label the last point of each line series (<code>end_labels = TRUE</code>)</li>
+<li>geom-aware scale expansion (<code>expand = "auto"</code>) — y room above columns, right-side room for line endpoints</li>
+</ul></li>
+</ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

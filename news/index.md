@@ -97,3 +97,24 @@
 - [`fmt_month()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
   — `Date` / `POSIXct` → localised month string; ships its own pt-BR and
   en-US month tables (no `LC_TIME` reliance).
+
+### Data-aware polish (prompt 06)
+
+- [`ct_finish()`](https://viniciusoike.github.io/ggconsulting/reference/ct_finish.md)
+  — companion to
+  [`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)
+  that runs *after* the geom layer is built (via an
+  [`ggplot_add()`](https://ggplot2.tidyverse.org/reference/update_ggplot.html)
+  S3 method) and can:
+  - inject value labels above bars / next to points (`values = TRUE` or
+    `"auto"`)
+  - reorder a categorical x by y (`sort = "asc" | "desc"`)
+  - format labels via shortcut names
+    (`label_fmt = "brl" | "number" | "pct" | "delta"`) or a
+    user-supplied function
+  - highlight specific x values with the theme’s main colour and mute
+    the rest with `muted_color` (default `#A8A4A0`, a warm-leaning
+    neutral that reads under both cool and warm palettes)
+  - label the last point of each line series (`end_labels = TRUE`)
+  - geom-aware scale expansion (`expand = "auto"`) — y room above
+    columns, right-side room for line endpoints

@@ -97,6 +97,6 @@ archetypes,
 [`scale_color_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
 /
 [`scale_fill_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md),
-`ct_finish()` polish layer, locale-aware label helpers (`fmt_brl`,
-`ct_locale`), `install_consulting_fonts()`, vignettes, and a polished
-gallery.
+[`ct_finish()`](https://viniciusoike.github.io/ggconsulting/reference/ct_finish.md)
+polish layer, locale-aware label helpers (`fmt_brl`, `ct_locale`),
+`install_consulting_fonts()`, vignettes, and a polished gallery.

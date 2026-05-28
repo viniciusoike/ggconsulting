@@ -28,6 +28,15 @@ palettes, plus a swatch preview helper.
 - [`ct_palette_show()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette_show.md)
   : Preview ggconsulting palettes as a swatch
 
+## Data-aware polish
+
+[`ct_finish()`](https://viniciusoike.github.io/ggconsulting/reference/ct_finish.md)
+runs after the geom layer is built and inspects the plot to inject value
+labels, sorting, highlighting, end labels, and scale expansion.
+
+- [`ct_finish()`](https://viniciusoike.github.io/ggconsulting/reference/ct_finish.md)
+  **\[experimental\]** : Apply data-aware finishing touches to a plot
+
 ## Geom wrappers
 
 Drop-in replacements for

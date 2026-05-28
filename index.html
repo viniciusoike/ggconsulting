@@ -51,7 +51,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>An opinionated ggplot2 extension for executive-grade consulting output. Ships archetype themes, palettes, mechanical geom wrappers, and (in later releases) locale-aware label helpers and a data-aware polish layer.</p>
+<p>An opinionated ggplot2 extension for executive-grade consulting output. Ships three archetype themes, eleven palettes, locale-aware label helpers (pt-BR + en-US), and a data-aware polish layer.</p>
 <blockquote>
 <p><strong>Heads up:</strong> ggconsulting is in early development. The public API is being shaped against real consulting decks; expect breaking changes through <code>0.x</code>.</p>
 </blockquote>
@@ -92,23 +92,57 @@
 <span><span class="fu"><a href="reference/ct_defaults.html">ct_unset_defaults</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="whats-inside-v01-foundation">What’s inside (v0.1 foundation)<a class="anchor" aria-label="anchor" href="#whats-inside-v01-foundation"></a>
+<h2 id="whats-inside">What’s inside<a class="anchor" aria-label="anchor" href="#whats-inside"></a>
 </h2>
+<p><strong>Themes</strong></p>
 <ul>
 <li>
-<strong><code><a href="reference/ct_theme.html">ct_theme()</a></code> / <code><a href="reference/theme_strategy.html">theme_strategy()</a></code></strong> — composable theme builder and archetype preset. Built with ggplot2 4.x <code>theme_sub_*()</code> helpers and routed through <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_geom()</a></code> for <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code> linkage.</li>
+<code><a href="reference/ct_theme.html">ct_theme()</a></code> — composable theme builder with <code>palette</code>, <code>font</code>, <code>density</code>, and <code>context</code> arguments. Built on ggplot2 4.x <code>theme_sub_*()</code> helpers and routed through <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_geom()</a></code> for <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code> linkage.</li>
 <li>
-<strong>Five starter palettes</strong> — <code>strategy_navy</code>, <code>strategy_emerald</code>, <code>strategy_crimson</code>, <code>strategy_azure</code>, <code>strategy_slate</code>.</li>
+<code><a href="reference/theme_strategy.html">theme_strategy()</a></code> — minimal, generous-whitespace, navy-default preset inspired by top-tier global strategy consultancies.</li>
 <li>
-<strong><code><a href="reference/ct_geoms.html">ct_col()</a></code> / <code><a href="reference/ct_geoms.html">ct_line()</a></code> / <code><a href="reference/ct_geoms.html">ct_point()</a></code></strong> — mechanical wrappers with consulting-grade defaults for call-site overrides.</li>
+<code><a href="reference/theme_finance.html">theme_finance()</a></code> — serif preset with denser defaults (<code>density = "tight"</code>, <code>context = "report"</code>) tuned for printed pages and pitch books.</li>
 <li>
-<strong><code><a href="reference/ct_defaults.html">ct_set_defaults()</a></code> / <code><a href="reference/ct_defaults.html">ct_unset_defaults()</a></code></strong> — <code><a href="https://ggplot2.tidyverse.org/reference/update_defaults.html" class="external-link">update_geom_defaults()</a></code>-driven aesthetic baseline with honest revert.</li>
+<code><a href="reference/theme_editorial.html">theme_editorial()</a></code> — serif preset with italic subtitles and a warmer palette for client memos and market commentary.</li>
+</ul>
+<p><strong>Palettes and scales</strong></p>
+<ul>
+<li>Eleven shipped palettes — five strategy (<code>strategy_navy</code>, <code>strategy_emerald</code>, <code>strategy_crimson</code>, <code>strategy_azure</code>, <code>strategy_slate</code>), three finance (<code>finance_classic</code>, <code>finance_steel</code>, <code>finance_burgundy</code>), and three editorial (<code>editorial_warm</code>, <code>editorial_clay</code>, <code>editorial_oxide</code>).</li>
+<li>
+<code><a href="reference/ct_scales.html">scale_color_ct()</a></code> / <code><a href="reference/ct_scales.html">scale_fill_ct()</a></code> — discrete scales backed by the palettes; interpolate and warn when <code>n</code> exceeds the palette size.</li>
+<li>
+<code><a href="reference/ct_scales.html">scale_color_ct_c()</a></code> / <code><a href="reference/ct_scales.html">scale_fill_ct_c()</a></code> — continuous variants. British-spelling aliases (<code>scale_colour_ct*</code>) are also exported.</li>
+<li>
+<code><a href="reference/ct_palette_show.html">ct_palette_show()</a></code> — quick swatch preview for a single palette, a custom hex vector, or every shipped palette faceted.</li>
+</ul>
+<p><strong>Locale-aware labels</strong></p>
+<ul>
+<li>
+<code>ct_locale("pt-BR" | "en-US")</code> — session-scoped locale switch stored in <code>options(ggconsulting.locale)</code>. Does not touch <code><a href="https://rdrr.io/r/base/locales.html" class="external-link">Sys.setlocale()</a></code>; portable across Windows / Linux / macOS CI.</li>
+<li>
+<code><a href="reference/ct_formatters.html">fmt_number()</a></code>, <code><a href="reference/ct_formatters.html">fmt_pct()</a></code>, <code><a href="reference/ct_formatters.html">fmt_delta()</a></code>, <code><a href="reference/ct_formatters.html">fmt_currency()</a></code> — locale-aware formatters.</li>
+<li>
+<code><a href="reference/ct_formatters.html">fmt_brl()</a></code> — always renders Brazilian Real with <code>R$</code> and a non-breaking space, regardless of active locale. Supports <code>style = "accounting"</code> for parens-wrapped negatives.</li>
+<li>
+<code><a href="reference/ct_formatters.html">fmt_month()</a></code> — <code>Date</code> / <code>POSIXct</code> → localised month string, using internal pt-BR and en-US tables (no <code>LC_TIME</code> reliance).</li>
+</ul>
+<p><strong>Data-aware polish layer</strong></p>
+<ul>
+<li>
+<code><a href="reference/ct_finish.html">ct_finish()</a></code> — runs <em>after</em> the geom layer is built and can inject value labels above bars or next to points, reorder a categorical x by y, format labels via shortcut names (<code>"brl"</code>, <code>"number"</code>, <code>"pct"</code>, <code>"delta"</code>) or a user-supplied function, highlight specific x values while muting the rest, label the last point of each line series, and apply geom-aware scale expansion.</li>
+</ul>
+<p><strong>Mechanical wrappers</strong></p>
+<ul>
+<li>
+<code><a href="reference/ct_geoms.html">ct_col()</a></code>, <code><a href="reference/ct_geoms.html">ct_line()</a></code>, <code><a href="reference/ct_geoms.html">ct_point()</a></code> — thin wrappers with consulting-grade defaults for call-site overrides.</li>
+<li>
+<code><a href="reference/ct_defaults.html">ct_set_defaults()</a></code> / <code><a href="reference/ct_defaults.html">ct_unset_defaults()</a></code> — <code><a href="https://ggplot2.tidyverse.org/reference/update_defaults.html" class="external-link">update_geom_defaults()</a></code>-driven aesthetic baseline with honest revert.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="roadmap">Roadmap<a class="anchor" aria-label="anchor" href="#roadmap"></a>
 </h2>
-<p>Next prompts will add <code><a href="reference/theme_finance.html">theme_finance()</a></code> / <code><a href="reference/theme_editorial.html">theme_editorial()</a></code> archetypes, <code><a href="reference/ct_scales.html">scale_color_ct()</a></code> / <code><a href="reference/ct_scales.html">scale_fill_ct()</a></code>, <code><a href="reference/ct_finish.html">ct_finish()</a></code> polish layer, locale-aware label helpers (<code>fmt_brl</code>, <code>ct_locale</code>), <code>install_consulting_fonts()</code>, vignettes, and a polished gallery.</p>
+<p><code>install_consulting_fonts()</code>, three vignettes (theme comparison, locale and number formatting, font setup), and a polished pkgdown gallery. The companion package <code>ctplot</code> — <code>ct_waterfall()</code>, <code>ct_slope()</code>, <code>ct_dumbbell()</code>, and PPT export via <code>officer</code> — will follow in a separate repo.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

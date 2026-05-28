@@ -14,8 +14,10 @@
 #'
 #' @param palette Palette name (e.g. `"strategy_navy"`) or character
 #'   vector of colours.
-#' @param font Preferred font family. Falls back through
-#'   `c("Helvetica Neue", "Arial", "sans")` if unavailable.
+#' @param font Preferred font family.
+#' @param font_fallback Character vector of fallback families to try if
+#'   `font` is unavailable. The generic R families `"sans"`, `"serif"`,
+#'   and `"mono"` are always recognised as terminal fallbacks.
 #' @param density One of `"normal"`, `"tight"`, `"loose"`. Controls
 #'   `panel.spacing` and axis-text margins.
 #' @param context One of `"presentation"`, `"report"`, `"screen"`. Drives
@@ -34,6 +36,7 @@
 #'   ct_theme()
 ct_theme <- function(palette = "strategy_navy",
                      font = "Inter",
+                     font_fallback = c("Helvetica Neue", "Arial", "sans"),
                      density = c("normal", "tight", "loose"),
                      context = c("presentation", "report", "screen"),
                      base_size = NULL,
@@ -42,7 +45,7 @@ ct_theme <- function(palette = "strategy_navy",
   context <- match.arg(context)
 
   pal_vec       <- .resolve_palette(palette)
-  resolved_font <- .resolve_font(font)
+  resolved_font <- .resolve_font(font, font_fallback)
   resolved_main <- if (is.null(main_color)) pal_vec[1] else main_color
   size          <- if (is.null(base_size)) .context_base_size(context) else base_size
   margins       <- .context_margins(context)
@@ -106,12 +109,13 @@ ct_theme <- function(palette = "strategy_navy",
 
 .resolve_font <- function(primary,
                           fallback = c("Helvetica Neue", "Arial", "sans")) {
+  generic <- c("sans", "serif", "mono")
   for (f in c(primary, fallback)) {
-    if (identical(f, "sans") || has_font(f)) {
+    if (f %in% generic || has_font(f)) {
       return(f)
     }
   }
-  "sans"
+  utils::tail(fallback, 1L)
 }
 
 .context_base_size <- function(context) {

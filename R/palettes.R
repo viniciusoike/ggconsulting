@@ -42,6 +42,54 @@
     "#C5D5E3",
     "#D4945A",
     "#646E78"
+  ),
+  finance_classic = c(
+    "#1A2B3D",
+    "#3D5A7A",
+    "#6D8AA6",
+    "#A8BAC9",
+    "#7A3030",
+    "#525B68"
+  ),
+  finance_steel = c(
+    "#243447",
+    "#3F556E",
+    "#7185A0",
+    "#B4C0CE",
+    "#6B7B3C",
+    "#525B68"
+  ),
+  finance_burgundy = c(
+    "#5A1F2B",
+    "#8B3340",
+    "#B5707A",
+    "#D4B5BA",
+    "#2A4A6B",
+    "#525B68"
+  ),
+  editorial_warm = c(
+    "#A8324A",
+    "#D4593D",
+    "#E89E3D",
+    "#F2D49D",
+    "#3D5A6B",
+    "#5C5550"
+  ),
+  editorial_clay = c(
+    "#7B3B30",
+    "#B05E47",
+    "#D08D6E",
+    "#E8C9B0",
+    "#4A6B5C",
+    "#5C5550"
+  ),
+  editorial_oxide = c(
+    "#264653",
+    "#2A9D8F",
+    "#E9C46A",
+    "#F4A261",
+    "#E76F51",
+    "#5C5550"
   )
 )
 

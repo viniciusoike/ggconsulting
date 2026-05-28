@@ -7,6 +7,7 @@
 ct_theme(
   palette = "strategy_navy",
   font = "Inter",
+  font_fallback = c("Helvetica Neue", "Arial", "sans"),
   density = c("normal", "tight", "loose"),
   context = c("presentation", "report", "screen"),
   base_size = NULL,
@@ -17,8 +18,11 @@ ct_theme(
 \item{palette}{Palette name (e.g. \code{"strategy_navy"}) or character
 vector of colours.}
 
-\item{font}{Preferred font family. Falls back through
-\code{c("Helvetica Neue", "Arial", "sans")} if unavailable.}
+\item{font}{Preferred font family.}
+
+\item{font_fallback}{Character vector of fallback families to try if
+\code{font} is unavailable. The generic R families \code{"sans"}, \code{"serif"},
+and \code{"mono"} are always recognised as terminal fallbacks.}
 
 \item{density}{One of \code{"normal"}, \code{"tight"}, \code{"loose"}. Controls
 \code{panel.spacing} and axis-text margins.}

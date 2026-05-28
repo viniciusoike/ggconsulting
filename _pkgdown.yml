@@ -13,6 +13,8 @@ reference:
   contents:
   - ct_theme
   - theme_strategy
+  - theme_finance
+  - theme_editorial
 
 - title: Scales and palettes
   desc: >

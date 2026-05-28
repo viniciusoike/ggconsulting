@@ -31,6 +31,14 @@ reference:
   contents:
   - ct_geoms
 
+- title: Locale and formatters
+  desc: >
+    Locale-aware number, currency, percentage, and date formatters,
+    plus a session-scoped locale switch.
+  contents:
+  - ct_locale
+  - ct_formatters
+
 - title: Defaults
   desc: >
     Aesthetic defaults applied on library attach via

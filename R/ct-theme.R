@@ -64,9 +64,10 @@ ct_theme <- function(palette = "strategy_navy",
       rect = ggplot2::element_rect(linewidth = 0.5)
     ) +
     ggplot2::theme_sub_panel(
-      grid.minor = ggplot2::element_blank(),
-      grid.major = ggplot2::element_line(colour = "#E5E5E5", linewidth = 0.3),
-      spacing    = density_bits$panel_spacing
+      grid.minor   = ggplot2::element_blank(),
+      grid.major.y = ggplot2::element_line(colour = "#E5E5E5", linewidth = 0.3),
+      grid.major.x = ggplot2::element_blank(),
+      spacing      = density_bits$panel_spacing
     ) +
     ggplot2::theme_sub_plot(
       title = ggplot2::element_text(
@@ -90,8 +91,11 @@ ct_theme <- function(palette = "strategy_navy",
       margin = margins
     ) +
     ggplot2::theme_sub_axis_x(
-      title = ggplot2::element_text(margin = ggplot2::margin(t = size * 0.4)),
-      text  = ggplot2::element_text(margin = density_bits$axis_text_x)
+      title        = ggplot2::element_text(margin = ggplot2::margin(t = size * 0.4)),
+      text         = ggplot2::element_text(margin = density_bits$axis_text_x),
+      line         = ggplot2::element_line(colour = "#1A1A1A", linewidth = 0.4),
+      ticks        = ggplot2::element_line(colour = "#1A1A1A", linewidth = 0.4),
+      ticks.length = ggplot2::unit(3, "pt")
     ) +
     ggplot2::theme_sub_axis_y(
       title = ggplot2::element_text(margin = ggplot2::margin(r = size * 0.4)),

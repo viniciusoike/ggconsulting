@@ -42,7 +42,8 @@ theme_finance <- function(main_color = NULL,
   )
 
   th + ggplot2::theme(
-    plot.title       = ggplot2::element_text(face = "plain"),
-    panel.grid.major = ggplot2::element_line(colour = "#EEEEEE", linewidth = 0.25)
+    plot.title         = ggplot2::element_text(face = "plain"),
+    panel.grid.major.y = ggplot2::element_line(colour = "#EEEEEE", linewidth = 0.25),
+    panel.grid.major.x = ggplot2::element_blank()
   )
 }

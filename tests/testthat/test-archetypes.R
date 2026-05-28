@@ -59,6 +59,6 @@ test_that("theme_editorial sets an italic subtitle", {
 })
 
 test_that("theme_finance uses a lighter major gridline than theme_strategy", {
-  expect_equal(theme_finance()$panel.grid.major$colour,  "#EEEEEE")
-  expect_equal(theme_strategy()$panel.grid.major$colour, "#E5E5E5")
+  expect_equal(theme_finance()$panel.grid.major.y$colour,  "#EEEEEE")
+  expect_equal(theme_strategy()$panel.grid.major.y$colour, "#E5E5E5")
 })

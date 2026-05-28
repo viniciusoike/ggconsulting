@@ -14,6 +14,14 @@ reference:
   - ct_theme
   - theme_strategy
 
+- title: Scales and palettes
+  desc: >
+    Discrete and continuous colour/fill scales backed by ggconsulting
+    palettes, plus a swatch preview helper.
+  contents:
+  - ct_scales
+  - ct_palette_show
+
 - title: Geom wrappers
   desc: >
     Drop-in replacements for `ggplot2::geom_col()`, `geom_line()`, and

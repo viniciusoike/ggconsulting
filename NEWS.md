@@ -65,3 +65,19 @@
   (`+1,2pp` / `-0,3pp` / `0,0pp`).
 * `fmt_month()` — `Date` / `POSIXct` → localised month string;
   ships its own pt-BR and en-US month tables (no `LC_TIME` reliance).
+
+## Data-aware polish (prompt 06)
+
+* `ct_finish()` — companion to `ct_theme()` that runs *after* the geom
+  layer is built (via an `ggplot_add()` S3 method) and can:
+  - inject value labels above bars / next to points
+    (`values = TRUE` or `"auto"`)
+  - reorder a categorical x by y (`sort = "asc" | "desc"`)
+  - format labels via shortcut names (`label_fmt = "brl" | "number" |
+    "pct" | "delta"`) or a user-supplied function
+  - highlight specific x values with the theme's main colour and mute
+    the rest with `muted_color` (default `#A8A4A0`, a warm-leaning
+    neutral that reads under both cool and warm palettes)
+  - label the last point of each line series (`end_labels = TRUE`)
+  - geom-aware scale expansion (`expand = "auto"`) — y room above
+    columns, right-side room for line endpoints

@@ -24,6 +24,14 @@ reference:
   - ct_scales
   - ct_palette_show
 
+- title: Data-aware polish
+  desc: >
+    `ct_finish()` runs after the geom layer is built and inspects the
+    plot to inject value labels, sorting, highlighting, end labels, and
+    scale expansion.
+  contents:
+  - ct_finish
+
 - title: Geom wrappers
   desc: >
     Drop-in replacements for `ggplot2::geom_col()`, `geom_line()`, and

@@ -93,6 +93,67 @@
   )
 )
 
+# Palette accessor ----
+
+#' Get palette colours
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' Returns the hex colour vector for a named palette, optionally subsetting
+#' or interpolating to `n` colours. Called with no arguments, returns the
+#' names of all available palettes.
+#'
+#' @param palette Palette name (e.g. `"strategy_navy"`) or `NULL` (default)
+#'   to list available palette names.
+#' @param n Number of colours to return. When `n` is smaller than the
+#'   palette, the first `n` colours are returned. When `n` is larger,
+#'   colours are interpolated via [grDevices::colorRampPalette()] (with a
+#'   warning). Defaults to `NULL` (return the full palette).
+#' @param reverse Reverse palette order before subsetting. Defaults to
+#'   `FALSE`.
+#'
+#' @return A character vector of hex colours, or (when `palette` is `NULL`)
+#'   a character vector of palette names.
+#' @export
+#' @examples
+#' # List available palettes
+#' ct_palette()
+#'
+#' # Full palette
+#' ct_palette("strategy_navy")
+#'
+#' # First 3 colours
+#' ct_palette("strategy_navy", n = 3)
+#'
+#' # Interpolate to 9 colours
+#' ct_palette("strategy_navy", n = 9)
+ct_palette <- function(palette = NULL, n = NULL, reverse = FALSE) {
+  if (is.null(palette)) {
+    return(names(.ct_palettes))
+  }
+
+  pal <- .resolve_palette(palette)
+  if (reverse) pal <- rev(pal)
+
+  if (is.null(n)) {
+    return(pal)
+  }
+
+  n <- as.integer(n)
+  n_pal <- length(pal)
+
+  if (n <= n_pal) {
+    return(pal[seq_len(n)])
+  }
+
+  cli::cli_warn(c(
+    "Requested {n} colours from a palette of {n_pal}; interpolating.",
+    "i" = "Consider a larger palette or a continuous scale via {.fn scale_color_ct_c}."
+  ))
+  grDevices::colorRampPalette(pal)(n)
+}
+
 # Palette resolver ----
 
 .resolve_palette <- function(palette) {

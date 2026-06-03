@@ -22,11 +22,11 @@ LazyData: true
 Imports:
     cli,
     ggplot2,
+    lifecycle,
     rlang,
     scales,
     systemfonts
 Suggests:
-    lifecycle,
     testthat (>= 3.0.0),
     vdiffr,
     withr

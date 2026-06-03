@@ -22,6 +22,7 @@ reference:
     palettes, plus a swatch preview helper.
   contents:
   - ct_scales
+  - ct_palette
   - ct_palette_show
 
 - title: Data-aware polish
@@ -53,3 +54,10 @@ reference:
     `ggplot2::update_geom_defaults()`, with an opt-out path.
   contents:
   - ct_defaults
+
+- title: Fonts
+  desc: >
+    Font installation helper and availability check.
+  contents:
+  - install_consulting_fonts
+  - has_font

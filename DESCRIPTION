@@ -13,7 +13,7 @@ Description: An opinionated 'ggplot2' extension for executive-grade
     consulting output. Ships archetype themes, palettes, scale helpers,
     locale-aware label helpers, and a data-aware polish layer.
 License: MIT + file LICENSE
-URL: https://github.com/viniciusoike/ggconsulting
+URL: https://github.com/viniciusoike/ggconsulting, https://viniciusoike.github.io/ggconsulting/
 BugReports: https://github.com/viniciusoike/ggconsulting/issues
 Depends:
     R (>= 3.5)

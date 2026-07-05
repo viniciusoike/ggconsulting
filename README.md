@@ -7,6 +7,8 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Project Status:
+WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![R-CMD-check](https://github.com/viniciusoike/ggconsulting/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/viniciusoike/ggconsulting/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/viniciusoike/ggconsulting/graph/badge.svg)](https://app.codecov.io/gh/viniciusoike/ggconsulting)
@@ -21,6 +23,9 @@ helpers (pt-BR + en-US), and a data-aware polish layer.
 > **Heads up:** ggconsulting is in early development. The public API is
 > being shaped against real consulting decks; expect breaking changes
 > through `0.x`.
+
+Full documentation and a function reference live at the pkgdown site:
+<https://viniciusoike.github.io/ggconsulting/>.
 
 ## Installation
 
@@ -39,8 +44,8 @@ library(ggplot2)
 library(ggconsulting)
 #> v ggconsulting set ggplot2 aesthetic defaults
 #> i Opt out: `ct_unset_defaults()` or `options(ggconsulting.autoload = FALSE)`
-#> i Column width / linewidth: use `ct_col()` / `ct_line()`, or apply
-#>   `ct_theme()`/`theme_strategy()` for linewidth via `from_theme()`
+#> i Column width / linewidth: use `ct_col()` / `ct_line()`, or apply a
+#>   `theme_*()` archetype for linewidth via `from_theme()`
 
 ggplot(mtcars, aes(wt, mpg)) +
   geom_point() +

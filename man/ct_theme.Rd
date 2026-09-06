@@ -11,7 +11,8 @@ ct_theme(
   density = c("normal", "tight", "loose"),
   context = c("presentation", "report", "screen"),
   base_size = NULL,
-  main_color = NULL
+  main_color = NULL,
+  paper = NULL
 )
 }
 \arguments{
@@ -37,6 +38,14 @@ so unmapped geoms pick it up via \code{from_theme()}. \code{NULL} falls back
 to the palette's first colour. Title colour is a fixed neutral
 near-black (\verb{#1A1A1A}); override with a follow-on \code{theme()} call
 if you want it palette-tinted.}
+
+\item{paper}{Figure ground colour. \code{NULL} (default) leaves
+\code{\link[ggplot2:ggtheme]{ggplot2::theme_minimal()}}'s white background untouched. Otherwise one
+of the shortcuts \code{"cream"}, \code{"warm_grey"}, \code{"white"}, or any colour
+\code{\link[grDevices:col2rgb]{grDevices::col2rgb()}} accepts. Because \code{theme_minimal()} leaves the
+panel background blank, filling the plot background alone gives a
+uniform ground with no panel-versus-plot seam. Setting \code{paper} also
+warms the major gridline to match it.}
 }
 \value{
 A \code{\link[ggplot2:theme]{ggplot2::theme()}} object.

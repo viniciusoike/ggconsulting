@@ -21,8 +21,17 @@
 #' @param highlight Value(s) of the x aesthetic to emphasise. Matching
 #'   bars use the active palette's main colour; non-matching bars use
 #'   `muted_color`. Inserted as a `scale_*_manual()`.
-#' @param end_labels For line plots: when `TRUE`, label the last point of
-#'   each series with the group identifier.
+#' @param end_labels For line plots: `TRUE` labels the last point of each
+#'   series with the group identifier. `"first_facet"` draws those labels
+#'   only in the first panel, which replaces a legend across small
+#'   multiples; on an unfaceted plot it behaves like `TRUE`. The x
+#'   aesthetic may be numeric, `Date`, or `POSIXct`.
+#' @param end_points For line plots: when `TRUE`, draw a filled point at
+#'   each series' last observation, under the end label.
+#' @param axis_y Moves the y axis. `"right"` or `"left"`; `NULL` (default)
+#'   leaves it where the scale puts it. Applied through
+#'   [ggplot2::guide_axis()], so it does not disturb a `scale_y_*()` call
+#'   of your own.
 #' @param expand `"auto"` picks geom-aware scale expansion
 #'   (room above column tops, right-side room for line end labels);
 #'   `FALSE` disables.
@@ -43,11 +52,24 @@ ct_finish <- function(values     = FALSE,
                       label_fmt  = NULL,
                       highlight  = NULL,
                       end_labels = FALSE,
+                      end_points = FALSE,
+                      axis_y     = NULL,
                       expand     = "auto",
                       muted_color = "#A8A4A0") {
   if (!is.null(sort) && !sort %in% c("asc", "desc")) {
     cli::cli_abort(
       "{.arg sort} must be {.val NULL}, {.val asc}, or {.val desc}; got {.val {sort}}."
+    )
+  }
+  if (!isTRUE(end_labels) && !isFALSE(end_labels) &&
+      !identical(end_labels, "first_facet")) {
+    cli::cli_abort(
+      "{.arg end_labels} must be {.val TRUE}, {.val FALSE}, or {.val first_facet}."
+    )
+  }
+  if (!is.null(axis_y) && !axis_y %in% c("left", "right")) {
+    cli::cli_abort(
+      "{.arg axis_y} must be {.val NULL}, {.val left}, or {.val right}; got {.val {axis_y}}."
     )
   }
 
@@ -57,7 +79,9 @@ ct_finish <- function(values     = FALSE,
       sort        = sort,
       label_fmt   = .resolve_label_fmt(label_fmt),
       highlight   = highlight,
-      end_labels  = isTRUE(end_labels),
+      end_labels  = end_labels,
+      end_points  = isTRUE(end_points),
+      axis_y      = axis_y,
       expand      = expand,
       muted_color = muted_color
     ),
@@ -85,13 +109,27 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
     plot <- .ct_add_value_labels(plot, geom_info, object$label_fmt)
   }
 
-  if (isTRUE(object$end_labels) &&
+  # End labels set their own, wider, x expansion. Track whether they did,
+  # so auto expansion does not add a second x scale over the top of it.
+  x_scaled <- FALSE
+  if (!isFALSE(object$end_labels) &&
       geom_info$type %in% c("GeomLine", "GeomPath")) {
-    plot <- .ct_add_end_labels(plot, geom_info)
+    plot <- .ct_add_end_labels(
+      plot,
+      geom_info,
+      first_facet = identical(object$end_labels, "first_facet"),
+      end_points  = object$end_points
+    )
+    x_scaled <- .has_x_scale(plot)
   }
 
   if (!identical(object$expand, FALSE)) {
-    plot <- .ct_apply_expansion(plot, geom_info, object$expand)
+    plot <- .ct_apply_expansion(plot, geom_info, object$expand, skip_x = x_scaled)
+  }
+
+  if (!is.null(object$axis_y)) {
+    plot <- plot +
+      ggplot2::guides(y = ggplot2::guide_axis(position = object$axis_y))
   }
 
   plot
@@ -214,7 +252,10 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
   )
 }
 
-.ct_add_end_labels <- function(plot, geom_info) {
+.ct_add_end_labels <- function(plot,
+                               geom_info,
+                               first_facet = FALSE,
+                               end_points = FALSE) {
   if (is.null(geom_info$layer)) return(plot)
   x_var <- .aes_var(plot, geom_info$layer, "x")
   group_var <- .aes_var(plot, geom_info$layer, "colour")
@@ -223,10 +264,10 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
 
   d <- plot$data
   x_col <- d[[x_var]]
-  if (!is.numeric(x_col)) {
+  if (!.is_positional_x(x_col)) {
     cli::cli_abort(c(
-      "{.fun ct_finish} {.arg end_labels} requires a numeric x aesthetic.",
-      "i" = "Got {.cls {class(x_col)[1]}}. Coerce dates with {.code as.numeric()} or use a numeric x."
+      "{.fun ct_finish} {.arg end_labels} needs a numeric, {.cls Date}, or {.cls POSIXct} x aesthetic.",
+      "i" = "Got {.cls {class(x_col)[1]}}. Map a continuous x, or drop {.arg end_labels}."
     ))
   }
 
@@ -234,9 +275,18 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
     grp[which.max(grp[[x_var]]), , drop = FALSE]
   }))
 
+  if (isTRUE(first_facet)) {
+    ends <- .pin_to_first_panel(ends, plot$facet, d)
+  }
+
   nudge <- as.numeric(diff(range(x_col, na.rm = TRUE))) * 0.01
 
-  plot +
+  if (isTRUE(end_points)) {
+    plot <- plot +
+      ggplot2::geom_point(data = ends, size = 2, show.legend = FALSE)
+  }
+
+  plot <- plot +
     ggplot2::geom_text(
       data = ends,
       ggplot2::aes(label = .data[[group_var]]),
@@ -244,26 +294,93 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
       nudge_x = nudge,
       size = 3,
       show.legend = FALSE
-    ) +
-    ggplot2::scale_x_continuous(expand = ggplot2::expansion(mult = c(0, 0.12)))
+    )
+
+  # Room on the right for the labels, unless the caller already brought an
+  # x scale of their own — replacing it would drop their breaks and limits.
+  if (.has_x_scale(plot)) {
+    return(plot)
+  }
+  plot + .x_expansion_scale(x_col, mult = c(0, 0.12))
 }
 
-.ct_apply_expansion <- function(plot, geom_info, expand) {
+# Positional x types end labels can measure and nudge along. Date and
+# POSIXct are numeric underneath, so range() and which.max() work; only
+# discrete x is genuinely unsupported.
+.has_x_scale <- function(plot) {
+  any(vapply(
+    plot$scales$scales,
+    function(s) "x" %in% s$aesthetics,
+    logical(1)
+  ))
+}
+
+.is_positional_x <- function(x) {
+  is.numeric(x) || inherits(x, "Date") || inherits(x, "POSIXt")
+}
+
+# Facet variables live in different slots per facet class. Pinning each
+# one to its first level lands every label in panel 1. Levels come from
+# the full data, not from `ends` — series commonly all terminate in the
+# same panel, which would otherwise pin to that panel instead of the first.
+.pin_to_first_panel <- function(ends, facet, data) {
+  vars <- .facet_vars(facet)
+  for (v in vars) {
+    if (!v %in% names(ends) || !v %in% names(data)) next
+    ends[[v]] <- .first_level(data[[v]])
+  }
+  ends
+}
+
+.facet_vars <- function(facet) {
+  if (is.null(facet) || inherits(facet, "FacetNull")) {
+    return(character())
+  }
+  params <- facet$params
+  unique(c(
+    names(params$facets),
+    names(params$rows),
+    names(params$cols)
+  ))
+}
+
+.first_level <- function(x) {
+  if (is.factor(x)) {
+    return(factor(levels(x)[1], levels = levels(x)))
+  }
+  sort(unique(x))[1]
+}
+
+# Scale constructor matching the x type. Handing a Date axis to
+# scale_x_continuous() builds without complaint but replaces the date
+# labels with raw day numbers, so the branch is load-bearing.
+.x_expansion_scale <- function(x_col, mult) {
+  expand <- ggplot2::expansion(mult = mult)
+  if (inherits(x_col, "POSIXt")) {
+    return(ggplot2::scale_x_datetime(expand = expand))
+  }
+  if (inherits(x_col, "Date")) {
+    return(ggplot2::scale_x_date(expand = expand))
+  }
+  ggplot2::scale_x_continuous(expand = expand)
+}
+
+.ct_apply_expansion <- function(plot, geom_info, expand, skip_x = FALSE) {
   if (!identical(expand, "auto")) {
     return(plot)
   }
   if (geom_info$type %in% c("GeomCol", "GeomBar")) {
     return(plot + ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.15))))
   }
+  if (isTRUE(skip_x)) {
+    return(plot)
+  }
   if (geom_info$type %in% c("GeomLine", "GeomPath") && !is.null(geom_info$layer)) {
     x_var <- .aes_var(plot, geom_info$layer, "x")
     if (!is.null(x_var) && !is.null(plot$data)) {
       x_col <- plot$data[[x_var]]
-      if (inherits(x_col, "POSIXt")) {
-        return(plot + ggplot2::scale_x_datetime(expand = ggplot2::expansion(mult = c(0, 0.08))))
-      }
-      if (inherits(x_col, "Date")) {
-        return(plot + ggplot2::scale_x_date(expand = ggplot2::expansion(mult = c(0, 0.08))))
+      if (inherits(x_col, "Date") || inherits(x_col, "POSIXt")) {
+        return(plot + .x_expansion_scale(x_col, mult = c(0, 0.08)))
       }
     }
   }

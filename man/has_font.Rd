@@ -2,21 +2,39 @@
 % Please edit documentation in R/utils-font.R
 \name{has_font}
 \alias{has_font}
-\title{Test whether a font family is installed}
+\title{Test whether a font family is available}
 \usage{
 has_font(name)
 }
 \arguments{
-\item{name}{Font family name as it appears in
-\code{systemfonts::system_fonts()$family}.}
+\item{name}{Font family name, as it appears in the \code{family} column of
+\code{systemfonts::system_fonts()} or \code{systemfonts::registry_fonts()}.}
 }
 \value{
-\code{TRUE} if \code{name} matches an installed family, \code{FALSE} otherwise.
+\code{TRUE} if \code{name} matches an available family, \code{FALSE}
+otherwise. Vectorised over \code{name}.
 }
 \description{
-Wrapper around \code{\link[systemfonts:system_fonts]{systemfonts::system_fonts()}} used to gate font-dependent
-code paths and tests.
+Used to gate font-dependent code paths and tests, and by \code{ct_theme()}
+to walk its \code{font_fallback} chain.
+}
+\details{
+Checks both font tables systemfonts maintains: families installed on
+the operating system (\code{\link[systemfonts:system_fonts]{systemfonts::system_fonts()}}) \emph{and} families
+registered for the current session with
+\code{\link[systemfonts:register_font]{systemfonts::register_font()}} (\code{\link[systemfonts:register_font]{systemfonts::registry_fonts()}}).
+Registered fonts do not appear in the system table, so checking only
+that one would silently reject a corporate font a user had registered
+from a file rather than installed.
 }
 \examples{
 has_font("Arial")
+
+# Registered fonts count as available, so a client brand font you
+# register from a file can be used by name:
+\dontrun{
+systemfonts::register_font("ClientSans", plain = "~/fonts/ClientSans.ttf")
+has_font("ClientSans")
+ct_theme(font = "ClientSans")
+}
 }

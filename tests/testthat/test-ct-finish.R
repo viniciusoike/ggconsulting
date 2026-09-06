@@ -116,16 +116,347 @@ test_that("ct_finish(end_labels = TRUE) on numeric geom_line adds geom_text + x 
   expect_true(has_x_scale)
 })
 
-test_that("ct_finish(end_labels = TRUE) errors on non-numeric x", {
+test_that("ct_finish(end_labels = TRUE) accepts a Date x and keeps date labels", {
   d <- data.frame(
-    x = as.Date(c("2024-01-01", "2024-06-01")),
-    y = c(1, 2),
-    g = c("A", "A")
+    x = rep(as.Date("2024-01-01") + c(0, 150, 300), 2),
+    y = c(1, 2, 3, 3, 2, 1),
+    g = rep(c("A", "B"), each = 3)
   )
-  expect_error(
-    ggplot2::ggplot(d, ggplot2::aes(x, y, group = g)) +
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = g)) +
+    ggplot2::geom_line() +
+    ct_finish(end_labels = TRUE)
+
+  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  expect_true(any(has_text))
+
+  # A continuous x scale here would render day numbers instead of dates.
+  labels <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x$get_labels()
+  expect_false(any(grepl("^[0-9]{5}$", labels)))
+})
+
+test_that("ct_finish(end_labels = TRUE) accepts a POSIXct x", {
+  d <- data.frame(
+    x = rep(as.POSIXct("2024-01-01", tz = "UTC") + c(0, 3600, 7200), 2),
+    y = c(1, 2, 3, 3, 2, 1),
+    g = rep(c("A", "B"), each = 3)
+  )
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = g)) +
+    ggplot2::geom_line() +
+    ct_finish(end_labels = TRUE)
+  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  expect_true(any(has_text))
+})
+
+test_that("end labels and auto expansion do not both add an x scale", {
+  d <- data.frame(
+    x = rep(as.Date("2024-01-01") + c(0, 150), 2),
+    y = c(1, 2, 2, 1),
+    g = rep(c("A", "B"), each = 2)
+  )
+  expect_silent(
+    p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = g)) +
       ggplot2::geom_line() +
-      ct_finish(end_labels = TRUE),
-    "numeric"
+      ct_finish(end_labels = TRUE)
   )
+  n_x <- sum(vapply(
+    p$scales$scales,
+    function(s) "x" %in% s$aesthetics,
+    logical(1)
+  ))
+  expect_equal(n_x, 1L)
+})
+
+# Guard branches ----
+
+test_that(".detect_first_geom() reports NA for a plot with no layers", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v))
+  info <- .detect_first_geom(p)
+  expect_true(is.na(info$type))
+  expect_null(info$layer)
+})
+
+test_that(".detect_first_geom() skips a GeomBlank layer", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v)) +
+    ggplot2::geom_blank() +
+    ggplot2::geom_col()
+  expect_equal(.detect_first_geom(p)$type, "GeomCol")
+})
+
+test_that(".detect_first_geom() reports NA when only GeomBlank is present", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v)) + ggplot2::geom_blank()
+  info <- .detect_first_geom(p)
+  expect_true(is.na(info$type))
+})
+
+test_that("ct_finish() is a no-op on a layerless plot", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v))
+  expect_silent(out <- p + ct_finish(values = TRUE, sort = "desc"))
+  expect_s3_class(out, "ggplot")
+})
+
+test_that("sort is skipped when y is not numeric", {
+  d <- data.frame(g = c("A", "B"), v = c("x", "y"))
+  p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_point() +
+    ct_finish(sort = "desc")
+  expect_false(is.factor(p$data$g))
+})
+
+test_that("sort is skipped when the data frame is empty", {
+  d <- data.frame(g = character(), v = numeric())
+  p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_col() +
+    ct_finish(sort = "desc")
+  expect_equal(nrow(p$data), 0L)
+})
+
+test_that("highlight uses fill for columns and colour for points", {
+  d <- make_d()
+  p_col <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_col() +
+    ct_finish(highlight = "D")
+  expect_true("fill" %in% names(p_col$mapping))
+
+  p_pt <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_point() +
+    ct_finish(highlight = "D")
+  expect_true("colour" %in% names(p_pt$mapping))
+})
+
+test_that("highlight falls back to a default main colour without a ct theme", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v)) +
+    ggplot2::geom_col() +
+    ct_finish(highlight = "D")
+  expect_s3_class(p, "ggplot")
+})
+
+test_that("end_labels aborts on a non-numeric x aesthetic", {
+  d <- data.frame(
+    x = rep(c("Q1", "Q2"), 2),
+    y = c(1, 2, 3, 4),
+    series = rep(c("A", "B"), each = 2)
+  )
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line()
+  expect_error(p + ct_finish(end_labels = TRUE), "needs a numeric")
+})
+
+test_that("end_labels is skipped without a grouping aesthetic", {
+  d <- data.frame(x = 1:4, y = c(1, 2, 3, 4))
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish(end_labels = TRUE)
+  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  expect_false(any(has_text))
+})
+
+test_that("auto expansion picks a date scale for Date x on lines", {
+  d <- data.frame(x = as.Date("2026-01-01") + 0:3, y = c(1, 2, 3, 4))
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish()
+  classes <- vapply(p$scales$scales, function(s) class(s)[1], character(1))
+  expect_true("ScaleContinuousDate" %in% classes)
+})
+
+test_that("auto expansion picks a datetime scale for POSIXct x on lines", {
+  d <- data.frame(
+    x = as.POSIXct("2026-01-01 00:00:00", tz = "UTC") + (0:3) * 3600,
+    y = c(1, 2, 3, 4)
+  )
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish()
+  classes <- vapply(p$scales$scales, function(s) class(s)[1], character(1))
+  expect_true("ScaleContinuousDatetime" %in% classes)
+})
+
+test_that("expand = FALSE leaves scales untouched", {
+  d <- make_d()
+  p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_col() +
+    ct_finish(expand = FALSE)
+  expect_length(p$scales$scales, 0L)
+})
+
+test_that("label_fmt rejects an unknown shortcut and lists the valid ones", {
+  expect_error(ct_finish(label_fmt = "furlongs"), "Unknown")
+  expect_error(ct_finish(label_fmt = "furlongs"), "brl")
+})
+
+test_that("label_fmt rejects input that is neither a shortcut nor a function", {
+  expect_error(ct_finish(label_fmt = 42), "must be")
+})
+
+# End labels in the first facet only ----
+
+# Every series spans both panels and so terminates in the *last* one.
+# Pinning must therefore read facet levels from the full data; taking them
+# from the end rows alone would land the labels in the last panel.
+make_faceted <- function() {
+  data.frame(
+    x = rep(1:4, 4),
+    y = c(1:4, 4:1, 2:5, 5:2),
+    series = rep(c("A", "B", "C", "D"), each = 4),
+    region = rep(rep(c("North", "South"), each = 2), 4)
+  )
+}
+
+text_layer_data <- function(p) {
+  i <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1)))
+  ggplot2::ggplot_build(p)$data[[i[1]]]
+}
+
+test_that("end_labels = 'first_facet' puts every label in the first panel", {
+  p <- ggplot2::ggplot(make_faceted(), ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line() +
+    ggplot2::facet_wrap(~region) +
+    ct_finish(end_labels = "first_facet")
+
+  counts <- table(text_layer_data(p)$PANEL)
+  expect_equal(as.integer(counts[["1"]]), 4L)
+  expect_equal(as.integer(counts[["2"]]), 0L)
+})
+
+test_that("end_labels = TRUE leaves labels in their own panel", {
+  p <- ggplot2::ggplot(make_faceted(), ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line() +
+    ggplot2::facet_wrap(~region) +
+    ct_finish(end_labels = TRUE)
+
+  # Each series runs to x = 4, which sits in the South panel.
+  counts <- table(text_layer_data(p)$PANEL)
+  expect_equal(as.integer(counts[["1"]]), 0L)
+  expect_equal(as.integer(counts[["2"]]), 4L)
+})
+
+test_that("'first_facet' pins to the first level even when no series ends there", {
+  d <- make_faceted()
+  expect_equal(unique(d$region[d$x == max(d$x)]), "South")
+
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line() +
+    ggplot2::facet_wrap(~region) +
+    ct_finish(end_labels = "first_facet")
+  expect_equal(as.integer(table(text_layer_data(p)$PANEL)[["1"]]), 4L)
+})
+
+test_that("end_labels = 'first_facet' works on facet_grid", {
+  p <- ggplot2::ggplot(make_faceted(), ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line() +
+    ggplot2::facet_grid(rows = ggplot2::vars(region)) +
+    ct_finish(end_labels = "first_facet")
+
+  counts <- table(text_layer_data(p)$PANEL)
+  expect_equal(as.integer(counts[["1"]]), 4L)
+  expect_equal(as.integer(counts[["2"]]), 0L)
+})
+
+test_that("end_labels = 'first_facet' behaves like TRUE without facets", {
+  d <- make_faceted()
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line() +
+    ct_finish(end_labels = "first_facet")
+  expect_equal(nrow(text_layer_data(p)), 4L)
+})
+
+test_that(".facet_vars() reads wrap, grid, and null facets", {
+  d <- make_faceted()
+  base <- ggplot2::ggplot(d, ggplot2::aes(x, y)) + ggplot2::geom_line()
+  expect_equal(.facet_vars((base + ggplot2::facet_wrap(~region))$facet), "region")
+  expect_equal(
+    .facet_vars((base + ggplot2::facet_grid(rows = ggplot2::vars(region)))$facet),
+    "region"
+  )
+  expect_length(.facet_vars(base$facet), 0L)
+})
+
+test_that(".first_level() keeps factor levels intact", {
+  f <- factor(c("b", "a"), levels = c("b", "a"))
+  expect_equal(as.character(.first_level(f)), "b")
+  expect_equal(levels(.first_level(f)), c("b", "a"))
+  expect_equal(.first_level(c("z", "m")), "m")
+})
+
+test_that("end_labels rejects an unknown string", {
+  expect_error(ct_finish(end_labels = "nope"), "first_facet")
+})
+
+# End points ----
+
+test_that("end_points adds one point layer under the labels", {
+  d <- make_faceted()
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line() +
+    ct_finish(end_labels = TRUE, end_points = TRUE)
+
+  is_point <- vapply(p$layers, function(l) inherits(l$geom, "GeomPoint"), logical(1))
+  expect_equal(sum(is_point), 1L)
+
+  is_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  expect_lt(which(is_point)[1], which(is_text)[1])
+  expect_equal(nrow(ggplot2::ggplot_build(p)$data[[which(is_point)[1]]]), 4L)
+})
+
+test_that("end_points is off by default", {
+  d <- make_faceted()
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line() +
+    ct_finish(end_labels = TRUE)
+  expect_false(any(vapply(p$layers, function(l) inherits(l$geom, "GeomPoint"), logical(1))))
+})
+
+# Axis position ----
+
+axis_grob_class <- function(p, name) {
+  g <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(p))
+  class(g$grobs[[which(g$layout$name == name)]])[1]
+}
+
+test_that("axis_y = 'right' moves the y axis", {
+  d <- make_faceted()
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish(axis_y = "right")
+  expect_equal(axis_grob_class(p, "axis-l"), "zeroGrob")
+  expect_false(axis_grob_class(p, "axis-r") == "zeroGrob")
+})
+
+test_that("axis_y = NULL leaves the y axis on the left", {
+  d <- make_faceted()
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish()
+  expect_false(axis_grob_class(p, "axis-l") == "zeroGrob")
+  expect_equal(axis_grob_class(p, "axis-r"), "zeroGrob")
+})
+
+test_that("axis_y = 'right' preserves a user-supplied y scale", {
+  d <- make_faceted()
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ggplot2::scale_y_continuous(limits = c(0, 10)) +
+    ct_finish(axis_y = "right")
+  expect_equal(axis_grob_class(p, "axis-l"), "zeroGrob")
+  expect_equal(
+    ggplot2::ggplot_build(p)$layout$panel_params[[1]]$y$limits,
+    c(0, 10)
+  )
+})
+
+test_that("axis_y rejects an unknown position", {
+  expect_error(ct_finish(axis_y = "top"), "must be")
+})
+
+test_that("end_labels leaves a caller-supplied x scale in place", {
+  d <- make_faceted()
+  expect_silent(
+    p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = series)) +
+      ggplot2::geom_line() +
+      ggplot2::scale_x_continuous(breaks = c(1, 3)) +
+      ct_finish(end_labels = TRUE)
+  )
+  x_scales <- Filter(function(s) "x" %in% s$aesthetics, p$scales$scales)
+  expect_length(x_scales, 1L)
+  expect_equal(x_scales[[1]]$breaks, c(1, 3))
 })

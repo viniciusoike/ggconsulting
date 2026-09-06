@@ -106,6 +106,35 @@ test_that("vdiffr: palette show layout", {
   vdiffr::expect_doppelganger("palette-show-layout", p)
 })
 
+test_that("vdiffr: editorial cream ground layout", {
+  skip_on_cran()
+  d <- ibov_sectors[ibov_sectors$sector_index == "IBOV", ]
+  p <- ggplot2::ggplot(d, ggplot2::aes(date, close)) +
+    ggplot2::geom_line() +
+    ct_theme(palette = "editorial_warm", font = "sans", paper = "cream")
+  vdiffr::expect_doppelganger("editorial-paper-cream-layout", p)
+})
+
+test_that("vdiffr: ct_finish end_labels first_facet layout", {
+  skip_on_cran()
+  # Small multiples in the FT mould: every panel carries the same two
+  # series over the same x range, so one set of labels serves all of them.
+  d <- bu_quarterly[bu_quarterly$business_unit %in% c("Industrial", "Consumer"), ]
+  long <- rbind(
+    data.frame(quarter = d$quarter, bu = d$business_unit,
+               metric = "Revenue", value = d$revenue_brl),
+    data.frame(quarter = d$quarter, bu = d$business_unit,
+               metric = "COGS", value = d$cogs_brl)
+  )
+  p <- ggplot2::ggplot(long, ggplot2::aes(quarter, value, colour = metric)) +
+    ggplot2::geom_line() +
+    ggplot2::facet_wrap(~bu) +
+    ct_finish(end_labels = "first_facet", end_points = TRUE, axis_y = "right") +
+    ct_theme(palette = "strategy_navy", font = "sans") +
+    ggplot2::theme(legend.position = "none")
+  vdiffr::expect_doppelganger("finish-first-facet-layout", p)
+})
+
 # Font baselines (local only) ----
 
 test_that("vdiffr: strategy col font", {

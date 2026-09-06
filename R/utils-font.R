@@ -1,19 +1,43 @@
 # Font utilities ----
 
-#' Test whether a font family is installed
+#' Test whether a font family is available
 #'
-#' Wrapper around [systemfonts::system_fonts()] used to gate font-dependent
-#' code paths and tests.
+#' Used to gate font-dependent code paths and tests, and by `ct_theme()`
+#' to walk its `font_fallback` chain.
 #'
-#' @param name Font family name as it appears in
-#'   `systemfonts::system_fonts()$family`.
-#' @return `TRUE` if `name` matches an installed family, `FALSE` otherwise.
+#' Checks both font tables systemfonts maintains: families installed on
+#' the operating system ([systemfonts::system_fonts()]) *and* families
+#' registered for the current session with
+#' [systemfonts::register_font()] ([systemfonts::registry_fonts()]).
+#' Registered fonts do not appear in the system table, so checking only
+#' that one would silently reject a corporate font a user had registered
+#' from a file rather than installed.
+#'
+#' @param name Font family name, as it appears in the `family` column of
+#'   `systemfonts::system_fonts()` or `systemfonts::registry_fonts()`.
+#' @return `TRUE` if `name` matches an available family, `FALSE`
+#'   otherwise. Vectorised over `name`.
 #' @export
 #' @examples
 #' has_font("Arial")
+#'
+#' # Registered fonts count as available, so a client brand font you
+#' # register from a file can be used by name:
+#' \dontrun{
+#' systemfonts::register_font("ClientSans", plain = "~/fonts/ClientSans.ttf")
+#' has_font("ClientSans")
+#' ct_theme(font = "ClientSans")
+#' }
 has_font <- function(name) {
-  fonts <- systemfonts::system_fonts()
-  name %in% fonts$family
+  name %in% .available_font_families()
+}
+
+# Both tables: OS-installed families and session-registered ones.
+.available_font_families <- function() {
+  unique(c(
+    systemfonts::system_fonts()$family,
+    systemfonts::registry_fonts()$family
+  ))
 }
 
 # Font URL catalog ----
@@ -69,12 +93,25 @@ has_font <- function(name) {
 #' @param quiet Suppress informational messages. Errors are always
 #'   emitted. Defaults to `FALSE`.
 #'
+#' @section Consent:
+#' Installing to the default destination writes font files into your home
+#' directory and downloads roughly 9 MB from the network. Because that is
+#' outside the R session, this function never does it silently: in an
+#' interactive session it asks for confirmation first, and in a
+#' non-interactive one it aborts. To install unattended, either pass an
+#' explicit `dest` or set `options(ggconsulting.font_consent = TRUE)`.
+#' No confirmation is asked when `dest` is supplied, since the caller has
+#' then named the directory themselves.
+#'
 #' @return Invisibly, a character vector of installed file paths.
 #' @export
 #' @examples
 #' \dontrun{
 #' install_consulting_fonts()
 #' install_consulting_fonts("Inter")
+#'
+#' # Unattended, into a directory you choose:
+#' install_consulting_fonts("Inter", dest = tempdir())
 #' }
 install_consulting_fonts <- function(fonts = NULL, dest = NULL, quiet = FALSE) {
   catalog <- .font_urls()
@@ -93,6 +130,7 @@ install_consulting_fonts <- function(fonts = NULL, dest = NULL, quiet = FALSE) {
 
   if (is.null(dest)) {
     dest <- .default_font_dir()
+    .confirm_font_install(dest, fonts)
   }
 
   if (!dir.exists(dest)) {
@@ -169,4 +207,62 @@ install_consulting_fonts <- function(fonts = NULL, dest = NULL, quiet = FALSE) {
     Windows = tempdir(),
     tempdir()
   )
+}
+
+# Install consent ----
+
+# Gate writes to the user's home directory behind explicit consent. Only
+# reached when `dest` was left NULL; a caller-supplied `dest` is consent
+# in itself. Session-scoped tempdirs need no gate.
+.confirm_font_install <- function(dest, fonts) {
+  if (.is_temp_path(dest)) {
+    return(invisible(TRUE))
+  }
+
+  if (isTRUE(getOption("ggconsulting.font_consent", FALSE))) {
+    return(invisible(TRUE))
+  }
+
+  if (!interactive()) {
+    cli::cli_abort(c(
+      "{.fn install_consulting_fonts} would write to {.path {dest}}.",
+      "x" = "Refusing to modify your home directory in a non-interactive session.",
+      "i" = "Pass an explicit {.arg dest}, or set {.code options(ggconsulting.font_consent = TRUE)}."
+    ))
+  }
+
+  cli::cli_inform(c(
+    "!" = "About to download {length(fonts)} font famil{?y/ies} from Google Fonts",
+    " " = "and install {?it/them} into {.path {dest}}.",
+    "i" = "Families: {.val {fonts}}."
+  ))
+  answer <- utils::menu(c("Yes", "No"), title = "Proceed?")
+
+  if (!identical(answer, 1L)) {
+    cli::cli_abort("Font installation cancelled.")
+  }
+
+  invisible(TRUE)
+}
+
+.is_temp_path <- function(path) {
+  # normalizePath() only resolves symlinks for paths that exist, so a
+  # not-yet-created child of tempdir() keeps the unresolved prefix
+  # (/var/... on macOS) while tempdir() itself resolves (/private/var/...).
+  # Compare against both spellings.
+  temps <- unique(c(tempdir(), normalizePath(tempdir(), mustWork = FALSE)))
+  path <- .clean_path(normalizePath(path, mustWork = FALSE))
+
+  for (temp in .clean_path(temps)) {
+    if (identical(path, temp) || startsWith(path, paste0(temp, "/"))) {
+      return(TRUE)
+    }
+  }
+  FALSE
+}
+
+.clean_path <- function(path) {
+  path <- gsub("\\\\", "/", path)
+  path <- gsub("/+", "/", path)
+  sub("/$", "", path)
 }

@@ -129,3 +129,125 @@ test_that("ct_finish(end_labels = TRUE) errors on non-numeric x", {
     "numeric"
   )
 })
+
+# Guard branches ----
+
+test_that(".detect_first_geom() reports NA for a plot with no layers", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v))
+  info <- .detect_first_geom(p)
+  expect_true(is.na(info$type))
+  expect_null(info$layer)
+})
+
+test_that(".detect_first_geom() skips a GeomBlank layer", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v)) +
+    ggplot2::geom_blank() +
+    ggplot2::geom_col()
+  expect_equal(.detect_first_geom(p)$type, "GeomCol")
+})
+
+test_that(".detect_first_geom() reports NA when only GeomBlank is present", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v)) + ggplot2::geom_blank()
+  info <- .detect_first_geom(p)
+  expect_true(is.na(info$type))
+})
+
+test_that("ct_finish() is a no-op on a layerless plot", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v))
+  expect_silent(out <- p + ct_finish(values = TRUE, sort = "desc"))
+  expect_s3_class(out, "ggplot")
+})
+
+test_that("sort is skipped when y is not numeric", {
+  d <- data.frame(g = c("A", "B"), v = c("x", "y"))
+  p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_point() +
+    ct_finish(sort = "desc")
+  expect_false(is.factor(p$data$g))
+})
+
+test_that("sort is skipped when the data frame is empty", {
+  d <- data.frame(g = character(), v = numeric())
+  p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_col() +
+    ct_finish(sort = "desc")
+  expect_equal(nrow(p$data), 0L)
+})
+
+test_that("highlight uses fill for columns and colour for points", {
+  d <- make_d()
+  p_col <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_col() +
+    ct_finish(highlight = "D")
+  expect_true("fill" %in% names(p_col$mapping))
+
+  p_pt <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_point() +
+    ct_finish(highlight = "D")
+  expect_true("colour" %in% names(p_pt$mapping))
+})
+
+test_that("highlight falls back to a default main colour without a ct theme", {
+  p <- ggplot2::ggplot(make_d(), ggplot2::aes(g, v)) +
+    ggplot2::geom_col() +
+    ct_finish(highlight = "D")
+  expect_s3_class(p, "ggplot")
+})
+
+test_that("end_labels aborts on a non-numeric x aesthetic", {
+  d <- data.frame(
+    x = rep(c("Q1", "Q2"), 2),
+    y = c(1, 2, 3, 4),
+    series = rep(c("A", "B"), each = 2)
+  )
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = series)) +
+    ggplot2::geom_line()
+  expect_error(p + ct_finish(end_labels = TRUE), "requires a numeric x aesthetic")
+})
+
+test_that("end_labels is skipped without a grouping aesthetic", {
+  d <- data.frame(x = 1:4, y = c(1, 2, 3, 4))
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish(end_labels = TRUE)
+  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  expect_false(any(has_text))
+})
+
+test_that("auto expansion picks a date scale for Date x on lines", {
+  d <- data.frame(x = as.Date("2026-01-01") + 0:3, y = c(1, 2, 3, 4))
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish()
+  classes <- vapply(p$scales$scales, function(s) class(s)[1], character(1))
+  expect_true("ScaleContinuousDate" %in% classes)
+})
+
+test_that("auto expansion picks a datetime scale for POSIXct x on lines", {
+  d <- data.frame(
+    x = as.POSIXct("2026-01-01 00:00:00", tz = "UTC") + (0:3) * 3600,
+    y = c(1, 2, 3, 4)
+  )
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish()
+  classes <- vapply(p$scales$scales, function(s) class(s)[1], character(1))
+  expect_true("ScaleContinuousDatetime" %in% classes)
+})
+
+test_that("expand = FALSE leaves scales untouched", {
+  d <- make_d()
+  p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+    ggplot2::geom_col() +
+    ct_finish(expand = FALSE)
+  expect_length(p$scales$scales, 0L)
+})
+
+test_that("label_fmt rejects an unknown shortcut and lists the valid ones", {
+  expect_error(ct_finish(label_fmt = "furlongs"), "Unknown")
+  expect_error(ct_finish(label_fmt = "furlongs"), "brl")
+})
+
+test_that("label_fmt rejects input that is neither a shortcut nor a function", {
+  expect_error(ct_finish(label_fmt = 42), "must be")
+})

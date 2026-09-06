@@ -64,3 +64,39 @@ test_that("fmt_month gives en-US abbreviations with locale arg", {
 test_that("fmt_month full gives 'agosto' in pt-BR", {
   expect_equal(fmt_month(format = "full")(as.Date("2026-08-15")), "agosto")
 })
+
+# Locale switch and resolution ----
+
+test_that("ct_locale() returns the previous locale invisibly and round-trips", {
+  withr::local_options(ggconsulting.locale = "pt-BR")
+  old <- expect_invisible(ct_locale("en-US"))
+  expect_equal(old, "pt-BR")
+  expect_equal(.current_locale(), "en-US")
+  ct_locale(old)
+  expect_equal(.current_locale(), "pt-BR")
+})
+
+test_that("ct_locale() rejects an unsupported locale", {
+  expect_error(ct_locale("fr-FR"), "should be one of")
+})
+
+test_that(".current_locale() falls back to pt-BR when the option is unset", {
+  withr::local_options(ggconsulting.locale = NULL)
+  expect_equal(.current_locale(), "pt-BR")
+})
+
+test_that(".locale_data() reads the active locale when passed NULL", {
+  withr::local_options(ggconsulting.locale = "en-US")
+  expect_equal(.locale_data()$decimal_mark, ".")
+})
+
+test_that(".locale_data() aborts on an unknown locale", {
+  expect_error(.locale_data("de-DE"), "Unknown locale")
+  expect_error(.locale_data("de-DE"), "pt-BR")
+})
+
+test_that(".locale_data() aborts when the active option is unknown", {
+  # A bad option value must surface as an error, not silently fall back.
+  withr::local_options(ggconsulting.locale = "xx-XX")
+  expect_error(fmt_number()(1), "Unknown locale")
+})

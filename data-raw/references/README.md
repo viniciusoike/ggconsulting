@@ -51,18 +51,20 @@ area | stacked_bar | other`.
 | Publisher            | Archetype | Notes                                       |
 | -------------------- | --------- | ------------------------------------------- |
 | mckinsey             | strategy  | headline-as-takeaway, no-gridline bars      |
-| fed, bis, imf, ecb   | finance   | print-report serif, dense panels, muted     |
+| fed, bis, imf, ecb   | finance   | dense panels, muted hues, shared legends    |
 | bloomberg            | finance   | counter-direction; see the note below       |
 | ft                   | editorial | cream ground, direct labels, serif wordmark |
 | economist            | editorial | warm-grey ground, red-led palette           |
 | owid                 | editorial | white ground, muted categorical, annotation |
 
-`theme_finance()` ships serif type at report density, which the central-bank
-and multilateral chart packs match. Bloomberg points somewhere else, toward a
-white ground with black as a series colour and one warm accent. `briefs/`
-records both. Sample the institutions for refs that inform the current theme,
-and treat Bloomberg refs as evidence for a screen-finance variant rather than
-for `theme_finance()` as built.
+`theme_finance()` ships serif type at report density. Report density the
+institutional packs match; serif they do not. IMF and BACEN both set their
+exhibits in a humanist sans and reserve serif for body text, so the
+print-report feel comes from density, muted hues, and shared legends rather
+than from the letterform. `briefs/imf.md` records the mismatch. Bloomberg
+points somewhere else again, toward a white ground with black as a series
+colour and one warm accent, so treat Bloomberg refs as evidence for a
+screen-finance variant rather than for `theme_finance()` as built.
 
 ## Coverage status (2026-09)
 
@@ -90,9 +92,10 @@ pointing straight at one. Slope has a single example and dumbbell none.
 Collect against those three before adding volume anywhere else.
 
 The finance refs also settle which institution the archetype should follow.
-IMF is the closest match to `theme_finance()` as built: one legend shared
-across stacked panels, mirrored tick dashes, a muted palette that holds up
-across six series, and no panel fill. BACEN is a close second and validates
+IMF is the closest match to what `theme_finance()` reaches for, with one
+legend shared across stacked panels, mirrored tick dashes, a tinted palette
+that holds up across six series, and no panel fill. `briefs/imf.md` works
+through it in full. BACEN is a close second and validates
 the pt-BR number formatting the package emits. BIS is worth reading for
 structure only, since its grey panel fill and clashing categorical hues do
 not survive contact with the archetype. OECD is the outlier: black bar

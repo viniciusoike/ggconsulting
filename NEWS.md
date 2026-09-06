@@ -26,6 +26,13 @@ consulting decks, so expect breaking changes through the `0.x` series.
   printed pages rather than slides. Defaults to `finance_classic`.
 * `theme_editorial()` — serif preset with an italic subtitle and a larger,
   tighter-leaded title. Defaults to `editorial_warm`.
+* `ct_theme(paper = ...)` sets the figure ground. Pass `"cream"`
+  (Financial Times), `"warm_grey"` (The Economist), `"white"`, or any colour
+  R recognises. Because `theme_minimal()` leaves the panel background blank,
+  filling the plot background alone gives a uniform ground with no
+  panel-versus-plot seam. Setting `paper` also warms the major gridline to
+  match. The archetypes forward it, so `theme_editorial(paper = "cream")`
+  works; cream is opt-in rather than the editorial default.
 
 ## Palettes and scales
 
@@ -71,9 +78,20 @@ consulting decks, so expect breaking changes through the `0.x` series.
   - highlighting of specific x values in the theme's main colour, muting
     the rest with `muted_color` (default `#A8A4A0`, a warm-leaning neutral
     that reads against both cool and warm palettes)
-  - end labels on the last point of each line series (`end_labels = TRUE`)
+  - end labels on the last point of each line series (`end_labels = TRUE`),
+    or only in the first panel of a faceted plot
+    (`end_labels = "first_facet"`), which replaces a legend across small
+    multiples
+  - a filled point at each series' last observation (`end_points = TRUE`)
+  - a right-hand y axis (`axis_y = "right"`), applied through
+    `guide_axis()` so it leaves a `scale_y_*()` call of your own alone
   - geom-aware scale expansion (`expand = "auto"`) — headroom above
     columns, right-side room for line endpoints
+
+  `end_labels` now accepts `Date` and `POSIXct` x aesthetics, which it
+  previously rejected. Auto expansion no longer adds a second x scale over
+  the one end labels set, and neither replaces an x scale supplied by the
+  caller.
 
 ## Geom wrappers and defaults
 

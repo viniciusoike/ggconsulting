@@ -6,14 +6,14 @@ Requires ggplot2 >= 4.0.0 and R >= 4.1. The theme layer is built on ggplot2 4.x 
 
 ## Architecture
 
-- **Theme builder**: `ct_theme()` (R/ct-theme.R) composes `theme_minimal()` + `theme_sub_*()` helpers + `element_geom(ink = ...)` for `from_theme()` linkage. Three archetype presets: `theme_strategy()`, `theme_finance()`, `theme_editorial()`.
+- **Theme builder**: `ct_theme()` (R/ct-theme.R) composes `theme_minimal()` + `theme_sub_*()` helpers + `element_geom(ink = ...)` for `from_theme()` linkage. Three archetype presets: `theme_strategy()`, `theme_finance()`, `theme_editorial()`. `paper` sets the figure ground (`"cream"`, `"warm_grey"`, `"white"`, or any colour) and derives a matching gridline; the archetypes forward it through `...`.
 - **Geom defaults**: `ct_set_defaults()` / `ct_unset_defaults()` (R/ct-defaults.R) use `update_geom_defaults()` only. Originals captured once in `.ct_env`. Auto-applied on attach via `.onAttach()` in R/zzz.R.
 - **Geom wrappers**: `ct_col()`, `ct_line()`, `ct_point()` (R/ct-wrappers.R) — thin pass-throughs with consulting defaults baked in as formals.
 - **Palettes**: 11 named palettes in `.ct_palettes` (R/palettes.R). Palette families: strategy (5), finance (3), editorial (3). Each palette is 6 hex colours; index 1 = main colour. `ct_palette()` is the accessor (no args = list names); `ct_palette_show()` (R/ct-palette-show.R) renders swatches.
 - **Scales**: Discrete + continuous colour/fill scales (R/scales.R). Discrete interpolates with a warning when data > palette size.
 - **Formatters**: Factory functions returning `function(x) character` (R/format-helpers.R). `fmt_number()`, `fmt_brl()`, `fmt_currency()`, `fmt_pct()`, `fmt_delta()`, `fmt_month()`. All locale-aware via `ct_locale()`.
 - **Locale**: Two built-in locales: `"pt-BR"` (default), `"en-US"` (R/locale.R). Ships own month tables — does not touch `Sys.setlocale()`.
-- **Polish layer**: `ct_finish()` (R/ct-finish.R) — S3 `ggplot_add()` dispatch. Data-aware: value labels, sort, highlight, end labels, scale expansion.
+- **Polish layer**: `ct_finish()` (R/ct-finish.R) — S3 `ggplot_add()` dispatch. Data-aware: value labels, sort, highlight, end labels (`TRUE` or `"first_facet"`), end points, y-axis position, scale expansion.
 - **Fonts**: `has_font()` and `install_consulting_fonts()` (R/utils-font.R). `has_font()` checks both `systemfonts::system_fonts()` and `registry_fonts()`, so session-registered client fonts count. The installer downloads from Google Fonts and gates writes to the home directory behind consent.
 - **Datasets**: 6 bundled datasets (R/data.R, data-raw/): `bu_quarterly`, `market_share`, `client_nps`, `ebitda_bridge`, `ibov_sectors`, `br_macro`.
 
@@ -34,6 +34,10 @@ Requires ggplot2 >= 4.0.0 and R >= 4.1. The theme layer is built on ggplot2 4.x 
 - `ct_theme()` stashes `ct_palette` and `ct_main_color` as attributes on the returned theme. `+ theme()` preserves them, so the archetype presets keep them after their follow-on `theme()` call.
 - `ct_finish(highlight = ...)` reads `attr(plot$theme, "ct_main_color")` at `ggplot_add()` time, so it is order-dependent: add the theme *before* `ct_finish()`, or highlights fall back to the hardcoded `#1F4E79`.
 - `ct_col()`'s `width` is in x-axis units. On a Date axis that is 0.8 days — convert x to a factor or index for bar charts.
+- Axis position is a scale/guide property in ggplot2, not a theme one, so `axis_y` lives on `ct_finish()` (via `guide_axis()`), not `ct_theme()`. Unlike `highlight`, it does not care whether the theme is added first.
+- `ct_finish()` adds an x scale for `end_labels` and another for `expand = "auto"`. Both defer to an x scale the caller supplied, and to each other — handing a Date axis to `scale_x_continuous()` builds without complaint but renders raw day numbers instead of dates, so `.x_expansion_scale()` picks the constructor by x type.
+- `end_labels = "first_facet"` reads facet levels from the full plot data, not from the computed end rows. Series commonly all terminate in the same panel, which would otherwise pin the labels to that panel rather than the first.
+- Direct end labels do not suppress the legend; add `theme(legend.position = "none")` when using them as a legend replacement.
 
 ## Development
 

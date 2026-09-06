@@ -67,22 +67,34 @@ for `theme_finance()` as built.
 ## Coverage status (2026-09)
 
 Counted by publisher, editorial is saturated at roughly 50 refs while strategy
-holds 12 and finance 3. Counted by chart type the gap is worse, and it lands
-where it hurts most.
+holds 12 and finance 25. Counted by chart type the gap has narrowed
+everywhere except where the planned constructors need it.
 
 | Chart type  | strategy | finance | editorial |
 | ----------- | -------- | ------- | --------- |
-| line        | 2        | 2       | 20        |
-| bar         | 1        | 0       | 8         |
-| stacked_bar | 2        | 1       | 2         |
-| area        | 0        | 0       | 8         |
-| other       | 4        | 0       | 9         |
-| scatter     | 1        | 0       | 2         |
+| line        | 2        | 8       | 20        |
+| bar         | 1        | 2       | 8         |
+| stacked_bar | 2        | 3       | 2         |
+| area        | 0        | 1       | 8         |
+| other       | 4        | 7       | 9         |
+| scatter     | 1        | 4       | 2         |
 | slope       | 0        | 0       | 1         |
 | waterfall   | 2        | 0       | 0         |
 | dumbbell    | 0        | 0       | 0         |
 
 Waterfall, slope, and dumbbell are the three constructions `ctplot` will ship
-as `ct_waterfall()`, `ct_slope()`, and `ct_dumbbell()`. Waterfall now has two
-variants, a left-to-right import bridge and a descending two-anchor bridge.
-Slope has one example and dumbbell none, so keep breaking ties toward those.
+as `ct_waterfall()`, `ct_slope()`, and `ct_dumbbell()`. Waterfall has two
+strategy variants, a left-to-right running bridge and a descending two-anchor
+bridge, but none in finance despite the bundled `ebitda_bridge` dataset
+pointing straight at one. Slope has a single example and dumbbell none.
+Collect against those three before adding volume anywhere else.
+
+The finance refs also settle which institution the archetype should follow.
+IMF is the closest match to `theme_finance()` as built: one legend shared
+across stacked panels, mirrored tick dashes, a muted palette that holds up
+across six series, and no panel fill. BACEN is a close second and validates
+the pt-BR number formatting the package emits. BIS is worth reading for
+structure only, since its grey panel fill and clashing categorical hues do
+not survive contact with the archetype. OECD is the outlier: black bar
+outlines, a headline colour outside the chart palette, and a palette that
+changes between panels of the same figure.

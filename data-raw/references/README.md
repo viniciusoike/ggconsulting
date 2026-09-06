@@ -37,24 +37,49 @@ area | stacked_bar | other`.
    `<publisher>-<chart_type>[-qualifier].png`. Crop to the chart region
    (page furniture like nav bars out; the chart's own title/caption/source
    block stays in — it is part of the design being studied).
-2. Add a `catalog.csv` row. `source_url` is optional — fill it when you have
-   it, don't reconstruct it after the fact.
+2. Add a `catalog.csv` row in the same step, while the page is still open.
+   `source_url` is required for new rows. Three of the first 57 rows carry
+   one, and the rest cannot be recovered, which is the whole argument for
+   filling it at collection time rather than after.
 3. When a publisher accumulates enough examples, write or update its brief in
    `briefs/`. Briefs, not per-image annotations, are where synthesis happens;
    reserve deep-dive YAML (see `strategy/`) for individual charts that earn it.
 
 ## Publisher → archetype mapping
 
-| Publisher   | Archetype  | Notes                                        |
-| ----------- | ---------- | -------------------------------------------- |
-| mckinsey    | strategy   | headline-as-takeaway, no-gridline bars       |
-| bloomberg   | finance    | terminal-adjacent: white, black, orange      |
-| ft          | editorial  | cream ground, direct labels, serif wordmark  |
-| economist   | editorial  | warm-grey ground, red-led palette            |
-| owid        | editorial  | white ground, muted categorical, annotation  |
+| Publisher            | Archetype | Notes                                       |
+| -------------------- | --------- | ------------------------------------------- |
+| mckinsey             | strategy  | headline-as-takeaway, no-gridline bars      |
+| fed, bis, imf, ecb   | finance   | print-report serif, dense panels, muted     |
+| bloomberg            | finance   | counter-direction; see the note below       |
+| ft                   | editorial | cream ground, direct labels, serif wordmark |
+| economist            | editorial | warm-grey ground, red-led palette           |
+| owid                 | editorial | white ground, muted categorical, annotation |
 
-## Coverage status (2026-07)
+`theme_finance()` ships serif type at report density, which the central-bank
+and multilateral chart packs match. Bloomberg points somewhere else, toward a
+white ground with black as a series colour and one warm accent. `briefs/`
+records both. Sample the institutions for refs that inform the current theme,
+and treat Bloomberg refs as evidence for a screen-finance variant rather than
+for `theme_finance()` as built.
 
-- editorial: ~50 refs (FT-heavy) — saturated
-- strategy: 3 (mckinsey) — needs ~9 more; use `prompts/references-research.md`
-- finance: 3 (bloomberg) — needs more; same route
+## Coverage status (2026-09)
+
+Counted by publisher, editorial is saturated at roughly 50 refs while strategy
+and finance sit at 3 each. Counted by chart type, the gap is worse and lands
+where it hurts most.
+
+| Chart type  | strategy | finance | editorial |
+| ----------- | -------- | ------- | --------- |
+| line        | 1        | 2       | 20        |
+| bar         | 1        | 0       | 8         |
+| stacked_bar | 1        | 1       | 2         |
+| area        | 0        | 0       | 8         |
+| scatter     | 0        | 0       | 2         |
+| slope       | 0        | 0       | 1         |
+| waterfall   | 0        | 0       | 0         |
+| dumbbell    | 0        | 0       | 0         |
+
+Waterfall, slope, and dumbbell are the three constructions `ctplot` will ship
+as `ct_waterfall()`, `ct_slope()`, and `ct_dumbbell()`. The corpus holds one
+example among them, so their defaults currently rest on nothing.

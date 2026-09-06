@@ -1,21 +1,23 @@
-# =============================================================================
-# TEMPLATE — not a real reference, do NOT count toward archetype targets.
-# Copy this file alongside a real ref-NNN-<slug>.png and fill it in.
-# Delete or keep as canonical schema example; the leading underscore keeps it
-# sorted to the top of the folder listing.
-# =============================================================================
+# TEMPLATE — not a real reference, do not count it toward archetype targets.
+#
+# Deep-dive schema, reserved for a chart that earns individual annotation.
+# Most references need only a catalog.csv row plus a line in the publisher
+# brief; see README.md, which is the authority on layout and posture when
+# this file disagrees with it.
+#
+# Copy alongside the PNG it describes and fill it in.
 
 id: ref-XXX
 archetype: strategy             # strategy | finance | editorial
 
 source:
   url: https://example.com/report-page
-  publisher: "Public report — large strategy consultancy"   # generic; never name firms
+  publisher: "mckinsey"          # name the publisher; facts about a style are not copyrightable
   date_accessed: 2026-05-27
 
 chart:
   type: waterfall               # bar | line | waterfall | slope | dumbbell | scatter | area | stacked_bar | other
-  title_observed: "Generic description; do NOT copy verbatim from the source"
+  title_observed: "Paraphrase the headline; never copy it verbatim"
   aspect_ratio: "16:9"          # or 4:3 | square | custom
 
 colors:
@@ -24,7 +26,7 @@ colors:
   - "#F18F01"
 
 font:
-  observed: "geometric sans, condensed, weights 400 and 700"
+  observed: "geometric sans, condensed, weights 400 and 700"   # describe letterforms; do not assert a proprietary name
   approximated_free_equivalent: "Inter or Source Sans 3"
 
 typography:
@@ -43,7 +45,7 @@ annotation_style:
   callouts: "small arrow + text box pointing to one bar"
   source_note: "bottom-left, small, gray"
 
-image_path: strategy/ref-XXX-<slug>.png
+image_path: general/<publisher>-<chart_type>[-qualifier].png
 
 notes: |
   Free-text observations. Anything distinctive about this chart that informs

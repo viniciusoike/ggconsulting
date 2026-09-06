@@ -7,8 +7,8 @@ frequency.
 The WEO exhibits are the most internally consistent set in the whole reference
 corpus. Four hues, one legend policy, one panel construction, repeated across
 ten figures with no drift. That consistency is the finding, and it makes the
-IMF the best template available for `theme_finance()`. It also contradicts
-three things `theme_finance()` currently does.
+IMF the best template available for `theme_finance()`. Reading it closely also
+overturned three of that theme's original choices.
 
 ## Ground
 
@@ -97,22 +97,32 @@ exhibits are the reference here.
 - Residual categories are folded into a named component and disclosed in the
   note, never left unlabelled.
 
-## Where `theme_finance()` diverges
+## Where `theme_finance()` diverged
 
-Three of the theme's current choices contradict the reference it is meant to
-follow. BACEN, which the coverage notes rank second for this archetype, sides
-with the IMF on all three.
+Three of the theme's original choices contradicted the reference it was meant
+to follow. BACEN, which the coverage notes rank second for this archetype,
+sided with the IMF on all three, and the theme now follows them.
 
-| `theme_finance()` today | IMF exhibits |
-| ----------------------- | ------------ |
-| `Source Serif 4`, serif fallback chain | humanist sans |
-| `plot.title` forced to `face = "plain"` | bold title, in the lead series blue |
-| `panel.grid.major.y` at `#EEEEEE` | no gridlines; mirrored tick dashes |
+| `theme_finance()` before | IMF exhibits | Resolution |
+| ------------------------ | ------------ | ---------- |
+| `Source Serif 4`, serif fallback | humanist sans | `Source Sans 3`, sans fallback |
+| title forced to `face = "plain"` | bold, in the lead series blue | inherits bold; colour left neutral |
+| `panel.grid.major.y` at `#EEEEEE` | no gridlines, mirrored tick dashes | gridlines off, y ticks on |
 
 The serif assumption looks like it came from the *report body*, which is indeed
 serif. The charts inside it are not. Reading the exhibits alone, the
 print-report look comes from density, muted hues, and shared legends, not from
 the letterform.
+
+Title colour stayed neutral because the two references disagree. The IMF sets
+figure titles in its lead series blue; BACEN sets them in black. One publisher
+is not enough to move a default, so `main_color` and a follow-on `theme()` call
+remain the way to get the blue.
+
+The mirrored dashes became `ct_finish(mirror_y = TRUE)` rather than a theme
+setting, because a secondary axis is a guide in ggplot2, not a theme element.
+It is opt-in for the same reason the title colour is: BACEN drops gridlines
+without mirroring anything.
 
 `finance_classic` is also a different kind of object than the IMF palette. It
 ramps one navy from `#1A2B3D` to `#A8BAC9` and adds a brick accent, which suits
@@ -128,11 +138,10 @@ where the navy ramp would muddy them.
   than by interpolating between existing colours, which is what
   `scale_colour_ct()` does when the data outruns the palette. Tinting keeps hue
   identity; interpolation invents in-between hues that name nothing.
-- Reconsider the serif default, or at least document that it follows report
-  body text rather than institutional chart practice.
 - Reserve black for totals and aggregates in the finance archetype, and keep it
   out of the categorical scales.
-- Backlog: a mirrored-tick axis option as a gridline alternative; a
-  forecast-shading helper taking a start value and drawing the block behind the
-  layers; a range-bar geom covering the thick-bar-with-markers construction,
-  which likely shares an implementation with `ct_dumbbell()`.
+- Backlog: a forecast-shading helper taking a start value and drawing the block
+  behind the layers; a range-bar geom covering the thick-bar-with-markers
+  construction, which likely shares an implementation with `ct_dumbbell()`.
+
+Done: the sans default, the bold title, the bare panel, and `mirror_y`.

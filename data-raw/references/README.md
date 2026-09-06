@@ -57,11 +57,11 @@ area | stacked_bar | other`.
 | economist            | editorial | warm-grey ground, red-led palette           |
 | owid                 | editorial | white ground, muted categorical, annotation |
 
-`theme_finance()` ships serif type at report density. Report density the
-institutional packs match; serif they do not. IMF and BACEN both set their
-exhibits in a humanist sans and reserve serif for body text, so the
-print-report feel comes from density, muted hues, and shared legends rather
-than from the letterform. `briefs/imf.md` records the mismatch. Bloomberg
+`theme_finance()` now ships a humanist sans at report density, following the
+institutional packs. IMF and BACEN both set their exhibits in sans and reserve
+serif for body text, so the print-report feel comes from density, muted hues,
+and shared legends rather than from the letterform. `briefs/imf.md` works
+through the evidence and what changed. Bloomberg
 points somewhere else again, toward a white ground with black as a series
 colour and one warm accent, so treat Bloomberg refs as evidence for a
 screen-finance variant rather than for `theme_finance()` as built.

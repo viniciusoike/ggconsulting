@@ -12,3 +12,5 @@
 ^\.github$
 ^CLAUDE\.md$
 ^\.Rprofile$
+^Rplots\.pdf$
+^\.playwright-mcp$

@@ -13,7 +13,7 @@ Requires ggplot2 >= 4.0.0 and R >= 4.1. The theme layer is built on ggplot2 4.x 
 - **Scales**: Discrete + continuous colour/fill scales (R/scales.R). Discrete interpolates with a warning when data > palette size.
 - **Formatters**: Factory functions returning `function(x) character` (R/format-helpers.R). `fmt_number()`, `fmt_brl()`, `fmt_currency()`, `fmt_pct()`, `fmt_delta()`, `fmt_month()`. All locale-aware via `ct_locale()`.
 - **Locale**: Two built-in locales: `"pt-BR"` (default), `"en-US"` (R/locale.R). Ships own month tables — does not touch `Sys.setlocale()`.
-- **Polish layer**: `ct_finish()` (R/ct-finish.R) — S3 `ggplot_add()` dispatch. Data-aware: value labels, sort, highlight, end labels (`TRUE` or `"first_facet"`), end points, y-axis position, scale expansion.
+- **Polish layer**: `ct_finish()` (R/ct-finish.R) — S3 `ggplot_add()` dispatch. Data-aware: value labels, sort, highlight, end labels (`TRUE` or `"first_facet"`), end points, y-axis position, mirrored y ticks, scale expansion.
 - **Fonts**: `has_font()` and `install_consulting_fonts()` (R/utils-font.R). `has_font()` checks both `systemfonts::system_fonts()` and `registry_fonts()`, so session-registered client fonts count. The installer downloads from Google Fonts and gates writes to the home directory behind consent.
 - **Datasets**: 6 bundled datasets (R/data.R, data-raw/): `bu_quarterly`, `market_share`, `client_nps`, `ebitda_bridge`, `ibov_sectors`, `br_macro`.
 

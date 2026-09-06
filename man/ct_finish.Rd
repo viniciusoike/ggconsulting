@@ -12,6 +12,7 @@ ct_finish(
   end_labels = FALSE,
   end_points = FALSE,
   axis_y = NULL,
+  mirror_y = FALSE,
   expand = "auto",
   muted_color = "#A8A4A0"
 )
@@ -45,6 +46,12 @@ each series' last observation, under the end label.}
 leaves it where the scale puts it. Applied through
 \code{\link[ggplot2:guide_axis]{ggplot2::guide_axis()}}, so it does not disturb a \verb{scale_y_*()} call
 of your own.}
+
+\item{mirror_y}{When \code{TRUE}, repeats the y-axis ticks on the opposite
+edge without labels, so the eye can track a level across a wide
+panel. Pairs with a gridline-free theme such as \code{\link[=theme_finance]{theme_finance()}}.
+Applied through \code{\link[ggplot2:guides]{ggplot2::guides()}}, so it leaves a \verb{scale_y_*()}
+call of your own alone.}
 
 \item{expand}{\code{"auto"} picks geom-aware scale expansion
 (room above column tops, right-side room for line end labels);

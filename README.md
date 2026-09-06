@@ -88,8 +88,8 @@ the labels need.
 
 - `theme_strategy()` keeps a minimal frame, generous whitespace, and a
   navy default.
-- `theme_finance()` sets a serif face and tightens spacing for printed
-  pages and pitch books.
+- `theme_finance()` tightens spacing for printed pages and pitch books,
+  drops the gridlines, and puts ticks on the y axis in their place.
 - `theme_editorial()` sets a serif face with an italic subtitle and a
   warmer palette.
 
@@ -125,8 +125,8 @@ the editorial default.
 `ct_finish()` reads the built plot and applies the finishing moves you
 would otherwise make by hand. It can sort a categorical axis by value,
 highlight chosen categories against a muted rest, print value labels,
-label line endpoints, move the y axis to the right, and expand the
-scales to suit the geom.
+label line endpoints, move the y axis to the right, repeat the y ticks
+on the opposite edge, and expand the scales to suit the geom.
 
 ``` r
 share_2024 <- subset(players, year == 2024)

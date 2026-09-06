@@ -48,7 +48,9 @@ of your own.}
 
 \item{expand}{\code{"auto"} picks geom-aware scale expansion
 (room above column tops, right-side room for line end labels);
-\code{FALSE} disables.}
+\code{FALSE} disables. Auto expansion defers to a positional scale you
+supplied yourself, so a \code{scale_y_continuous(labels = )} keeps its
+labels; set the expansion in that call when you need both.}
 
 \item{muted_color}{Fill / colour used for non-highlighted categories.}
 }

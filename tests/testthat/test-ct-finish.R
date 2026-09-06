@@ -460,3 +460,35 @@ test_that("end_labels leaves a caller-supplied x scale in place", {
   expect_length(x_scales, 1L)
   expect_equal(x_scales[[1]]$breaks, c(1, 3))
 })
+
+test_that("expand = 'auto' leaves a caller-supplied y scale in place", {
+  d <- data.frame(g = c("a", "b", "c"), v = c(3, 5, 2))
+  expect_silent(
+    p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+      ggplot2::geom_col() +
+      ggplot2::scale_y_continuous(labels = function(x) paste0(x, "%")) +
+      ct_finish(expand = "auto")
+  )
+  y_scales <- Filter(function(s) "y" %in% s$aesthetics, p$scales$scales)
+  expect_length(y_scales, 1L)
+  expect_equal(y_scales[[1]]$labels(c(1, 2)), c("1%", "2%"))
+})
+
+test_that("expand = 'auto' leaves a caller-supplied x scale in place on lines", {
+  d <- data.frame(
+    x = as.Date("2024-01-01") + c(0, 31, 60),
+    y = c(1, 2, 3)
+  )
+  expect_silent(
+    p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+      ggplot2::geom_line() +
+      ggplot2::scale_x_date(date_labels = "%b") +
+      ct_finish(expand = "auto")
+  )
+  x_scales <- Filter(function(s) "x" %in% s$aesthetics, p$scales$scales)
+  expect_length(x_scales, 1L)
+  expect_equal(
+    x_scales[[1]]$get_labels(as.Date(c("2024-01-01", "2024-03-01"))),
+    c("Jan", "Mar")
+  )
+})

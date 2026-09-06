@@ -14,3 +14,6 @@ consultr_plan_v2.html
 
 # Design reference images: local-only, never published (see data-raw/references/README.md)
 data-raw/references/**/*.png
+
+# Device detritus from running tests outside a graphics session
+tests/testthat/Rplots.pdf

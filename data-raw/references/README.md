@@ -22,7 +22,7 @@ plus text syntheses that turn them into actionable theme decisions.
 ```
 data-raw/references/
 ├── catalog.csv        # one row per image: filename, publisher, archetype,
-│                      #   chart_type, source_url (optional), one_line_note
+│                      #   chart_type, source_url, one_line_note
 ├── briefs/            # per-publisher style syntheses (the main deliverable)
 ├── general/           # bulk screenshot corpus, named <publisher>-<chart>.png
 └── strategy/          # early refs with deep-dive YAML annotations
@@ -66,20 +66,22 @@ for `theme_finance()` as built.
 ## Coverage status (2026-09)
 
 Counted by publisher, editorial is saturated at roughly 50 refs while strategy
-and finance sit at 3 each. Counted by chart type, the gap is worse and lands
+holds 8 and finance 3. Counted by chart type the gap is worse, and it lands
 where it hurts most.
 
 | Chart type  | strategy | finance | editorial |
 | ----------- | -------- | ------- | --------- |
-| line        | 1        | 2       | 20        |
+| line        | 2        | 2       | 20        |
 | bar         | 1        | 0       | 8         |
-| stacked_bar | 1        | 1       | 2         |
+| stacked_bar | 2        | 1       | 2         |
 | area        | 0        | 0       | 8         |
+| other       | 2        | 0       | 9         |
 | scatter     | 0        | 0       | 2         |
 | slope       | 0        | 0       | 1         |
-| waterfall   | 0        | 0       | 0         |
+| waterfall   | 1        | 0       | 0         |
 | dumbbell    | 0        | 0       | 0         |
 
 Waterfall, slope, and dumbbell are the three constructions `ctplot` will ship
-as `ct_waterfall()`, `ct_slope()`, and `ct_dumbbell()`. The corpus holds one
-example among them, so their defaults currently rest on nothing.
+as `ct_waterfall()`, `ct_slope()`, and `ct_dumbbell()`. Between them the corpus
+holds one waterfall and one slope, and no dumbbell at all, so keep breaking
+ties toward those three.

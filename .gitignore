@@ -17,3 +17,6 @@ data-raw/references/**/*.png
 
 # Device detritus from running tests outside a graphics session
 tests/testthat/Rplots.pdf
+
+# Playwright MCP session output (snapshots, console logs, scratch screenshots)
+.playwright-mcp/

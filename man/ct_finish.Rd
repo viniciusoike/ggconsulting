@@ -10,6 +10,8 @@ ct_finish(
   label_fmt = NULL,
   highlight = NULL,
   end_labels = FALSE,
+  end_points = FALSE,
+  axis_y = NULL,
   expand = "auto",
   muted_color = "#A8A4A0"
 )
@@ -30,8 +32,19 @@ numeric vector to a character vector), or one of the shortcut names
 bars use the active palette's main colour; non-matching bars use
 \code{muted_color}. Inserted as a \verb{scale_*_manual()}.}
 
-\item{end_labels}{For line plots: when \code{TRUE}, label the last point of
-each series with the group identifier.}
+\item{end_labels}{For line plots: \code{TRUE} labels the last point of each
+series with the group identifier. \code{"first_facet"} draws those labels
+only in the first panel, which replaces a legend across small
+multiples; on an unfaceted plot it behaves like \code{TRUE}. The x
+aesthetic may be numeric, \code{Date}, or \code{POSIXct}.}
+
+\item{end_points}{For line plots: when \code{TRUE}, draw a filled point at
+each series' last observation, under the end label.}
+
+\item{axis_y}{Moves the y axis. \code{"right"} or \code{"left"}; \code{NULL} (default)
+leaves it where the scale puts it. Applied through
+\code{\link[ggplot2:guide_axis]{ggplot2::guide_axis()}}, so it does not disturb a \verb{scale_y_*()} call
+of your own.}
 
 \item{expand}{\code{"auto"} picks geom-aware scale expansion
 (room above column tops, right-side room for line end labels);

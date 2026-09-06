@@ -33,9 +33,24 @@ IBM Plex Sans) are downloaded as variable \code{.ttf} files containing all
 weights (Light through Bold and beyond). Lato is downloaded as four
 static \code{.ttf} files (Regular, Bold, Italic, Light).
 }
+\section{Consent}{
+
+Installing to the default destination writes font files into your home
+directory and downloads roughly 9 MB from the network. Because that is
+outside the R session, this function never does it silently: in an
+interactive session it asks for confirmation first, and in a
+non-interactive one it aborts. To install unattended, either pass an
+explicit \code{dest} or set \code{options(ggconsulting.font_consent = TRUE)}.
+No confirmation is asked when \code{dest} is supplied, since the caller has
+then named the directory themselves.
+}
+
 \examples{
 \dontrun{
 install_consulting_fonts()
 install_consulting_fonts("Inter")
+
+# Unattended, into a directory you choose:
+install_consulting_fonts("Inter", dest = tempdir())
 }
 }

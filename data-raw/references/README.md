@@ -25,7 +25,8 @@ data-raw/references/
 │                      #   chart_type, source_url, one_line_note
 ├── briefs/            # per-publisher style syntheses (the main deliverable)
 ├── general/           # bulk screenshot corpus, named <publisher>-<chart>.png
-└── strategy/          # early refs with deep-dive YAML annotations
+├── strategy/          # early refs with deep-dive YAML annotations
+└── finance/           # central-bank and multilateral chart packs
 ```
 
 `chart_type` values: `bar | line | waterfall | slope | dumbbell | scatter |
@@ -66,7 +67,7 @@ for `theme_finance()` as built.
 ## Coverage status (2026-09)
 
 Counted by publisher, editorial is saturated at roughly 50 refs while strategy
-holds 8 and finance 3. Counted by chart type the gap is worse, and it lands
+holds 12 and finance 3. Counted by chart type the gap is worse, and it lands
 where it hurts most.
 
 | Chart type  | strategy | finance | editorial |
@@ -75,13 +76,13 @@ where it hurts most.
 | bar         | 1        | 0       | 8         |
 | stacked_bar | 2        | 1       | 2         |
 | area        | 0        | 0       | 8         |
-| other       | 2        | 0       | 9         |
-| scatter     | 0        | 0       | 2         |
+| other       | 4        | 0       | 9         |
+| scatter     | 1        | 0       | 2         |
 | slope       | 0        | 0       | 1         |
-| waterfall   | 1        | 0       | 0         |
+| waterfall   | 2        | 0       | 0         |
 | dumbbell    | 0        | 0       | 0         |
 
 Waterfall, slope, and dumbbell are the three constructions `ctplot` will ship
-as `ct_waterfall()`, `ct_slope()`, and `ct_dumbbell()`. Between them the corpus
-holds one waterfall and one slope, and no dumbbell at all, so keep breaking
-ties toward those three.
+as `ct_waterfall()`, `ct_slope()`, and `ct_dumbbell()`. Waterfall now has two
+variants, a left-to-right import bridge and a descending two-anchor bridge.
+Slope has one example and dumbbell none, so keep breaking ties toward those.

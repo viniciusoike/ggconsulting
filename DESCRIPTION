@@ -1,7 +1,7 @@
 Package: ggconsulting
 Type: Package
 Title: Executive-Grade Themes and Helpers for 'ggplot2'
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person(
       "Vinicius", "Reginatto",
@@ -16,16 +16,19 @@ License: MIT + file LICENSE
 URL: https://github.com/viniciusoike/ggconsulting, https://viniciusoike.github.io/ggconsulting/
 BugReports: https://github.com/viniciusoike/ggconsulting/issues
 Depends:
-    R (>= 3.5)
+    R (>= 4.1)
 Encoding: UTF-8
 LazyData: true
 Imports:
     cli,
-    ggplot2,
+    ggplot2 (>= 4.0.0),
+    grDevices,
     lifecycle,
     rlang,
     scales,
-    systemfonts
+    stats,
+    systemfonts (>= 1.0.0),
+    utils
 Suggests:
     testthat (>= 3.0.0),
     vdiffr,

@@ -12,6 +12,7 @@ An opinionated 'ggplot2' extension for executive-grade consulting output. Ships 
 Useful links:
 \itemize{
   \item \url{https://github.com/viniciusoike/ggconsulting}
+  \item \url{https://viniciusoike.github.io/ggconsulting/}
   \item Report bugs at \url{https://github.com/viniciusoike/ggconsulting/issues}
 }
 

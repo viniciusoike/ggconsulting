@@ -1,96 +1,115 @@
-# ggconsulting 0.0.0.9000
+# ggconsulting 0.1.0
 
-## Foundation (prompt 01)
+First public release. ggconsulting is an opinionated ggplot2 extension for
+executive-grade consulting output: archetype themes, palettes, scales,
+locale-aware label helpers, and a data-aware polish layer.
 
-* `ct_theme()` builder composed via `theme_sub_*()` helpers and routed
-  through `element_geom()` so `from_theme()`-aware geoms inherit the
-  palette's main colour (`ink`) and a default linewidth.
-* `theme_strategy()` archetype as a preset path.
-* Five starter palettes: `strategy_navy`, `strategy_emerald`,
-  `strategy_crimson`, `strategy_azure`, `strategy_slate`.
-* `ct_col()` / `ct_line()` / `ct_point()` mechanical wrappers for
-  explicit-override use at the call site.
-* `ct_set_defaults()` / `ct_unset_defaults()` for true aesthetic
-  defaults (currently `geom_point` `size = 2.5`), autoloaded on
-  library attach with an opt-out option.
-* `has_font()` internal helper.
+The package is experimental. The public API is being shaped against real
+consulting decks, so expect breaking changes through the `0.x` series.
 
-## CI (prompt 02)
+## Requirements
 
-* `R-CMD-check` workflow across macOS, Windows, Ubuntu (R release) and
-  Ubuntu (R devel).
-* `test-coverage` workflow via covr + Codecov v4.
-* README badges: R-CMD-check status, Codecov coverage, License: MIT.
+* Requires ggplot2 >= 4.0.0 and R >= 4.1. The themes are built on ggplot2
+  4.x API — `theme_sub_*()` helpers, `element_geom()`, and `from_theme()`
+  linkage — and will not work on ggplot2 3.x.
 
-## Scales and palette preview (prompt 03)
+## Themes
 
-* `scale_color_ct()` / `scale_fill_ct()` — discrete scales backed by
-  ggconsulting palettes; interpolate and emit a `cli::cli_warn()` when
-  `n` exceeds the palette size.
-* `scale_color_ct_c()` / `scale_fill_ct_c()` — continuous variants via
-  `ggplot2::scale_color_gradientn()` / `scale_fill_gradientn()`.
+* `ct_theme()` composes a theme from `palette`, `font`, `font_fallback`,
+  `density`, and `context` arguments. The palette's main colour is routed
+  through `element_geom(ink = ...)`, so `from_theme()`-aware geoms pick it
+  up without an explicit `scale_color_*()` call.
+* `theme_strategy()` — minimal, generous whitespace, navy default.
+* `theme_finance()` — serif preset (Source Serif 4 → Georgia → Times New
+  Roman → serif) with a regular-weight title, lighter major gridlines, and
+  denser defaults (`density = "tight"`, `context = "report"`) tuned for
+  printed pages rather than slides. Defaults to `finance_classic`.
+* `theme_editorial()` — serif preset with an italic subtitle and a larger,
+  tighter-leaded title. Defaults to `editorial_warm`.
+
+## Palettes and scales
+
+* Eleven palettes of six colours each, in three families: five strategy
+  (`strategy_navy`, `strategy_emerald`, `strategy_crimson`,
+  `strategy_azure`, `strategy_slate`), three finance (`finance_classic`,
+  `finance_steel`, `finance_burgundy`), and three editorial
+  (`editorial_warm`, `editorial_clay`, `editorial_oxide`).
+* `ct_palette()` returns a palette's colours, subsets to `n`, or —
+  called with no arguments — lists every available palette name.
+* `scale_color_ct()` / `scale_fill_ct()` — discrete scales. When the data
+  needs more levels than the palette holds, colours are interpolated and a
+  warning points at the continuous scales instead.
+* `scale_color_ct_c()` / `scale_fill_ct_c()` — continuous variants, with
+  `direction = -1` to reverse.
 * British-spelling aliases: `scale_colour_ct()`, `scale_colour_ct_c()`.
-* `ct_palette_show()` — swatch preview for a single palette, a custom
-  hex vector, or every shipped palette faceted.
+* `ct_palette_show()` — swatch preview for one palette, a custom hex
+  vector, or every shipped palette faceted.
 
-## Finance and editorial archetypes (prompt 04)
+## Locale and formatters
 
-* `theme_finance()` — serif preset (Source Serif 4 → Georgia →
-  Times New Roman → serif) with regular-weight title, a lighter
-  major gridline, and denser defaults (`density = "tight"`,
-  `context = "report"`) tuned for printed pages over slides.
-  Defaults to the `finance_classic` palette.
-* `theme_editorial()` — serif preset with an italic subtitle and
-  slightly larger, tighter-leaded title. Defaults to the
-  `editorial_warm` palette.
-* `ct_theme()` gained a `font_fallback` argument; `.resolve_font()`
-  now recognises `"sans"`, `"serif"`, and `"mono"` as guaranteed
-  terminal fallbacks.
-* Six new palettes: `finance_classic`, `finance_steel`,
-  `finance_burgundy`, `editorial_warm`, `editorial_clay`,
-  `editorial_oxide`. The catalog is now 11 palettes (5 strategy + 3
-  finance + 3 editorial).
-
-## Locale and formatters (prompt 05)
-
-* `ct_locale("pt-BR" | "en-US")` — session-scoped locale switch
-  stored in `options(ggconsulting.locale)`. Does *not* touch
-  `Sys.setlocale()`; portable across Windows / Linux / macOS CI.
-* `fmt_number()` — locale-aware number formatter (`1.234,5` /
-  `1,234.5`).
-* `fmt_brl()` — Brazilian Real formatter; always renders as `R$`
-  with a non-breaking space, regardless of active locale.
-  Supports `style = "accounting"` for parens-wrapped negatives.
+* `ct_locale("pt-BR" | "en-US")` — session-scoped locale switch stored in
+  `options(ggconsulting.locale)`. It does *not* touch `Sys.setlocale()`;
+  the package ships its own month tables and formatting marks, so output
+  is identical across Windows, Linux, and macOS.
+* `fmt_number()` — locale-aware numbers (`1.234,5` / `1,234.5`).
+* `fmt_brl()` — Brazilian Real, always `R$` with a non-breaking space
+  regardless of the active locale. `style = "accounting"` wraps negatives
+  in parentheses.
 * `fmt_currency()` — uses the active locale's currency symbol.
-* `fmt_pct()` — fraction-to-percent (`0.5` → `"50%"`).
-* `fmt_delta()` — always-signed percentage-point-style deltas
-  (`+1,2pp` / `-0,3pp` / `0,0pp`).
-* `fmt_month()` — `Date` / `POSIXct` → localised month string;
-  ships its own pt-BR and en-US month tables (no `LC_TIME` reliance).
+* `fmt_pct()` — fraction to percent (`0.5` → `"50%"`).
+* `fmt_delta()` — always-signed percentage-point deltas (`+1,2pp`).
+* `fmt_month()` — `Date` / `POSIXct` to a localised month string.
 
-## Data-aware polish (prompt 06)
+## Data-aware polish
 
-* `ct_finish()` — companion to `ct_theme()` that runs *after* the geom
-  layer is built (via an `ggplot_add()` S3 method) and can:
-  - inject value labels above bars / next to points
-    (`values = TRUE` or `"auto"`)
-  - reorder a categorical x by y (`sort = "asc" | "desc"`)
-  - format labels via shortcut names (`label_fmt = "brl" | "number" |
-    "pct" | "delta"`) or a user-supplied function
-  - highlight specific x values with the theme's main colour and mute
-    the rest with `muted_color` (default `#A8A4A0`, a warm-leaning
-    neutral that reads under both cool and warm palettes)
-  - label the last point of each line series (`end_labels = TRUE`)
-  - geom-aware scale expansion (`expand = "auto"`) — y room above
+* `ct_finish()` runs after the geom layer is built, via a `ggplot_add()`
+  S3 method, and inspects the plot to apply:
+  - value labels above bars or beside points (`values = TRUE`)
+  - reordering of a categorical x by y (`sort = "asc" | "desc"`)
+  - label formatting by shortcut (`label_fmt = "brl" | "number" | "pct" |
+    "delta"`) or a user-supplied function
+  - highlighting of specific x values in the theme's main colour, muting
+    the rest with `muted_color` (default `#A8A4A0`, a warm-leaning neutral
+    that reads against both cool and warm palettes)
+  - end labels on the last point of each line series (`end_labels = TRUE`)
+  - geom-aware scale expansion (`expand = "auto"`) — headroom above
     columns, right-side room for line endpoints
 
-## Visual gallery (prompt 07)
+## Geom wrappers and defaults
 
-* `inst/gallery/` ships a small portfolio of example scripts for visual
-  QA of themes, palettes, geoms, and formatters. Each file groups
-  related plots into a single `library(...) + assignments + print`
-  source-it-and-eyeball workflow. Files: `lines.R`, `columns.R`,
-  `columns-finished.R`, `facets.R`, `points.R`, `themes.R`, `palettes.R`,
-  `formatters.R`. Reachable post-install via
-  `system.file("gallery", package = "ggconsulting")` — intended as the
-  data source for a future Shiny gallery app.
+* `ct_col()`, `ct_line()`, `ct_point()` — thin wrappers over the
+  corresponding ggplot2 geoms with consulting defaults as formals, for
+  overriding at the call site.
+* `ct_set_defaults()` / `ct_unset_defaults()` apply and cleanly revert
+  package-wide aesthetic defaults via `update_geom_defaults()`. Applied on
+  attach; opt out with `options(ggconsulting.autoload = FALSE)`.
+
+## Fonts
+
+* `install_consulting_fonts()` downloads the five archetype font families
+  from Google Fonts (Inter, Source Sans 3, Lato, Source Serif 4, IBM Plex
+  Sans — all OFL or Apache-2.0) and installs them into a
+  platform-appropriate user font directory.
+
+  Because that writes outside the R session, it asks for confirmation
+  first when run interactively and refuses to run otherwise. Pass an
+  explicit `dest`, or set `options(ggconsulting.font_consent = TRUE)`, to
+  install unattended.
+* `has_font()` reports whether a family is available, checking both fonts
+  installed on the operating system and fonts registered for the session
+  with `systemfonts::register_font()`. This matters for client brand
+  fonts, which are commonly registered from a file rather than installed:
+  `ct_theme(font = "ClientSans")` now honours a registered `ClientSans`
+  instead of falling through to the `font_fallback` chain.
+
+## Data
+
+* Six bundled datasets for examples and tests: `bu_quarterly`,
+  `market_share`, `client_nps`, `ebitda_bridge`, `ibov_sectors`, and
+  `br_macro`.
+
+## Development
+
+* `inst/gallery/` ships example scripts for visual QA of themes, palettes,
+  geoms, and formatters. Available post-install via
+  `system.file("gallery", package = "ggconsulting")`.

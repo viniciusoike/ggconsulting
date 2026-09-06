@@ -28,6 +28,13 @@
 #'   to the palette's first colour. Title colour is a fixed neutral
 #'   near-black (`#1A1A1A`); override with a follow-on `theme()` call
 #'   if you want it palette-tinted.
+#' @param paper Figure ground colour. `NULL` (default) leaves
+#'   [ggplot2::theme_minimal()]'s white background untouched. Otherwise one
+#'   of the shortcuts `"cream"`, `"warm_grey"`, `"white"`, or any colour
+#'   [grDevices::col2rgb()] accepts. Because `theme_minimal()` leaves the
+#'   panel background blank, filling the plot background alone gives a
+#'   uniform ground with no panel-versus-plot seam. Setting `paper` also
+#'   warms the major gridline to match it.
 #'
 #' @return A [ggplot2::theme()] object.
 #' @export
@@ -43,7 +50,8 @@ ct_theme <- function(
   density = c("normal", "tight", "loose"),
   context = c("presentation", "report", "screen"),
   base_size = NULL,
-  main_color = NULL
+  main_color = NULL,
+  paper = NULL
 ) {
   density <- match.arg(density)
   context <- match.arg(context)
@@ -51,6 +59,7 @@ ct_theme <- function(
   pal_vec <- .resolve_palette(palette)
   resolved_font <- .resolve_font(font, font_fallback)
   resolved_main <- if (is.null(main_color)) pal_vec[1] else main_color
+  resolved_paper <- .resolve_paper(paper)
   size <- if (is.null(base_size)) .context_base_size(context) else base_size
   margins <- .context_margins(context)
   density_bits <- .density_bits(density)
@@ -67,7 +76,10 @@ ct_theme <- function(
     ) +
     ggplot2::theme_sub_panel(
       grid.minor = ggplot2::element_blank(),
-      grid.major.y = ggplot2::element_line(colour = "#E5E5E5", linewidth = 0.3),
+      grid.major.y = ggplot2::element_line(
+        colour = .grid_color(resolved_paper),
+        linewidth = 0.3
+      ),
       grid.major.x = ggplot2::element_blank(),
       spacing = density_bits$panel_spacing
     ) +
@@ -108,9 +120,68 @@ ct_theme <- function(
       justification = "left"
     )
 
+  if (!is.null(resolved_paper)) {
+    built <- built +
+      ggplot2::theme_sub_plot(
+        background = ggplot2::element_rect(fill = resolved_paper, colour = NA)
+      )
+  }
+
   attr(built, "ct_palette") <- pal_vec
   attr(built, "ct_main_color") <- resolved_main
   built
+}
+
+# Ground colour ----
+
+# Named grounds sampled from the reference briefs: cream is the FT page
+# ground, warm_grey the Economist figure ground.
+.ct_papers <- c(
+  cream     = "#FFF1E5",
+  warm_grey = "#F0EFEB",
+  white     = "#FFFFFF"
+)
+
+.resolve_paper <- function(paper, call = rlang::caller_env()) {
+  if (is.null(paper)) {
+    return(NULL)
+  }
+  if (!is.character(paper) || length(paper) != 1L) {
+    cli::cli_abort(
+      "{.arg paper} must be a single colour or shortcut name, not {.obj_type_friendly {paper}}.",
+      call = call
+    )
+  }
+  if (paper %in% names(.ct_papers)) {
+    return(unname(.ct_papers[[paper]]))
+  }
+  ok <- tryCatch(
+    {
+      grDevices::col2rgb(paper)
+      TRUE
+    },
+    error = function(e) FALSE
+  )
+  if (!ok) {
+    cli::cli_abort(c(
+      "{.arg paper} {.val {paper}} is not a colour R recognises.",
+      "i" = "Use a hex string, an {.fn colors} name, or one of {.val {names(.ct_papers)}}."
+    ), call = call)
+  }
+  paper
+}
+
+# Gridlines are derived from the ground so a warm paper gets a warm
+# hairline. The 0.12 blend puts cream in the range sampled from FT charts;
+# on white it lands within a shade of the untinted default.
+.grid_color <- function(paper) {
+  if (is.null(paper)) {
+    return("#E5E5E5")
+  }
+  grDevices::rgb(
+    grDevices::colorRamp(c(paper, "#1A1A1A"))(0.12),
+    maxColorValue = 255
+  )
 }
 
 # Internal helpers ----

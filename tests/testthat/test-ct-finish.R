@@ -460,3 +460,78 @@ test_that("end_labels leaves a caller-supplied x scale in place", {
   expect_length(x_scales, 1L)
   expect_equal(x_scales[[1]]$breaks, c(1, 3))
 })
+
+test_that("expand = 'auto' leaves a caller-supplied y scale in place", {
+  d <- data.frame(g = c("a", "b", "c"), v = c(3, 5, 2))
+  expect_silent(
+    p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
+      ggplot2::geom_col() +
+      ggplot2::scale_y_continuous(labels = function(x) paste0(x, "%")) +
+      ct_finish(expand = "auto")
+  )
+  y_scales <- Filter(function(s) "y" %in% s$aesthetics, p$scales$scales)
+  expect_length(y_scales, 1L)
+  expect_equal(y_scales[[1]]$labels(c(1, 2)), c("1%", "2%"))
+})
+
+test_that("expand = 'auto' leaves a caller-supplied x scale in place on lines", {
+  d <- data.frame(
+    x = as.Date("2024-01-01") + c(0, 31, 60),
+    y = c(1, 2, 3)
+  )
+  expect_silent(
+    p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+      ggplot2::geom_line() +
+      ggplot2::scale_x_date(date_labels = "%b") +
+      ct_finish(expand = "auto")
+  )
+  x_scales <- Filter(function(s) "x" %in% s$aesthetics, p$scales$scales)
+  expect_length(x_scales, 1L)
+  expect_equal(
+    x_scales[[1]]$get_labels(as.Date(c("2024-01-01", "2024-03-01"))),
+    c("Jan", "Mar")
+  )
+})
+
+# mirror_y ----
+
+test_that("mirror_y draws a second y axis and leaves the primary labelled", {
+  d <- data.frame(x = 1:5, y = c(2, 4, 3, 6, 5))
+  base <- ggplot2::ggplot(d, ggplot2::aes(x, y)) + ggplot2::geom_line()
+
+  right_axis <- function(p) {
+    g <- ggplot2::ggplotGrob(p)
+    g$grobs[[which(g$layout$name == "axis-r")]]
+  }
+
+  expect_s3_class(right_axis(base + ct_finish()), "zeroGrob")
+  expect_false(inherits(right_axis(base + ct_finish(mirror_y = TRUE)), "zeroGrob"))
+
+  g <- ggplot2::ggplotGrob(base + ct_finish(mirror_y = TRUE))
+  expect_false(
+    inherits(g$grobs[[which(g$layout$name == "axis-l")]], "zeroGrob")
+  )
+})
+
+test_that("mirror_y leaves a caller-supplied y scale in place", {
+  d <- data.frame(x = 1:5, y = c(2, 4, 3, 6, 5))
+  expect_silent(
+    p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+      ggplot2::geom_line() +
+      ggplot2::scale_y_continuous(labels = function(x) paste0(x, "%")) +
+      ct_finish(mirror_y = TRUE)
+  )
+  y_scales <- Filter(function(s) "y" %in% s$aesthetics, p$scales$scales)
+  expect_length(y_scales, 1L)
+  expect_equal(y_scales[[1]]$labels(c(1, 2)), c("1%", "2%"))
+})
+
+test_that("mirror_y composes with axis_y = 'right'", {
+  d <- data.frame(x = 1:5, y = c(2, 4, 3, 6, 5))
+  p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
+    ggplot2::geom_line() +
+    ct_finish(mirror_y = TRUE, axis_y = "right")
+  g <- ggplot2::ggplotGrob(p)
+  expect_false(inherits(g$grobs[[which(g$layout$name == "axis-l")]], "zeroGrob"))
+  expect_false(inherits(g$grobs[[which(g$layout$name == "axis-r")]], "zeroGrob"))
+})

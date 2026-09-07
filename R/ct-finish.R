@@ -32,9 +32,16 @@
 #'   leaves it where the scale puts it. Applied through
 #'   [ggplot2::guide_axis()], so it does not disturb a `scale_y_*()` call
 #'   of your own.
+#' @param mirror_y When `TRUE`, repeats the y-axis ticks on the opposite
+#'   edge without labels, so the eye can track a level across a wide
+#'   panel. Pairs with a gridline-free theme such as [theme_finance()].
+#'   Applied through [ggplot2::guides()], so it leaves a `scale_y_*()`
+#'   call of your own alone.
 #' @param expand `"auto"` picks geom-aware scale expansion
 #'   (room above column tops, right-side room for line end labels);
-#'   `FALSE` disables.
+#'   `FALSE` disables. Auto expansion defers to a positional scale you
+#'   supplied yourself, so a `scale_y_continuous(labels = )` keeps its
+#'   labels; set the expansion in that call when you need both.
 #' @param muted_color Fill / colour used for non-highlighted categories.
 #'
 #' @return A `ct_finish` object, added to a plot via `+`. The
@@ -54,6 +61,7 @@ ct_finish <- function(values     = FALSE,
                       end_labels = FALSE,
                       end_points = FALSE,
                       axis_y     = NULL,
+                      mirror_y   = FALSE,
                       expand     = "auto",
                       muted_color = "#A8A4A0") {
   if (!is.null(sort) && !sort %in% c("asc", "desc")) {
@@ -82,6 +90,7 @@ ct_finish <- function(values     = FALSE,
       end_labels  = end_labels,
       end_points  = isTRUE(end_points),
       axis_y      = axis_y,
+      mirror_y    = isTRUE(mirror_y),
       expand      = expand,
       muted_color = muted_color
     ),
@@ -130,6 +139,21 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
   if (!is.null(object$axis_y)) {
     plot <- plot +
       ggplot2::guides(y = ggplot2::guide_axis(position = object$axis_y))
+  }
+
+  # The secondary guide always lands opposite the primary, so blanking both
+  # sides here keeps this side-agnostic under axis_y. The theme is scoped to
+  # this guide, so the labelled primary axis keeps its text.
+  if (isTRUE(object$mirror_y)) {
+    plot <- plot +
+      ggplot2::guides(
+        y.sec = ggplot2::guide_axis(
+          theme = ggplot2::theme(
+            axis.text.y.left  = ggplot2::element_blank(),
+            axis.text.y.right = ggplot2::element_blank()
+          )
+        )
+      )
   }
 
   plot
@@ -304,17 +328,24 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
   plot + .x_expansion_scale(x_col, mult = c(0, 0.12))
 }
 
-# Positional x types end labels can measure and nudge along. Date and
-# POSIXct are numeric underneath, so range() and which.max() work; only
-# discrete x is genuinely unsupported.
-.has_x_scale <- function(plot) {
+# Auto expansion adds a positional scale, which would replace one the
+# caller supplied and silently drop their breaks, limits, and labels.
+# Every branch that adds a scale checks here first.
+.has_scale <- function(plot, aes) {
   any(vapply(
     plot$scales$scales,
-    function(s) "x" %in% s$aesthetics,
+    function(s) aes %in% s$aesthetics,
     logical(1)
   ))
 }
 
+.has_x_scale <- function(plot) {
+  .has_scale(plot, "x")
+}
+
+# Positional x types end labels can measure and nudge along. Date and
+# POSIXct are numeric underneath, so range() and which.max() work; only
+# discrete x is genuinely unsupported.
 .is_positional_x <- function(x) {
   is.numeric(x) || inherits(x, "Date") || inherits(x, "POSIXt")
 }
@@ -370,9 +401,12 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
     return(plot)
   }
   if (geom_info$type %in% c("GeomCol", "GeomBar")) {
+    if (.has_scale(plot, "y")) {
+      return(plot)
+    }
     return(plot + ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.15))))
   }
-  if (isTRUE(skip_x)) {
+  if (isTRUE(skip_x) || .has_scale(plot, "x")) {
     return(plot)
   }
   if (geom_info$type %in% c("GeomLine", "GeomPath") && !is.null(geom_info$layer)) {

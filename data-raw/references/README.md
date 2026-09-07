@@ -22,10 +22,11 @@ plus text syntheses that turn them into actionable theme decisions.
 ```
 data-raw/references/
 ├── catalog.csv        # one row per image: filename, publisher, archetype,
-│                      #   chart_type, source_url (optional), one_line_note
+│                      #   chart_type, source_url, one_line_note
 ├── briefs/            # per-publisher style syntheses (the main deliverable)
 ├── general/           # bulk screenshot corpus, named <publisher>-<chart>.png
-└── strategy/          # early refs with deep-dive YAML annotations
+├── strategy/          # early refs with deep-dive YAML annotations
+└── finance/           # central-bank and multilateral chart packs
 ```
 
 `chart_type` values: `bar | line | waterfall | slope | dumbbell | scatter |
@@ -37,24 +38,66 @@ area | stacked_bar | other`.
    `<publisher>-<chart_type>[-qualifier].png`. Crop to the chart region
    (page furniture like nav bars out; the chart's own title/caption/source
    block stays in — it is part of the design being studied).
-2. Add a `catalog.csv` row. `source_url` is optional — fill it when you have
-   it, don't reconstruct it after the fact.
+2. Add a `catalog.csv` row in the same step, while the page is still open.
+   `source_url` is required for new rows. Three of the first 57 rows carry
+   one, and the rest cannot be recovered, which is the whole argument for
+   filling it at collection time rather than after.
 3. When a publisher accumulates enough examples, write or update its brief in
    `briefs/`. Briefs, not per-image annotations, are where synthesis happens;
    reserve deep-dive YAML (see `strategy/`) for individual charts that earn it.
 
 ## Publisher → archetype mapping
 
-| Publisher   | Archetype  | Notes                                        |
-| ----------- | ---------- | -------------------------------------------- |
-| mckinsey    | strategy   | headline-as-takeaway, no-gridline bars       |
-| bloomberg   | finance    | terminal-adjacent: white, black, orange      |
-| ft          | editorial  | cream ground, direct labels, serif wordmark  |
-| economist   | editorial  | warm-grey ground, red-led palette            |
-| owid        | editorial  | white ground, muted categorical, annotation  |
+| Publisher            | Archetype | Notes                                       |
+| -------------------- | --------- | ------------------------------------------- |
+| mckinsey             | strategy  | headline-as-takeaway, no-gridline bars      |
+| fed, bis, imf, ecb   | finance   | dense panels, muted hues, shared legends    |
+| bloomberg            | finance   | counter-direction; see the note below       |
+| ft                   | editorial | cream ground, direct labels, serif wordmark |
+| economist            | editorial | warm-grey ground, red-led palette           |
+| owid                 | editorial | white ground, muted categorical, annotation |
 
-## Coverage status (2026-07)
+`theme_finance()` now ships a humanist sans at report density, following the
+institutional packs. IMF and BACEN both set their exhibits in sans and reserve
+serif for body text, so the print-report feel comes from density, muted hues,
+and shared legends rather than from the letterform. `briefs/imf.md` works
+through the evidence and what changed. Bloomberg
+points somewhere else again, toward a white ground with black as a series
+colour and one warm accent, so treat Bloomberg refs as evidence for a
+screen-finance variant rather than for `theme_finance()` as built.
 
-- editorial: ~50 refs (FT-heavy) — saturated
-- strategy: 3 (mckinsey) — needs ~9 more; use `prompts/references-research.md`
-- finance: 3 (bloomberg) — needs more; same route
+## Coverage status (2026-09)
+
+Counted by publisher, editorial is saturated at roughly 50 refs while strategy
+holds 12 and finance 25. Counted by chart type the gap has narrowed
+everywhere except where the planned constructors need it.
+
+| Chart type  | strategy | finance | editorial |
+| ----------- | -------- | ------- | --------- |
+| line        | 2        | 8       | 20        |
+| bar         | 1        | 2       | 8         |
+| stacked_bar | 2        | 3       | 2         |
+| area        | 0        | 1       | 8         |
+| other       | 4        | 7       | 9         |
+| scatter     | 1        | 4       | 2         |
+| slope       | 0        | 0       | 1         |
+| waterfall   | 2        | 0       | 0         |
+| dumbbell    | 0        | 0       | 0         |
+
+Waterfall, slope, and dumbbell are the three constructions `ctplot` will ship
+as `ct_waterfall()`, `ct_slope()`, and `ct_dumbbell()`. Waterfall has two
+strategy variants, a left-to-right running bridge and a descending two-anchor
+bridge, but none in finance despite the bundled `ebitda_bridge` dataset
+pointing straight at one. Slope has a single example and dumbbell none.
+Collect against those three before adding volume anywhere else.
+
+The finance refs also settle which institution the archetype should follow.
+IMF is the closest match to what `theme_finance()` reaches for, with one
+legend shared across stacked panels, mirrored tick dashes, a tinted palette
+that holds up across six series, and no panel fill. `briefs/imf.md` works
+through it in full. BACEN is a close second and validates
+the pt-BR number formatting the package emits. BIS is worth reading for
+structure only, since its grey panel fill and clashing categorical hues do
+not survive contact with the archetype. OECD is the outlier: black bar
+outlines, a headline colour outside the chart palette, and a palette that
+changes between panels of the same figure.

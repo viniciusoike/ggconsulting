@@ -25,10 +25,10 @@ test_that("theme_finance honors a main_color override", {
   expect_equal(th$geom$ink, "#222222")
 })
 
-test_that("theme_finance resolves to Source Serif 4 if installed", {
-  skip_if_not(has_font("Source Serif 4"), "Source Serif 4 not installed")
+test_that("theme_finance resolves to Source Sans 3 if installed", {
+  skip_if_not(has_font("Source Sans 3"), "Source Sans 3 not installed")
   th <- theme_finance()
-  expect_equal(th$text$family, "Source Serif 4")
+  expect_equal(th$text$family, "Source Sans 3")
 })
 
 test_that("theme_editorial resolves to Source Serif 4 if installed", {
@@ -37,8 +37,8 @@ test_that("theme_editorial resolves to Source Serif 4 if installed", {
   expect_equal(th$text$family, "Source Serif 4")
 })
 
-test_that("theme_finance falls back to a generic serif when nothing installed", {
-  # If none of the serif fallbacks are installed, .resolve_font should still
+test_that("theme_finance falls back to a usable family when nothing installed", {
+  # If none of the sans fallbacks are installed, .resolve_font should still
   # return a usable family name (one of "sans"/"serif"/"mono" or whatever
   # the tail of the fallback chain is).
   th <- theme_finance()
@@ -48,9 +48,18 @@ test_that("theme_finance falls back to a generic serif when nothing installed", 
 
 # Distinctives ----
 
-test_that("theme_finance sets a plain-weight title (no bold)", {
+# The institutional exhibits the archetype follows set bold figure titles;
+# an earlier revision forced plain on the assumption that finance reports
+# avoid bold, which the reference corpus does not bear out.
+test_that("theme_finance keeps the bold title inherited from ct_theme", {
   th <- theme_finance()
-  expect_equal(th$plot.title$face, "plain")
+  expect_equal(th$plot.title$face, "bold")
+})
+
+test_that("theme_finance uses a humanist sans, not a serif", {
+  th <- theme_finance()
+  expect_false(identical(th$text$family, "Source Serif 4"))
+  expect_false(identical(th$text$family, "serif"))
 })
 
 test_that("theme_editorial sets an italic subtitle", {
@@ -58,7 +67,14 @@ test_that("theme_editorial sets an italic subtitle", {
   expect_equal(th$plot.subtitle$face, "italic")
 })
 
-test_that("theme_finance uses a lighter major gridline than theme_strategy", {
-  expect_equal(theme_finance()$panel.grid.major.y$colour,  "#EEEEEE")
+test_that("theme_finance drops gridlines while theme_strategy keeps a y line", {
+  th <- theme_finance()
+  expect_s3_class(th$panel.grid.major.y, "element_blank")
+  expect_s3_class(th$panel.grid.major.x, "element_blank")
   expect_equal(theme_strategy()$panel.grid.major.y$colour, "#E5E5E5")
+})
+
+test_that("theme_finance draws y-axis ticks to replace the gridlines", {
+  th <- theme_finance()
+  expect_s3_class(th$axis.ticks.y, "element_line")
 })

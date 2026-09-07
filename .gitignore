@@ -13,4 +13,16 @@ prompts/
 consultr_plan_v2.html
 
 # Design reference images: local-only, never published (see data-raw/references/README.md)
+# The image directories are ignored whole, not just by extension, so a
+# non-PNG screenshot or a symlink into another worktree cannot be staged
+# by accident. Only catalog.csv, briefs/, and the strategy YAML are tracked.
 data-raw/references/**/*.png
+data-raw/references/finance
+data-raw/references/general
+
+# Device detritus from running tests outside a graphics session
+tests/testthat/Rplots.pdf
+
+# Playwright MCP session output (snapshots, console logs, scratch screenshots)
+.playwright-mcp/
+Rplots.pdf

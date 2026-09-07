@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.git$
 ^\.positai$
 ^\.claude$
 ^README\.Rmd$
@@ -12,3 +13,5 @@
 ^\.github$
 ^CLAUDE\.md$
 ^\.Rprofile$
+^Rplots\.pdf$
+^\.playwright-mcp$

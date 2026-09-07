@@ -88,8 +88,12 @@ has_font <- function(name) {
 #'   Source Serif 4, IBM Plex Sans. Validated against the known catalog.
 #' @param dest Destination directory. `NULL` (default) uses a
 #'   platform-appropriate user font directory: `~/Library/Fonts` on
-#'   macOS, `~/.local/share/fonts` on Linux, or a session tempdir on
-#'   Windows (with [systemfonts::register_font()] for the active session).
+#'   macOS, `~/.local/share/fonts` on Linux, or
+#'   `~/AppData/Local/Microsoft/Windows/Fonts` on Windows. On Windows
+#'   the fonts are also registered for the current R session with
+#'   [systemfonts::register_font()], because files in the per-user
+#'   folder are not visible to other applications until they are
+#'   installed (right-click > Install).
 #' @param quiet Suppress informational messages. Errors are always
 #'   emitted. Defaults to `FALSE`.
 #'
@@ -188,10 +192,17 @@ install_consulting_fonts <- function(fonts = NULL, dest = NULL, quiet = FALSE) {
       ))
     }
     if (is_windows) {
-      cli::cli_inform(c(
-        "!" = "Windows: fonts registered for this R session only.",
-        "i" = "To install permanently, copy files from {.path {dest}} to your system Fonts folder."
-      ))
+      if (!.is_temp_path(dest)) {
+        cli::cli_inform(c(
+          "!" = "Windows: font files installed to {.path {dest}} and registered for this R session.",
+          "i" = "To make them available to other apps, install the files from that folder."
+        ))
+      } else {
+        cli::cli_inform(c(
+          "!" = "Windows: fonts registered for this R session only.",
+          "i" = "To install permanently, copy files from {.path {dest}} to your user Fonts folder."
+        ))
+      }
     }
   }
 
@@ -204,7 +215,11 @@ install_consulting_fonts <- function(fonts = NULL, dest = NULL, quiet = FALSE) {
   switch(sys,
     Darwin  = path.expand("~/Library/Fonts"),
     Linux   = path.expand("~/.local/share/fonts"),
-    Windows = tempdir(),
+    # Per-user font directory (Windows 10 1809+). Files written here
+    # persist across sessions; session registration still happens in
+    # the installer, since Windows does not index this folder until
+    # the files are installed (right-click > Install).
+    Windows = path.expand("~/AppData/Local/Microsoft/Windows/Fonts"),
     tempdir()
   )
 }

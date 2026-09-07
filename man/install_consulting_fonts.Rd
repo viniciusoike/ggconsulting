@@ -13,8 +13,12 @@ Source Serif 4, IBM Plex Sans. Validated against the known catalog.}
 
 \item{dest}{Destination directory. \code{NULL} (default) uses a
 platform-appropriate user font directory: \verb{~/Library/Fonts} on
-macOS, \verb{~/.local/share/fonts} on Linux, or a session tempdir on
-Windows (with \code{\link[systemfonts:register_font]{systemfonts::register_font()}} for the active session).}
+macOS, \verb{~/.local/share/fonts} on Linux, or
+\verb{~/AppData/Local/Microsoft/Windows/Fonts} on Windows. On Windows
+the fonts are also registered for the current R session with
+\code{\link[systemfonts:register_font]{systemfonts::register_font()}}, because files in the per-user
+folder are not visible to other applications until they are
+installed (right-click > Install).}
 
 \item{quiet}{Suppress informational messages. Errors are always
 emitted. Defaults to \code{FALSE}.}

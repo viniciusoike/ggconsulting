@@ -1,0 +1,48 @@
+# Annual market share for a fictional sector
+
+Simulated annual market share for six players (five named + Others) over
+ten years (2015 through 2024). Shares sum to 1 within each year. Story
+arc: incumbent erodes, challenger gains. Designed for slope and
+bump-chart demos.
+
+## Usage
+
+``` r
+market_share
+```
+
+## Format
+
+A data frame with 60 rows and 3 columns:
+
+- year:
+
+  Calendar year (integer).
+
+- company:
+
+  Factor with 6 levels: Player A, Player B, Player C, Player D, Player
+  E, Others.
+
+- share:
+
+  Market share, fraction in \[0, 1\] (numeric).
+
+## Source
+
+Simulated. See `data-raw/market_share.R`.
+
+## Examples
+
+``` r
+head(market_share)
+#> # A tibble: 6 × 3
+#>    year company   share
+#>   <int> <fct>     <dbl>
+#> 1  2015 Player A 0.335 
+#> 2  2015 Player B 0.216 
+#> 3  2015 Player C 0.0773
+#> 4  2015 Player D 0.0989
+#> 5  2015 Player E 0.0658
+#> 6  2015 Others   0.207 
+```

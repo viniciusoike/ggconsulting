@@ -1,0 +1,53 @@
+# FY23 to FY24 EBITDA bridge
+
+Eight-row ordered breakdown decomposing the year-over-year EBITDA change
+for the fictional conglomerate behind
+[bu_quarterly](https://viniciusoike.github.io/ggconsulting/reference/bu_quarterly.md)
+into volume, price, cost, mix, FX, and one-off effects. The first and
+last rows are absolute levels; the six intermediate rows are signed
+deltas that reconcile the endpoints. Designed for waterfall charts.
+
+## Usage
+
+``` r
+ebitda_bridge
+```
+
+## Format
+
+A data frame with 8 rows and 3 columns:
+
+- component:
+
+  Ordered factor naming the bridge step.
+
+- value_brl:
+
+  R\$ MM (numeric). Absolute level for endpoint rows; signed delta for
+  intermediate rows.
+
+- type:
+
+  Factor with 3 levels: `"total"` for endpoint rows, `"increase"` or
+  `"decrease"` for deltas.
+
+## Source
+
+Simulated. See `data-raw/ebitda_bridge.R`.
+
+## Examples
+
+``` r
+ebitda_bridge
+#> # A tibble: 8 × 3
+#>   component      value_brl type    
+#>   <ord>              <dbl> <fct>   
+#> 1 FY23 EBITDA          540 total   
+#> 2 Volume                85 increase
+#> 3 Price                120 increase
+#> 4 Cost inflation       -95 decrease
+#> 5 Mix                   25 increase
+#> 6 FX                   -30 decrease
+#> 7 One-offs             -45 decrease
+#> 8 FY24 EBITDA          600 total   
+```

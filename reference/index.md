@@ -25,6 +25,8 @@ palettes, plus a swatch preview helper.
   [`scale_colour_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
   [`scale_fill_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
   **\[experimental\]** : Consulting colour and fill scales
+- [`ct_palette()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette.md)
+  **\[experimental\]** : Get palette colours
 - [`ct_palette_show()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette_show.md)
   : Preview ggconsulting palettes as a swatch
 
@@ -75,3 +77,30 @@ with an opt-out path.
 - [`ct_set_defaults()`](https://viniciusoike.github.io/ggconsulting/reference/ct_defaults.md)
   [`ct_unset_defaults()`](https://viniciusoike.github.io/ggconsulting/reference/ct_defaults.md)
   : Set or restore ggconsulting aesthetic defaults
+
+## Fonts
+
+Font installation helper and availability check.
+
+- [`install_consulting_fonts()`](https://viniciusoike.github.io/ggconsulting/reference/install_consulting_fonts.md)
+  : Install consulting fonts from Google Fonts
+- [`has_font()`](https://viniciusoike.github.io/ggconsulting/reference/has_font.md)
+  : Test whether a font family is available
+
+## Example data
+
+Bundled datasets for demonstrating the package’s themes, scales,
+formatters, and data-aware finishing helpers.
+
+- [`bu_quarterly`](https://viniciusoike.github.io/ggconsulting/reference/bu_quarterly.md)
+  : Quarterly P&L for a fictional Brazilian conglomerate
+- [`market_share`](https://viniciusoike.github.io/ggconsulting/reference/market_share.md)
+  : Annual market share for a fictional sector
+- [`client_nps`](https://viniciusoike.github.io/ggconsulting/reference/client_nps.md)
+  : Quarterly NPS by client segment
+- [`ebitda_bridge`](https://viniciusoike.github.io/ggconsulting/reference/ebitda_bridge.md)
+  : FY23 to FY24 EBITDA bridge
+- [`ibov_sectors`](https://viniciusoike.github.io/ggconsulting/reference/ibov_sectors.md)
+  : Monthly B3 sector indices
+- [`br_macro`](https://viniciusoike.github.io/ggconsulting/reference/br_macro.md)
+  : Brazilian macroeconomic indicators (monthly)

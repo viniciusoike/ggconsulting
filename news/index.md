@@ -1,121 +1,176 @@
 # Changelog
 
-## ggconsulting (development version)
+## ggconsulting 0.1.0
 
-### Foundation (prompt 01)
+First public release. ggconsulting is an opinionated ggplot2 extension
+for executive-grade consulting output: archetype themes, palettes,
+scales, locale-aware label helpers, and a data-aware polish layer.
+
+The package is experimental. The public API is being shaped against real
+consulting decks, so expect breaking changes through the `0.x` series.
+
+### Requirements
+
+- Requires ggplot2 \>= 4.0.0 and R \>= 4.1. The themes are built on
+  ggplot2 4.x API — `theme_sub_*()` helpers,
+  [`element_geom()`](https://ggplot2.tidyverse.org/reference/element.html),
+  and
+  [`from_theme()`](https://ggplot2.tidyverse.org/reference/aes_eval.html)
+  linkage — and will not work on ggplot2 3.x.
+
+### Themes
 
 - [`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)
-  builder composed via `theme_sub_*()` helpers and routed through
-  [`element_geom()`](https://ggplot2.tidyverse.org/reference/element.html)
-  so
+  composes a theme from `palette`, `font`, `font_fallback`, `density`,
+  and `context` arguments. The palette’s main colour is routed through
+  `element_geom(ink = ...)`, so
   [`from_theme()`](https://ggplot2.tidyverse.org/reference/aes_eval.html)-aware
-  geoms inherit the palette’s main colour (`ink`) and a default
-  linewidth.
+  geoms pick it up without an explicit `scale_color_*()` call.
 - [`theme_strategy()`](https://viniciusoike.github.io/ggconsulting/reference/theme_strategy.md)
-  archetype as a preset path.
-- Five starter palettes: `strategy_navy`, `strategy_emerald`,
-  `strategy_crimson`, `strategy_azure`, `strategy_slate`.
-- [`ct_col()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md)
-  /
-  [`ct_line()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md)
-  /
-  [`ct_point()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md)
-  mechanical wrappers for explicit-override use at the call site.
-- [`ct_set_defaults()`](https://viniciusoike.github.io/ggconsulting/reference/ct_defaults.md)
-  /
-  [`ct_unset_defaults()`](https://viniciusoike.github.io/ggconsulting/reference/ct_defaults.md)
-  for true aesthetic defaults (currently `geom_point` `size = 2.5`),
-  autoloaded on library attach with an opt-out option.
-- `has_font()` internal helper.
+  — minimal, generous whitespace, navy default.
+- [`theme_finance()`](https://viniciusoike.github.io/ggconsulting/reference/theme_finance.md)
+  — serif preset (Source Serif 4 → Georgia → Times New Roman → serif)
+  with a regular-weight title, lighter major gridlines, and denser
+  defaults (`density = "tight"`, `context = "report"`) tuned for printed
+  pages rather than slides. Defaults to `finance_classic`.
+- [`theme_editorial()`](https://viniciusoike.github.io/ggconsulting/reference/theme_editorial.md)
+  — serif preset with an italic subtitle and a larger, tighter-leaded
+  title. Defaults to `editorial_warm`.
+- `ct_theme(paper = ...)` sets the figure ground. Pass `"cream"`
+  (Financial Times), `"warm_grey"` (The Economist), `"white"`, or any
+  colour R recognises. Because
+  [`theme_minimal()`](https://ggplot2.tidyverse.org/reference/ggtheme.html)
+  leaves the panel background blank, filling the plot background alone
+  gives a uniform ground with no panel-versus-plot seam. Setting `paper`
+  also warms the major gridline to match. The archetypes forward it, so
+  `theme_editorial(paper = "cream")` works; cream is opt-in rather than
+  the editorial default.
 
-### CI (prompt 02)
+### Palettes and scales
 
-- `R-CMD-check` workflow across macOS, Windows, Ubuntu (R release) and
-  Ubuntu (R devel).
-- `test-coverage` workflow via covr + Codecov v4.
-- README badges: R-CMD-check status, Codecov coverage, License: MIT.
-
-### Scales and palette preview (prompt 03)
-
+- Eleven palettes of six colours each, in three families: five strategy
+  (`strategy_navy`, `strategy_emerald`, `strategy_crimson`,
+  `strategy_azure`, `strategy_slate`), three finance (`finance_classic`,
+  `finance_steel`, `finance_burgundy`), and three editorial
+  (`editorial_warm`, `editorial_clay`, `editorial_oxide`).
+- [`ct_palette()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette.md)
+  returns a palette’s colours, subsets to `n`, or — called with no
+  arguments — lists every available palette name.
 - [`scale_color_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
   /
   [`scale_fill_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
-  — discrete scales backed by ggconsulting palettes; interpolate and
-  emit a
-  [`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html)
-  when `n` exceeds the palette size.
+  — discrete scales. When the data needs more levels than the palette
+  holds, colours are interpolated and a warning points at the continuous
+  scales instead.
 - [`scale_color_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
   /
   [`scale_fill_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
-  — continuous variants via
-  [`ggplot2::scale_color_gradientn()`](https://ggplot2.tidyverse.org/reference/scale_gradient.html)
-  /
-  [`scale_fill_gradientn()`](https://ggplot2.tidyverse.org/reference/scale_gradient.html).
+  — continuous variants, with `direction = -1` to reverse.
 - British-spelling aliases:
   [`scale_colour_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md),
   [`scale_colour_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md).
 - [`ct_palette_show()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette_show.md)
-  — swatch preview for a single palette, a custom hex vector, or every
+  — swatch preview for one palette, a custom hex vector, or every
   shipped palette faceted.
 
-### Finance and editorial archetypes (prompt 04)
-
-- [`theme_finance()`](https://viniciusoike.github.io/ggconsulting/reference/theme_finance.md)
-  — serif preset (Source Serif 4 → Georgia → Times New Roman → serif)
-  with regular-weight title, a lighter major gridline, and denser
-  defaults (`density = "tight"`, `context = "report"`) tuned for printed
-  pages over slides. Defaults to the `finance_classic` palette.
-- [`theme_editorial()`](https://viniciusoike.github.io/ggconsulting/reference/theme_editorial.md)
-  — serif preset with an italic subtitle and slightly larger,
-  tighter-leaded title. Defaults to the `editorial_warm` palette.
-- [`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)
-  gained a `font_fallback` argument; `.resolve_font()` now recognises
-  `"sans"`, `"serif"`, and `"mono"` as guaranteed terminal fallbacks.
-- Six new palettes: `finance_classic`, `finance_steel`,
-  `finance_burgundy`, `editorial_warm`, `editorial_clay`,
-  `editorial_oxide`. The catalog is now 11 palettes (5 strategy + 3
-  finance + 3 editorial).
-
-### Locale and formatters (prompt 05)
+### Locale and formatters
 
 - `ct_locale("pt-BR" | "en-US")` — session-scoped locale switch stored
-  in `options(ggconsulting.locale)`. Does *not* touch
-  [`Sys.setlocale()`](https://rdrr.io/r/base/locales.html); portable
-  across Windows / Linux / macOS CI.
+  in `options(ggconsulting.locale)`. It does *not* touch
+  [`Sys.setlocale()`](https://rdrr.io/r/base/locales.html); the package
+  ships its own month tables and formatting marks, so output is
+  identical across Windows, Linux, and macOS.
 - [`fmt_number()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
-  — locale-aware number formatter (`1.234,5` / `1,234.5`).
+  — locale-aware numbers (`1.234,5` / `1,234.5`).
 - [`fmt_brl()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
-  — Brazilian Real formatter; always renders as `R$` with a non-breaking
-  space, regardless of active locale. Supports `style = "accounting"`
-  for parens-wrapped negatives.
+  — Brazilian Real, always `R$` with a non-breaking space regardless of
+  the active locale. `style = "accounting"` wraps negatives in
+  parentheses.
 - [`fmt_currency()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
   — uses the active locale’s currency symbol.
 - [`fmt_pct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
-  — fraction-to-percent (`0.5` → `"50%"`).
+  — fraction to percent (`0.5` → `"50%"`).
 - [`fmt_delta()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
-  — always-signed percentage-point-style deltas (`+1,2pp` / `-0,3pp` /
-  `0,0pp`).
+  — always-signed percentage-point deltas (`+1,2pp`).
 - [`fmt_month()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
-  — `Date` / `POSIXct` → localised month string; ships its own pt-BR and
-  en-US month tables (no `LC_TIME` reliance).
+  — `Date` / `POSIXct` to a localised month string.
 
-### Data-aware polish (prompt 06)
+### Data-aware polish
 
 - [`ct_finish()`](https://viniciusoike.github.io/ggconsulting/reference/ct_finish.md)
-  — companion to
-  [`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)
-  that runs *after* the geom layer is built (via an
+  runs after the geom layer is built, via a
   [`ggplot_add()`](https://ggplot2.tidyverse.org/reference/update_ggplot.html)
-  S3 method) and can:
-  - inject value labels above bars / next to points (`values = TRUE` or
-    `"auto"`)
-  - reorder a categorical x by y (`sort = "asc" | "desc"`)
-  - format labels via shortcut names
+  S3 method, and inspects the plot to apply:
+  - value labels above bars or beside points (`values = TRUE`)
+  - reordering of a categorical x by y (`sort = "asc" | "desc"`)
+  - label formatting by shortcut
     (`label_fmt = "brl" | "number" | "pct" | "delta"`) or a
     user-supplied function
-  - highlight specific x values with the theme’s main colour and mute
+  - highlighting of specific x values in the theme’s main colour, muting
     the rest with `muted_color` (default `#A8A4A0`, a warm-leaning
-    neutral that reads under both cool and warm palettes)
-  - label the last point of each line series (`end_labels = TRUE`)
-  - geom-aware scale expansion (`expand = "auto"`) — y room above
+    neutral that reads against both cool and warm palettes)
+  - end labels on the last point of each line series
+    (`end_labels = TRUE`), or only in the first panel of a faceted plot
+    (`end_labels = "first_facet"`), which replaces a legend across small
+    multiples
+  - a filled point at each series’ last observation
+    (`end_points = TRUE`)
+  - a right-hand y axis (`axis_y = "right"`), applied through
+    [`guide_axis()`](https://ggplot2.tidyverse.org/reference/guide_axis.html)
+    so it leaves a `scale_y_*()` call of your own alone
+  - geom-aware scale expansion (`expand = "auto"`) — headroom above
     columns, right-side room for line endpoints
+
+  `end_labels` now accepts `Date` and `POSIXct` x aesthetics, which it
+  previously rejected. Auto expansion no longer adds a second x scale
+  over the one end labels set, and neither replaces an x scale supplied
+  by the caller.
+
+### Geom wrappers and defaults
+
+- [`ct_col()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md),
+  [`ct_line()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md),
+  [`ct_point()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md)
+  — thin wrappers over the corresponding ggplot2 geoms with consulting
+  defaults as formals, for overriding at the call site.
+- [`ct_set_defaults()`](https://viniciusoike.github.io/ggconsulting/reference/ct_defaults.md)
+  /
+  [`ct_unset_defaults()`](https://viniciusoike.github.io/ggconsulting/reference/ct_defaults.md)
+  apply and cleanly revert package-wide aesthetic defaults via
+  [`update_geom_defaults()`](https://ggplot2.tidyverse.org/reference/update_defaults.html).
+  Applied on attach; opt out with
+  `options(ggconsulting.autoload = FALSE)`.
+
+### Fonts
+
+- [`install_consulting_fonts()`](https://viniciusoike.github.io/ggconsulting/reference/install_consulting_fonts.md)
+  downloads the five archetype font families from Google Fonts (Inter,
+  Source Sans 3, Lato, Source Serif 4, IBM Plex Sans — all OFL or
+  Apache-2.0) and installs them into a platform-appropriate user font
+  directory.
+
+  Because that writes outside the R session, it asks for confirmation
+  first when run interactively and refuses to run otherwise. Pass an
+  explicit `dest`, or set `options(ggconsulting.font_consent = TRUE)`,
+  to install unattended.
+
+- [`has_font()`](https://viniciusoike.github.io/ggconsulting/reference/has_font.md)
+  reports whether a family is available, checking both fonts installed
+  on the operating system and fonts registered for the session with
+  [`systemfonts::register_font()`](https://systemfonts.r-lib.org/reference/register_font.html).
+  This matters for client brand fonts, which are commonly registered
+  from a file rather than installed: `ct_theme(font = "ClientSans")` now
+  honours a registered `ClientSans` instead of falling through to the
+  `font_fallback` chain.
+
+### Data
+
+- Six bundled datasets for examples and tests: `bu_quarterly`,
+  `market_share`, `client_nps`, `ebitda_bridge`, `ibov_sectors`, and
+  `br_macro`.
+
+### Development
+
+- `inst/gallery/` ships example scripts for visual QA of themes,
+  palettes, geoms, and formatters. Available post-install via
+  `system.file("gallery", package = "ggconsulting")`.

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggconsulting</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,77 +33,93 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="ggconsulting-development-version">ggconsulting (development version)<a class="anchor" aria-label="anchor" href="#ggconsulting-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="ggconsulting-010">ggconsulting 0.1.0<a class="anchor" aria-label="anchor" href="#ggconsulting-010"></a></h2>
+<p>First public release. ggconsulting is an opinionated ggplot2 extension for executive-grade consulting output: archetype themes, palettes, scales, locale-aware label helpers, and a data-aware polish layer.</p>
+<p>The package is experimental. The public API is being shaped against real consulting decks, so expect breaking changes through the <code>0.x</code> series.</p>
 <div class="section level3">
-<h3 id="foundation-prompt-development-version">Foundation (prompt 01)<a class="anchor" aria-label="anchor" href="#foundation-prompt-development-version"></a></h3>
-<ul><li>
-<code><a href="../reference/ct_theme.html">ct_theme()</a></code> builder composed via <code>theme_sub_*()</code> helpers and routed through <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_geom()</a></code> so <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code>-aware geoms inherit the palette’s main colour (<code>ink</code>) and a default linewidth.</li>
-<li>
-<code><a href="../reference/theme_strategy.html">theme_strategy()</a></code> archetype as a preset path.</li>
-<li>Five starter palettes: <code>strategy_navy</code>, <code>strategy_emerald</code>, <code>strategy_crimson</code>, <code>strategy_azure</code>, <code>strategy_slate</code>.</li>
-<li>
-<code><a href="../reference/ct_geoms.html">ct_col()</a></code> / <code><a href="../reference/ct_geoms.html">ct_line()</a></code> / <code><a href="../reference/ct_geoms.html">ct_point()</a></code> mechanical wrappers for explicit-override use at the call site.</li>
-<li>
-<code><a href="../reference/ct_defaults.html">ct_set_defaults()</a></code> / <code><a href="../reference/ct_defaults.html">ct_unset_defaults()</a></code> for true aesthetic defaults (currently <code>geom_point</code> <code>size = 2.5</code>), autoloaded on library attach with an opt-out option.</li>
-<li>
-<code>has_font()</code> internal helper.</li>
+<h3 id="requirements-0-1-0">Requirements<a class="anchor" aria-label="anchor" href="#requirements-0-1-0"></a></h3>
+<ul><li>Requires ggplot2 &gt;= 4.0.0 and R &gt;= 4.1. The themes are built on ggplot2 4.x API — <code>theme_sub_*()</code> helpers, <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_geom()</a></code>, and <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code> linkage — and will not work on ggplot2 3.x.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="ci-prompt-development-version">CI (prompt 02)<a class="anchor" aria-label="anchor" href="#ci-prompt-development-version"></a></h3>
+<h3 id="themes-0-1-0">Themes<a class="anchor" aria-label="anchor" href="#themes-0-1-0"></a></h3>
 <ul><li>
-<code>R-CMD-check</code> workflow across macOS, Windows, Ubuntu (R release) and Ubuntu (R devel).</li>
+<code><a href="../reference/ct_theme.html">ct_theme()</a></code> composes a theme from <code>palette</code>, <code>font</code>, <code>font_fallback</code>, <code>density</code>, and <code>context</code> arguments. The palette’s main colour is routed through <code>element_geom(ink = ...)</code>, so <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code>-aware geoms pick it up without an explicit <code>scale_color_*()</code> call.</li>
 <li>
-<code>test-coverage</code> workflow via covr + Codecov v4.</li>
-<li>README badges: R-CMD-check status, Codecov coverage, License: MIT.</li>
+<code><a href="../reference/theme_strategy.html">theme_strategy()</a></code> — minimal, generous whitespace, navy default.</li>
+<li>
+<code><a href="../reference/theme_finance.html">theme_finance()</a></code> — serif preset (Source Serif 4 → Georgia → Times New Roman → serif) with a regular-weight title, lighter major gridlines, and denser defaults (<code>density = "tight"</code>, <code>context = "report"</code>) tuned for printed pages rather than slides. Defaults to <code>finance_classic</code>.</li>
+<li>
+<code><a href="../reference/theme_editorial.html">theme_editorial()</a></code> — serif preset with an italic subtitle and a larger, tighter-leaded title. Defaults to <code>editorial_warm</code>.</li>
+<li>
+<code>ct_theme(paper = ...)</code> sets the figure ground. Pass <code>"cream"</code> (Financial Times), <code>"warm_grey"</code> (The Economist), <code>"white"</code>, or any colour R recognises. Because <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal()</a></code> leaves the panel background blank, filling the plot background alone gives a uniform ground with no panel-versus-plot seam. Setting <code>paper</code> also warms the major gridline to match. The archetypes forward it, so <code>theme_editorial(paper = "cream")</code> works; cream is opt-in rather than the editorial default.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="scales-and-palette-preview-prompt-development-version">Scales and palette preview (prompt 03)<a class="anchor" aria-label="anchor" href="#scales-and-palette-preview-prompt-development-version"></a></h3>
-<ul><li>
-<code><a href="../reference/ct_scales.html">scale_color_ct()</a></code> / <code><a href="../reference/ct_scales.html">scale_fill_ct()</a></code> — discrete scales backed by ggconsulting palettes; interpolate and emit a <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code> when <code>n</code> exceeds the palette size.</li>
+<h3 id="palettes-and-scales-0-1-0">Palettes and scales<a class="anchor" aria-label="anchor" href="#palettes-and-scales-0-1-0"></a></h3>
+<ul><li>Eleven palettes of six colours each, in three families: five strategy (<code>strategy_navy</code>, <code>strategy_emerald</code>, <code>strategy_crimson</code>, <code>strategy_azure</code>, <code>strategy_slate</code>), three finance (<code>finance_classic</code>, <code>finance_steel</code>, <code>finance_burgundy</code>), and three editorial (<code>editorial_warm</code>, <code>editorial_clay</code>, <code>editorial_oxide</code>).</li>
 <li>
-<code><a href="../reference/ct_scales.html">scale_color_ct_c()</a></code> / <code><a href="../reference/ct_scales.html">scale_fill_ct_c()</a></code> — continuous variants via <code><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">ggplot2::scale_color_gradientn()</a></code> / <code><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradientn()</a></code>.</li>
+<code><a href="../reference/ct_palette.html">ct_palette()</a></code> returns a palette’s colours, subsets to <code>n</code>, or — called with no arguments — lists every available palette name.</li>
+<li>
+<code><a href="../reference/ct_scales.html">scale_color_ct()</a></code> / <code><a href="../reference/ct_scales.html">scale_fill_ct()</a></code> — discrete scales. When the data needs more levels than the palette holds, colours are interpolated and a warning points at the continuous scales instead.</li>
+<li>
+<code><a href="../reference/ct_scales.html">scale_color_ct_c()</a></code> / <code><a href="../reference/ct_scales.html">scale_fill_ct_c()</a></code> — continuous variants, with <code>direction = -1</code> to reverse.</li>
 <li>British-spelling aliases: <code><a href="../reference/ct_scales.html">scale_colour_ct()</a></code>, <code><a href="../reference/ct_scales.html">scale_colour_ct_c()</a></code>.</li>
 <li>
-<code><a href="../reference/ct_palette_show.html">ct_palette_show()</a></code> — swatch preview for a single palette, a custom hex vector, or every shipped palette faceted.</li>
+<code><a href="../reference/ct_palette_show.html">ct_palette_show()</a></code> — swatch preview for one palette, a custom hex vector, or every shipped palette faceted.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="finance-and-editorial-archetypes-prompt-development-version">Finance and editorial archetypes (prompt 04)<a class="anchor" aria-label="anchor" href="#finance-and-editorial-archetypes-prompt-development-version"></a></h3>
+<h3 id="locale-and-formatters-0-1-0">Locale and formatters<a class="anchor" aria-label="anchor" href="#locale-and-formatters-0-1-0"></a></h3>
 <ul><li>
-<code><a href="../reference/theme_finance.html">theme_finance()</a></code> — serif preset (Source Serif 4 → Georgia → Times New Roman → serif) with regular-weight title, a lighter major gridline, and denser defaults (<code>density = "tight"</code>, <code>context = "report"</code>) tuned for printed pages over slides. Defaults to the <code>finance_classic</code> palette.</li>
+<code>ct_locale("pt-BR" | "en-US")</code> — session-scoped locale switch stored in <code>options(ggconsulting.locale)</code>. It does <em>not</em> touch <code><a href="https://rdrr.io/r/base/locales.html" class="external-link">Sys.setlocale()</a></code>; the package ships its own month tables and formatting marks, so output is identical across Windows, Linux, and macOS.</li>
 <li>
-<code><a href="../reference/theme_editorial.html">theme_editorial()</a></code> — serif preset with an italic subtitle and slightly larger, tighter-leaded title. Defaults to the <code>editorial_warm</code> palette.</li>
+<code><a href="../reference/ct_formatters.html">fmt_number()</a></code> — locale-aware numbers (<code>1.234,5</code> / <code>1,234.5</code>).</li>
 <li>
-<code><a href="../reference/ct_theme.html">ct_theme()</a></code> gained a <code>font_fallback</code> argument; <code>.resolve_font()</code> now recognises <code>"sans"</code>, <code>"serif"</code>, and <code>"mono"</code> as guaranteed terminal fallbacks.</li>
-<li>Six new palettes: <code>finance_classic</code>, <code>finance_steel</code>, <code>finance_burgundy</code>, <code>editorial_warm</code>, <code>editorial_clay</code>, <code>editorial_oxide</code>. The catalog is now 11 palettes (5 strategy + 3 finance + 3 editorial).</li>
-</ul></div>
-<div class="section level3">
-<h3 id="locale-and-formatters-prompt-development-version">Locale and formatters (prompt 05)<a class="anchor" aria-label="anchor" href="#locale-and-formatters-prompt-development-version"></a></h3>
-<ul><li>
-<code>ct_locale("pt-BR" | "en-US")</code> — session-scoped locale switch stored in <code>options(ggconsulting.locale)</code>. Does <em>not</em> touch <code><a href="https://rdrr.io/r/base/locales.html" class="external-link">Sys.setlocale()</a></code>; portable across Windows / Linux / macOS CI.</li>
-<li>
-<code><a href="../reference/ct_formatters.html">fmt_number()</a></code> — locale-aware number formatter (<code>1.234,5</code> / <code>1,234.5</code>).</li>
-<li>
-<code><a href="../reference/ct_formatters.html">fmt_brl()</a></code> — Brazilian Real formatter; always renders as <code>R$</code> with a non-breaking space, regardless of active locale. Supports <code>style = "accounting"</code> for parens-wrapped negatives.</li>
+<code><a href="../reference/ct_formatters.html">fmt_brl()</a></code> — Brazilian Real, always <code>R$</code> with a non-breaking space regardless of the active locale. <code>style = "accounting"</code> wraps negatives in parentheses.</li>
 <li>
 <code><a href="../reference/ct_formatters.html">fmt_currency()</a></code> — uses the active locale’s currency symbol.</li>
 <li>
-<code><a href="../reference/ct_formatters.html">fmt_pct()</a></code> — fraction-to-percent (<code>0.5</code> → <code>"50%"</code>).</li>
+<code><a href="../reference/ct_formatters.html">fmt_pct()</a></code> — fraction to percent (<code>0.5</code> → <code>"50%"</code>).</li>
 <li>
-<code><a href="../reference/ct_formatters.html">fmt_delta()</a></code> — always-signed percentage-point-style deltas (<code>+1,2pp</code> / <code>-0,3pp</code> / <code>0,0pp</code>).</li>
+<code><a href="../reference/ct_formatters.html">fmt_delta()</a></code> — always-signed percentage-point deltas (<code>+1,2pp</code>).</li>
 <li>
-<code><a href="../reference/ct_formatters.html">fmt_month()</a></code> — <code>Date</code> / <code>POSIXct</code> → localised month string; ships its own pt-BR and en-US month tables (no <code>LC_TIME</code> reliance).</li>
+<code><a href="../reference/ct_formatters.html">fmt_month()</a></code> — <code>Date</code> / <code>POSIXct</code> to a localised month string.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="data-aware-polish-prompt-development-version">Data-aware polish (prompt 06)<a class="anchor" aria-label="anchor" href="#data-aware-polish-prompt-development-version"></a></h3>
+<h3 id="data-aware-polish-0-1-0">Data-aware polish<a class="anchor" aria-label="anchor" href="#data-aware-polish-0-1-0"></a></h3>
 <ul><li>
-<code><a href="../reference/ct_finish.html">ct_finish()</a></code> — companion to <code><a href="../reference/ct_theme.html">ct_theme()</a></code> that runs <em>after</em> the geom layer is built (via an <code><a href="https://ggplot2.tidyverse.org/reference/update_ggplot.html" class="external-link">ggplot_add()</a></code> S3 method) and can:
-<ul><li>inject value labels above bars / next to points (<code>values = TRUE</code> or <code>"auto"</code>)</li>
-<li>reorder a categorical x by y (<code>sort = "asc" | "desc"</code>)</li>
-<li>format labels via shortcut names (<code>label_fmt = "brl" | "number" | "pct" | "delta"</code>) or a user-supplied function</li>
-<li>highlight specific x values with the theme’s main colour and mute the rest with <code>muted_color</code> (default <code>#A8A4A0</code>, a warm-leaning neutral that reads under both cool and warm palettes)</li>
-<li>label the last point of each line series (<code>end_labels = TRUE</code>)</li>
-<li>geom-aware scale expansion (<code>expand = "auto"</code>) — y room above columns, right-side room for line endpoints</li>
-</ul></li>
+<code><a href="../reference/ct_finish.html">ct_finish()</a></code> runs after the geom layer is built, via a <code><a href="https://ggplot2.tidyverse.org/reference/update_ggplot.html" class="external-link">ggplot_add()</a></code> S3 method, and inspects the plot to apply:
+<ul><li>value labels above bars or beside points (<code>values = TRUE</code>)</li>
+<li>reordering of a categorical x by y (<code>sort = "asc" | "desc"</code>)</li>
+<li>label formatting by shortcut (<code>label_fmt = "brl" | "number" | "pct" | "delta"</code>) or a user-supplied function</li>
+<li>highlighting of specific x values in the theme’s main colour, muting the rest with <code>muted_color</code> (default <code>#A8A4A0</code>, a warm-leaning neutral that reads against both cool and warm palettes)</li>
+<li>end labels on the last point of each line series (<code>end_labels = TRUE</code>), or only in the first panel of a faceted plot (<code>end_labels = "first_facet"</code>), which replaces a legend across small multiples</li>
+<li>a filled point at each series’ last observation (<code>end_points = TRUE</code>)</li>
+<li>a right-hand y axis (<code>axis_y = "right"</code>), applied through <code><a href="https://ggplot2.tidyverse.org/reference/guide_axis.html" class="external-link">guide_axis()</a></code> so it leaves a <code>scale_y_*()</code> call of your own alone</li>
+<li>geom-aware scale expansion (<code>expand = "auto"</code>) — headroom above columns, right-side room for line endpoints</li>
+</ul><code>end_labels</code> now accepts <code>Date</code> and <code>POSIXct</code> x aesthetics, which it previously rejected. Auto expansion no longer adds a second x scale over the one end labels set, and neither replaces an x scale supplied by the caller.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="geom-wrappers-and-defaults-0-1-0">Geom wrappers and defaults<a class="anchor" aria-label="anchor" href="#geom-wrappers-and-defaults-0-1-0"></a></h3>
+<ul><li>
+<code><a href="../reference/ct_geoms.html">ct_col()</a></code>, <code><a href="../reference/ct_geoms.html">ct_line()</a></code>, <code><a href="../reference/ct_geoms.html">ct_point()</a></code> — thin wrappers over the corresponding ggplot2 geoms with consulting defaults as formals, for overriding at the call site.</li>
+<li>
+<code><a href="../reference/ct_defaults.html">ct_set_defaults()</a></code> / <code><a href="../reference/ct_defaults.html">ct_unset_defaults()</a></code> apply and cleanly revert package-wide aesthetic defaults via <code><a href="https://ggplot2.tidyverse.org/reference/update_defaults.html" class="external-link">update_geom_defaults()</a></code>. Applied on attach; opt out with <code>options(ggconsulting.autoload = FALSE)</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="fonts-0-1-0">Fonts<a class="anchor" aria-label="anchor" href="#fonts-0-1-0"></a></h3>
+<ul><li>
+<p><code><a href="../reference/install_consulting_fonts.html">install_consulting_fonts()</a></code> downloads the five archetype font families from Google Fonts (Inter, Source Sans 3, Lato, Source Serif 4, IBM Plex Sans — all OFL or Apache-2.0) and installs them into a platform-appropriate user font directory.</p>
+<p>Because that writes outside the R session, it asks for confirmation first when run interactively and refuses to run otherwise. Pass an explicit <code>dest</code>, or set <code>options(ggconsulting.font_consent = TRUE)</code>, to install unattended.</p>
+</li>
+<li><p><code><a href="../reference/has_font.html">has_font()</a></code> reports whether a family is available, checking both fonts installed on the operating system and fonts registered for the session with <code><a href="https://systemfonts.r-lib.org/reference/register_font.html" class="external-link">systemfonts::register_font()</a></code>. This matters for client brand fonts, which are commonly registered from a file rather than installed: <code>ct_theme(font = "ClientSans")</code> now honours a registered <code>ClientSans</code> instead of falling through to the <code>font_fallback</code> chain.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="data-0-1-0">Data<a class="anchor" aria-label="anchor" href="#data-0-1-0"></a></h3>
+<ul><li>Six bundled datasets for examples and tests: <code>bu_quarterly</code>, <code>market_share</code>, <code>client_nps</code>, <code>ebitda_bridge</code>, <code>ibov_sectors</code>, and <code>br_macro</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="development-0-1-0">Development<a class="anchor" aria-label="anchor" href="#development-0-1-0"></a></h3>
+<ul><li>
+<code>inst/gallery/</code> ships example scripts for visual QA of themes, palettes, geoms, and formatters. Available post-install via <code>system.file("gallery", package = "ggconsulting")</code>.</li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -115,7 +131,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

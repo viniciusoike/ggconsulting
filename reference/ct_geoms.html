@@ -17,7 +17,7 @@ and geom_point() size is autoloaded by ct_set_defaults()."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ggconsulting</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,6 +85,16 @@ and <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" clas
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A ggplot2 <code><a href="https://ggplot2.tidyverse.org/reference/layer.html" class="external-link">ggplot2::layer()</a></code> object.</p>
     </div>
+    <div class="section level2">
+    <h2 id="bar-charts-with-date-x">Bar charts with Date x<a class="anchor" aria-label="anchor" href="#bar-charts-with-date-x"></a></h2>
+
+
+<p><code>ct_col()</code>'s default <code>width = 0.8</code> is in <em>x-axis units</em>. On a Date
+x-axis that is 0.8 <em>days</em>, which renders bars as slivers when the
+data is spaced quarterly or monthly. For bar charts, convert the
+x variable to either an ordered factor (e.g. <code>"21Q1"</code>, <code>"21Q2"</code>, ...)
+or a numeric index before plotting; line charts on Date are fine.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -104,7 +114,7 @@ and <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" clas
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

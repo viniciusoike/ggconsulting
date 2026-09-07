@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">ggconsulting</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,14 +51,13 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>An opinionated ggplot2 extension for executive-grade consulting output. Ships three archetype themes, eleven palettes, locale-aware label helpers (pt-BR + en-US), and a data-aware polish layer.</p>
-<blockquote>
-<p><strong>Heads up:</strong> ggconsulting is in early development. The public API is being shaped against real consulting decks; expect breaking changes through <code>0.x</code>.</p>
-</blockquote>
+<p>ggconsulting turns a plain ggplot into slide-ready output. It ships archetype themes drawn from published business charts, palettes to match, formatters that speak pt-BR and en-US, and a polish layer that reads your data to place labels and highlights.</p>
+<p>ggconsulting is in early development. The public API is being shaped against real consulting decks, so expect breaking changes through <code>0.x</code>.</p>
+<p>The themes require ggplot2 4.0 or later. They lean on <code>theme_sub_*()</code>, <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_geom()</a></code>, and <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code>, none of which exist in ggplot2 3.x.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>The development version from GitHub:</p>
+<p>Install the development version from GitHub.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"viniciusoike/ggconsulting"</span><span class="op">)</span></span></code></pre></div>
@@ -68,81 +67,141 @@
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: package 'ggplot2' was built under R version 4.5.2</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/viniciusoike/ggconsulting" class="external-link">ggconsulting</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; v ggconsulting set ggplot2 aesthetic defaults</span></span>
-<span><span class="co">#&gt; i Opt out: `ct_unset_defaults()` or `options(ggconsulting.autoload = FALSE)`</span></span>
-<span><span class="co">#&gt; i Column width / linewidth: use `ct_col()` / `ct_line()`, or apply</span></span>
-<span><span class="co">#&gt;   `ct_theme()`/`theme_strategy()` for linewidth via `from_theme()`</span></span>
+<span><span class="co">#&gt; ✔ ggconsulting set ggplot2 aesthetic defaults</span></span>
+<span><span class="co">#&gt; ℹ Opt out: `ct_unset_defaults()` or `options(ggconsulting.autoload = FALSE)`</span></span>
+<span><span class="co">#&gt; ℹ Column width / linewidth: use `ct_col()` / `ct_line()`, or apply a</span></span>
+<span><span class="co">#&gt;   `theme_*()` archetype for linewidth via `from_theme()`</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title    <span class="op">=</span> <span class="st">"Fuel efficiency vs. vehicle weight"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"1974 Motor Trend data"</span>,</span>
-<span>    caption  <span class="op">=</span> <span class="st">"Source: datasets::mtcars"</span></span>
+<span><span class="va">players</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">market_share</span>, <span class="va">company</span> <span class="op">!=</span> <span class="st">"Others"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">players</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">share</span>, colour <span class="op">=</span> <span class="va">company</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/ct_geoms.html">ct_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/ct_scales.html">scale_colour_ct</a></span><span class="op">(</span><span class="st">"strategy_navy"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="reference/ct_formatters.html">fmt_pct</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span></span>
+<span>    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2015</span>, <span class="fl">2024</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>    expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">0.12</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/theme_strategy.html">theme_strategy</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title    <span class="op">=</span> <span class="st">"Player C gained nine points of share as the leader lost nine"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Share of category revenue"</span>,</span>
+<span>    x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    caption  <span class="op">=</span> <span class="st">"Source: simulated data bundled with ggconsulting"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/theme_strategy.html">theme_strategy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/ct_finish.html">ct_finish</a></span><span class="op">(</span>end_labels <span class="op">=</span> <span class="cn">TRUE</span>, end_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" alt="" width="100%"></p>
-<p><code><a href="reference/theme_strategy.html">theme_strategy()</a></code> routes the palette’s main colour through ggplot2 4.x’s <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code> mechanism, so unmapped geoms inherit it automatically — no <code>scale_color_*()</code> calls needed for the single-series case.</p>
-<p>ggconsulting also sets a small set of aesthetic defaults on <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> attach (currently <code>geom_point</code> <code>size = 2.5</code>). Opt out via:</p>
+<p><code><a href="reference/ct_finish.html">ct_finish()</a></code> runs after the geoms are built, so it can inspect the data. Here it finds the last point of each series and drops a dot and a name beside it. Labelling the lines directly replaces the legend, which is why the example switches the legend off.</p>
+<p><code><a href="reference/ct_finish.html">ct_finish()</a></code> would normally widen the x range to make room for those labels, but it defers to any positional scale you set yourself rather than replacing it. This example supplies its own <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous()</a></code> to get integer year breaks, so it also supplies the right-hand <code>expand</code> the labels need.</p>
+</div>
+<div class="section level2">
+<h2 id="themes">Themes<a class="anchor" aria-label="anchor" href="#themes"></a>
+</h2>
+<p><code><a href="reference/ct_theme.html">ct_theme()</a></code> builds a theme from <code>palette</code>, <code>font</code>, <code>density</code>, <code>context</code>, and <code>paper</code>. Three presets cover the archetypes.</p>
+<ul>
+<li>
+<code><a href="reference/theme_strategy.html">theme_strategy()</a></code> keeps a minimal frame, generous whitespace, and a navy default.</li>
+<li>
+<code><a href="reference/theme_finance.html">theme_finance()</a></code> tightens spacing for printed pages and pitch books, drops the gridlines, and puts ticks on the y axis in their place.</li>
+<li>
+<code><a href="reference/theme_editorial.html">theme_editorial()</a></code> sets a serif face with an italic subtitle and a warmer palette.</li>
+</ul>
+<p><code>paper</code> sets the figure ground. Pass <code>"cream"</code>, <code>"warm_grey"</code>, <code>"white"</code>, or any colour R recognises. Because <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal()</a></code> leaves the panel blank, filling the plot background alone produces a uniform ground with no seam between panel and plot. Setting <code>paper</code> warms the gridline to match.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>ggconsulting.autoload <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co"># or, mid-session:</span></span>
-<span><span class="fu"><a href="reference/ct_defaults.html">ct_unset_defaults</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">client_nps</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">quarter</span>, <span class="va">nps</span>, colour <span class="op">=</span> <span class="va">segment</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/ct_geoms.html">ct_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/ct_scales.html">scale_colour_ct</a></span><span class="op">(</span><span class="st">"editorial_warm"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title    <span class="op">=</span> <span class="st">"Mid-Market sentiment caught up with Enterprise"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Net promoter score by client segment"</span>,</span>
+<span>    x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    caption  <span class="op">=</span> <span class="st">"Source: simulated data bundled with ggconsulting"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/theme_editorial.html">theme_editorial</a></span><span class="op">(</span>paper <span class="op">=</span> <span class="st">"cream"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/ct_finish.html">ct_finish</a></span><span class="op">(</span>end_labels <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-editorial-1.png" alt="" width="100%"></p>
+<p>The archetypes forward <code>...</code> to <code><a href="reference/ct_theme.html">ct_theme()</a></code>, so <code>theme_editorial(paper = "cream")</code> works. Cream is opt-in rather than the editorial default.</p>
 </div>
 <div class="section level2">
-<h2 id="whats-inside">What’s inside<a class="anchor" aria-label="anchor" href="#whats-inside"></a>
+<h2 id="the-polish-layer">The polish layer<a class="anchor" aria-label="anchor" href="#the-polish-layer"></a>
 </h2>
-<p><strong>Themes</strong></p>
-<ul>
-<li>
-<code><a href="reference/ct_theme.html">ct_theme()</a></code> — composable theme builder with <code>palette</code>, <code>font</code>, <code>density</code>, and <code>context</code> arguments. Built on ggplot2 4.x <code>theme_sub_*()</code> helpers and routed through <code><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_geom()</a></code> for <code><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">from_theme()</a></code> linkage.</li>
-<li>
-<code><a href="reference/theme_strategy.html">theme_strategy()</a></code> — minimal, generous-whitespace, navy-default preset inspired by top-tier global strategy consultancies.</li>
-<li>
-<code><a href="reference/theme_finance.html">theme_finance()</a></code> — serif preset with denser defaults (<code>density = "tight"</code>, <code>context = "report"</code>) tuned for printed pages and pitch books.</li>
-<li>
-<code><a href="reference/theme_editorial.html">theme_editorial()</a></code> — serif preset with italic subtitles and a warmer palette for client memos and market commentary.</li>
-</ul>
-<p><strong>Palettes and scales</strong></p>
-<ul>
-<li>Eleven shipped palettes — five strategy (<code>strategy_navy</code>, <code>strategy_emerald</code>, <code>strategy_crimson</code>, <code>strategy_azure</code>, <code>strategy_slate</code>), three finance (<code>finance_classic</code>, <code>finance_steel</code>, <code>finance_burgundy</code>), and three editorial (<code>editorial_warm</code>, <code>editorial_clay</code>, <code>editorial_oxide</code>).</li>
-<li>
-<code><a href="reference/ct_scales.html">scale_color_ct()</a></code> / <code><a href="reference/ct_scales.html">scale_fill_ct()</a></code> — discrete scales backed by the palettes; interpolate and warn when <code>n</code> exceeds the palette size.</li>
-<li>
-<code><a href="reference/ct_scales.html">scale_color_ct_c()</a></code> / <code><a href="reference/ct_scales.html">scale_fill_ct_c()</a></code> — continuous variants. British-spelling aliases (<code>scale_colour_ct*</code>) are also exported.</li>
-<li>
-<code><a href="reference/ct_palette_show.html">ct_palette_show()</a></code> — quick swatch preview for a single palette, a custom hex vector, or every shipped palette faceted.</li>
-</ul>
-<p><strong>Locale-aware labels</strong></p>
-<ul>
-<li>
-<code>ct_locale("pt-BR" | "en-US")</code> — session-scoped locale switch stored in <code>options(ggconsulting.locale)</code>. Does not touch <code><a href="https://rdrr.io/r/base/locales.html" class="external-link">Sys.setlocale()</a></code>; portable across Windows / Linux / macOS CI.</li>
-<li>
-<code><a href="reference/ct_formatters.html">fmt_number()</a></code>, <code><a href="reference/ct_formatters.html">fmt_pct()</a></code>, <code><a href="reference/ct_formatters.html">fmt_delta()</a></code>, <code><a href="reference/ct_formatters.html">fmt_currency()</a></code> — locale-aware formatters.</li>
-<li>
-<code><a href="reference/ct_formatters.html">fmt_brl()</a></code> — always renders Brazilian Real with <code>R$</code> and a non-breaking space, regardless of active locale. Supports <code>style = "accounting"</code> for parens-wrapped negatives.</li>
-<li>
-<code><a href="reference/ct_formatters.html">fmt_month()</a></code> — <code>Date</code> / <code>POSIXct</code> → localised month string, using internal pt-BR and en-US tables (no <code>LC_TIME</code> reliance).</li>
-</ul>
-<p><strong>Data-aware polish layer</strong></p>
-<ul>
-<li>
-<code><a href="reference/ct_finish.html">ct_finish()</a></code> — runs <em>after</em> the geom layer is built and can inject value labels above bars or next to points, reorder a categorical x by y, format labels via shortcut names (<code>"brl"</code>, <code>"number"</code>, <code>"pct"</code>, <code>"delta"</code>) or a user-supplied function, highlight specific x values while muting the rest, label the last point of each line series, and apply geom-aware scale expansion.</li>
-</ul>
-<p><strong>Mechanical wrappers</strong></p>
-<ul>
-<li>
-<code><a href="reference/ct_geoms.html">ct_col()</a></code>, <code><a href="reference/ct_geoms.html">ct_line()</a></code>, <code><a href="reference/ct_geoms.html">ct_point()</a></code> — thin wrappers with consulting-grade defaults for call-site overrides.</li>
-<li>
-<code><a href="reference/ct_defaults.html">ct_set_defaults()</a></code> / <code><a href="reference/ct_defaults.html">ct_unset_defaults()</a></code> — <code><a href="https://ggplot2.tidyverse.org/reference/update_defaults.html" class="external-link">update_geom_defaults()</a></code>-driven aesthetic baseline with honest revert.</li>
-</ul>
+<p><code><a href="reference/ct_finish.html">ct_finish()</a></code> reads the built plot and applies the finishing moves you would otherwise make by hand. It can sort a categorical axis by value, highlight chosen categories against a muted rest, print value labels, label line endpoints, move the y axis to the right, repeat the y ticks on the opposite edge, and expand the scales to suit the geom.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">share_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">players</span>, <span class="va">year</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">share_2024</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">company</span>, <span class="va">share</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/ct_geoms.html">ct_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span></span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="reference/ct_formatters.html">fmt_pct</a></span><span class="op">(</span>decimals <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
+<span>    expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title    <span class="op">=</span> <span class="st">"The leader's advantage has narrowed to two points"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Share of category revenue, 2024"</span>,</span>
+<span>    x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    caption  <span class="op">=</span> <span class="st">"Source: simulated data bundled with ggconsulting"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/theme_strategy.html">theme_strategy</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/ct_finish.html">ct_finish</a></span><span class="op">(</span>sort <span class="op">=</span> <span class="st">"desc"</span>, highlight <span class="op">=</span> <span class="st">"Player A"</span>, values <span class="op">=</span> <span class="cn">TRUE</span>, label_fmt <span class="op">=</span> <span class="st">"pct"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-columns-1.png" alt="" width="100%"></p>
+<p><code>highlight</code> reads the main colour from the theme, so add the theme before <code><a href="reference/ct_finish.html">ct_finish()</a></code>. Reverse that order and highlights fall back to a hardcoded navy.</p>
+<p><code>end_labels</code> also accepts <code>"first_facet"</code>, which pins every label to the first panel instead of the panel each series happens to end in.</p>
 </div>
 <div class="section level2">
-<h2 id="roadmap">Roadmap<a class="anchor" aria-label="anchor" href="#roadmap"></a>
+<h2 id="palettes-and-scales">Palettes and scales<a class="anchor" aria-label="anchor" href="#palettes-and-scales"></a>
 </h2>
-<p><code>install_consulting_fonts()</code>, three vignettes (theme comparison, locale and number formatting, font setup), and a polished pkgdown gallery. The companion package <code>ctplot</code> — <code>ct_waterfall()</code>, <code>ct_slope()</code>, <code>ct_dumbbell()</code>, and PPT export via <code>officer</code> — will follow in a separate repo.</p>
+<p>Palettes come in three families keyed to the archetypes, with several options in each. Every palette holds six colours, and the first is the main colour that <code><a href="reference/ct_theme.html">ct_theme()</a></code> routes through <code>element_geom(ink = )</code>.</p>
+<ul>
+<li>
+<code><a href="reference/ct_palette.html">ct_palette()</a></code> returns a palette’s colours, or lists the available names when called with no arguments.</li>
+<li>
+<code><a href="reference/ct_scales.html">scale_colour_ct()</a></code> and <code><a href="reference/ct_scales.html">scale_fill_ct()</a></code> map discrete data onto a palette. They interpolate and warn once the data needs more levels than the palette holds.</li>
+<li>
+<code><a href="reference/ct_scales.html">scale_colour_ct_c()</a></code> and <code><a href="reference/ct_scales.html">scale_fill_ct_c()</a></code> cover continuous data, with <code>direction = -1</code> to reverse.</li>
+<li>
+<code><a href="reference/ct_palette_show.html">ct_palette_show()</a></code> previews one palette, a custom hex vector, or every shipped palette at once.</li>
+</ul>
+<p>American and British spellings are both exported.</p>
+</div>
+<div class="section level2">
+<h2 id="locale-aware-labels">Locale-aware labels<a class="anchor" aria-label="anchor" href="#locale-aware-labels"></a>
+</h2>
+<p><code><a href="reference/ct_locale.html">ct_locale()</a></code> switches the active locale between <code>"pt-BR"</code> and <code>"en-US"</code> for the session. It writes to <code>options(ggconsulting.locale)</code> and never touches <code><a href="https://rdrr.io/r/base/locales.html" class="external-link">Sys.setlocale()</a></code>, so output matches across Windows, Linux, and macOS. The package carries its own month names rather than reading <code>LC_TIME</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ct_formatters.html">fmt_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fl">1234567.8</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "1.234.568"</span></span>
+<span><span class="fu"><a href="reference/ct_formatters.html">fmt_brl</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1234.5</span>, <span class="op">-</span><span class="fl">890</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "R$ 1.234,50" "-R$ 890,00"</span></span>
+<span><span class="fu"><a href="reference/ct_formatters.html">fmt_month</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2024-03-01"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "mar"</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/ct_locale.html">ct_locale</a></span><span class="op">(</span><span class="st">"en-US"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/ct_formatters.html">fmt_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fl">1234567.8</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "1,234,568"</span></span>
+<span><span class="fu"><a href="reference/ct_formatters.html">fmt_month</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2024-03-01"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Mar"</span></span></code></pre></div>
+<p><code><a href="reference/ct_formatters.html">fmt_number()</a></code>, <code><a href="reference/ct_formatters.html">fmt_pct()</a></code>, <code><a href="reference/ct_formatters.html">fmt_delta()</a></code>, and <code><a href="reference/ct_formatters.html">fmt_currency()</a></code> all follow the active locale. <code><a href="reference/ct_formatters.html">fmt_brl()</a></code> always renders Brazilian Real with <code>R$</code> and a non-breaking space whatever the locale, and takes <code>style = "accounting"</code> for negatives in parentheses. Each returns a function, so they drop straight into the <code>labels</code> argument of a scale.</p>
+</div>
+<div class="section level2">
+<h2 id="geoms-and-defaults">Geoms and defaults<a class="anchor" aria-label="anchor" href="#geoms-and-defaults"></a>
+</h2>
+<p><code><a href="reference/ct_geoms.html">ct_col()</a></code>, <code><a href="reference/ct_geoms.html">ct_line()</a></code>, and <code><a href="reference/ct_geoms.html">ct_point()</a></code> wrap their ggplot2 counterparts with different defaults for <code>width</code>, <code>linewidth</code>, and <code>size</code>. Everything else passes through.</p>
+<p>Attaching the package also calls <code><a href="reference/ct_defaults.html">ct_set_defaults()</a></code>, which routes a small set of aesthetic defaults through <code><a href="https://ggplot2.tidyverse.org/reference/update_defaults.html" class="external-link">update_geom_defaults()</a></code>. Turn it off with <code>options(ggconsulting.autoload = FALSE)</code> before loading, or call <code><a href="reference/ct_defaults.html">ct_unset_defaults()</a></code> mid-session to restore the ggplot2 originals.</p>
+<p>One gotcha carries over from ggplot2. <code><a href="reference/ct_geoms.html">ct_col()</a></code>’s <code>width</code> counts in x-axis units, so on a Date axis it means 0.8 <em>days</em> and the bars render as slivers. Convert x to a factor or an index for bar charts.</p>
+</div>
+<div class="section level2">
+<h2 id="fonts">Fonts<a class="anchor" aria-label="anchor" href="#fonts"></a>
+</h2>
+<p><code><a href="reference/has_font.html">has_font()</a></code> reports whether a family is available, checking both installed and session-registered fonts. <code><a href="reference/install_consulting_fonts.html">install_consulting_fonts()</a></code> fetches the defaults from Google Fonts. It asks before writing to your home directory unless <code>options(ggconsulting.font_consent = TRUE)</code> is set.</p>
+<p>Themes degrade gracefully. <code><a href="reference/ct_theme.html">ct_theme()</a></code> walks <code>font</code> then <code>font_fallback</code> and takes the first family present, so a missing Inter lands on Helvetica Neue, Arial, or the generic sans rather than failing.</p>
+</div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<p>The function reference and further examples live at <a href="https://viniciusoike.github.io/ggconsulting/" class="uri">https://viniciusoike.github.io/ggconsulting/</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -176,15 +235,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/viniciusoike/ggconsulting/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/viniciusoike/ggconsulting/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/viniciusoike/ggconsulting" class="external-link"><img src="https://codecov.io/gh/viniciusoike/ggconsulting/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a></li>
-</ul>
-</div>
+
 
   </aside>
 </div>
@@ -195,7 +246,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

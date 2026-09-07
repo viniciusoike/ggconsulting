@@ -54,6 +54,14 @@ A ggplot2
 [`ggplot2::layer()`](https://ggplot2.tidyverse.org/reference/layer.html)
 object.
 
+## Bar charts with Date x
+
+`ct_col()`'s default `width = 0.8` is in *x-axis units*. On a Date
+x-axis that is 0.8 *days*, which renders bars as slivers when the data
+is spaced quarterly or monthly. For bar charts, convert the x variable
+to either an ordered factor (e.g. `"21Q1"`, `"21Q2"`, ...) or a numeric
+index before plotting; line charts on Date are fine.
+
 ## Examples
 
 ``` r

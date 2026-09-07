@@ -13,8 +13,9 @@ set via
 
 - `fmt_currency()` — uses the active locale's currency symbol.
 
-- `fmt_pct()` — percentages, interpreting input as a fraction (`0.5` →
-  `"50%"`).
+- `fmt_pct()` — percentages. By default interprets input as a fraction
+  (`0.5` → `"50%"`); pass `scale = 1` when the input is already in
+  percent units (`50` → `"50%"`).
 
 - `fmt_delta()` — percentage-point-style signed deltas (`+1,2pp` /
   `-0,3pp` / `0,0pp`).
@@ -35,7 +36,7 @@ fmt_brl(decimals = 2, style = c("minus", "accounting"), locale = NULL)
 
 fmt_currency(decimals = 2, style = c("minus", "accounting"), locale = NULL)
 
-fmt_pct(decimals = 1, locale = NULL, accuracy = NULL)
+fmt_pct(decimals = 1, scale = 100, locale = NULL, accuracy = NULL)
 
 fmt_delta(decimals = 1, suffix = "pp", locale = NULL)
 
@@ -55,6 +56,12 @@ fmt_month(format = c("abbr", "full"), locale = NULL)
 - style:
 
   `"minus"` (default) or `"accounting"` for currency.
+
+- scale:
+
+  Multiplier applied to the input before rendering, for `fmt_pct()`
+  only. Defaults to `100` (input is a fraction). Use `scale = 1` when
+  the input is already in percent units.
 
 - accuracy:
 
@@ -83,6 +90,8 @@ fmt_brl()(c(1000, -500))
 #> [1] "R$ 1.000,00" "-R$ 500,00" 
 fmt_pct(decimals = 0)(0.5)
 #> [1] "50%"
+fmt_pct(decimals = 1, scale = 1)(50)
+#> [1] "50,0%"
 fmt_delta()(c(1.2, -0.3, 0))
 #> [1] "+1,2pp" "-0,3pp" "0,0pp" 
 fmt_month()(as.Date("2026-08-15"))

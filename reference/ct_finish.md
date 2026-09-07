@@ -17,6 +17,9 @@ ct_finish(
   label_fmt = NULL,
   highlight = NULL,
   end_labels = FALSE,
+  end_points = FALSE,
+  axis_y = NULL,
+  mirror_y = FALSE,
   expand = "auto",
   muted_color = "#A8A4A0"
 )
@@ -48,13 +51,41 @@ ct_finish(
 
 - end_labels:
 
-  For line plots: when `TRUE`, label the last point of each series with
-  the group identifier.
+  For line plots: `TRUE` labels the last point of each series with the
+  group identifier. `"first_facet"` draws those labels only in the first
+  panel, which replaces a legend across small multiples; on an unfaceted
+  plot it behaves like `TRUE`. The x aesthetic may be numeric, `Date`,
+  or `POSIXct`.
+
+- end_points:
+
+  For line plots: when `TRUE`, draw a filled point at each series' last
+  observation, under the end label.
+
+- axis_y:
+
+  Moves the y axis. `"right"` or `"left"`; `NULL` (default) leaves it
+  where the scale puts it. Applied through
+  [`ggplot2::guide_axis()`](https://ggplot2.tidyverse.org/reference/guide_axis.html),
+  so it does not disturb a `scale_y_*()` call of your own.
+
+- mirror_y:
+
+  When `TRUE`, repeats the y-axis ticks on the opposite edge without
+  labels, so the eye can track a level across a wide panel. Pairs with a
+  gridline-free theme such as
+  [`theme_finance()`](https://viniciusoike.github.io/ggconsulting/reference/theme_finance.md).
+  Applied through
+  [`ggplot2::guides()`](https://ggplot2.tidyverse.org/reference/guides.html),
+  so it leaves a `scale_y_*()` call of your own alone.
 
 - expand:
 
   `"auto"` picks geom-aware scale expansion (room above column tops,
-  right-side room for line end labels); `FALSE` disables.
+  right-side room for line end labels); `FALSE` disables. Auto expansion
+  defers to a positional scale you supplied yourself, so a
+  `scale_y_continuous(labels = )` keeps its labels; set the expansion in
+  that call when you need both.
 
 - muted_color:
 

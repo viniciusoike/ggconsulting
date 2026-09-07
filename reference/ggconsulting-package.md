@@ -10,6 +10,8 @@ Useful links:
 
 - <https://github.com/viniciusoike/ggconsulting>
 
+- <https://viniciusoike.github.io/ggconsulting/>
+
 - Report bugs at <https://github.com/viniciusoike/ggconsulting/issues>
 
 ## Author

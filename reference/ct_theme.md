@@ -24,7 +24,8 @@ ct_theme(
   density = c("normal", "tight", "loose"),
   context = c("presentation", "report", "screen"),
   base_size = NULL,
-  main_color = NULL
+  main_color = NULL,
+  paper = NULL
 )
 ```
 
@@ -67,6 +68,19 @@ ct_theme(
   fixed neutral near-black (`#1A1A1A`); override with a follow-on
   [`theme()`](https://ggplot2.tidyverse.org/reference/theme.html) call
   if you want it palette-tinted.
+
+- paper:
+
+  Figure ground colour. `NULL` (default) leaves
+  [`ggplot2::theme_minimal()`](https://ggplot2.tidyverse.org/reference/ggtheme.html)'s
+  white background untouched. Otherwise one of the shortcuts `"cream"`,
+  `"warm_grey"`, `"white"`, or any colour
+  [`grDevices::col2rgb()`](https://rdrr.io/r/grDevices/col2rgb.html)
+  accepts. Because
+  [`theme_minimal()`](https://ggplot2.tidyverse.org/reference/ggtheme.html)
+  leaves the panel background blank, filling the plot background alone
+  gives a uniform ground with no panel-versus-plot seam. Setting `paper`
+  also warms the major gridline to match it.
 
 ## Value
 

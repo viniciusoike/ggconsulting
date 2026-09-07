@@ -1,0 +1,65 @@
+# Quarterly P&L for a fictional Brazilian conglomerate
+
+Simulated quarterly revenue, COGS, EBITDA, and headcount for five
+business units of a mid-cap Brazilian conglomerate, spanning 16 quarters
+(2021-Q1 through 2024-Q4). Suitable for demos of
+[`theme_strategy()`](https://viniciusoike.github.io/ggconsulting/reference/theme_strategy.md),
+stacked-bar
+[`ct_finish()`](https://viniciusoike.github.io/ggconsulting/reference/ct_finish.md)
+value labels, and
+[`fmt_brl()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md).
+All monetary values are in millions of Brazilian Real (R\$ MM).
+
+## Usage
+
+``` r
+bu_quarterly
+```
+
+## Format
+
+A data frame with 80 rows and 6 columns:
+
+- quarter:
+
+  First day of the calendar quarter (Date).
+
+- business_unit:
+
+  Factor with 5 levels: Industrial, Consumer, Health, Logistics,
+  Digital.
+
+- revenue_brl:
+
+  Net revenue, R\$ MM (numeric).
+
+- cogs_brl:
+
+  Cost of goods sold, R\$ MM (numeric).
+
+- ebitda_brl:
+
+  EBITDA, R\$ MM (numeric); can be negative.
+
+- headcount:
+
+  Period-end full-time-equivalent employees (integer).
+
+## Source
+
+Simulated. See `data-raw/bu_quarterly.R`.
+
+## Examples
+
+``` r
+head(bu_quarterly)
+#> # A tibble: 6 × 6
+#>   quarter    business_unit revenue_brl cogs_brl ebitda_brl headcount
+#>   <date>     <fct>               <dbl>    <dbl>      <dbl>     <int>
+#> 1 2021-01-01 Industrial          103.      62.9       21.3      1630
+#> 2 2021-01-01 Consumer             64.7     36.1        7.8      1152
+#> 3 2021-01-01 Health               41.6     21.1        9.1       612
+#> 4 2021-01-01 Logistics            33.9     23.1        5.5       577
+#> 5 2021-01-01 Digital              12.4      5.6       -0.7       155
+#> 6 2021-04-01 Industrial          109.      69         18.7      1630
+```

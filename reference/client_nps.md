@@ -1,0 +1,53 @@
+# Quarterly NPS by client segment
+
+Simulated quarterly Net Promoter Score for three client segments
+(Enterprise, Mid-Market, SMB) across 12 quarters (2022-Q1 through
+2024-Q4). Suitable for line-chart demos with last-point labels and
+[`fmt_delta()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+/
+[`fmt_pct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md).
+
+## Usage
+
+``` r
+client_nps
+```
+
+## Format
+
+A data frame with 36 rows and 4 columns:
+
+- quarter:
+
+  First day of the calendar quarter (Date).
+
+- segment:
+
+  Factor with 3 levels: Enterprise, Mid-Market, SMB.
+
+- nps:
+
+  Net Promoter Score, integer in \[-100, 100\].
+
+- responses:
+
+  Number of survey responses in the period (integer).
+
+## Source
+
+Simulated. See `data-raw/client_nps.R`.
+
+## Examples
+
+``` r
+head(client_nps)
+#> # A tibble: 6 × 4
+#>   quarter    segment      nps responses
+#>   <date>     <fct>      <int>     <int>
+#> 1 2022-01-01 Enterprise    63        93
+#> 2 2022-01-01 Mid-Market    39       268
+#> 3 2022-01-01 SMB           30       915
+#> 4 2022-04-01 Enterprise    65       110
+#> 5 2022-04-01 Mid-Market    45       255
+#> 6 2022-04-01 SMB           30      1234
+```

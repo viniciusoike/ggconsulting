@@ -10,8 +10,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![Project Status:
 WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![R-CMD-check](https://github.com/viniciusoike/ggconsulting/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/viniciusoike/ggconsulting/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/viniciusoike/ggconsulting/graph/badge.svg)](https://app.codecov.io/gh/viniciusoike/ggconsulting)
+[![r-universe
+version](https://viniciusoike.r-universe.dev/ggconsulting/badges/version)](https://viniciusoike.r-universe.dev/ggconsulting)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
@@ -80,6 +80,21 @@ labels, but it defers to any positional scale you set yourself rather
 than replacing it. This example supplies its own `scale_x_continuous()`
 to get integer year breaks, so it also supplies the right-hand `expand`
 the labels need.
+
+## Why ggconsulting?
+
+- **Data-aware finishing.** `ct_finish()` runs after the geom layer is
+  built, so one addition can add value labels, sort categories,
+  highlight selected observations, label line endpoints, and set
+  geom-aware scale expansion.
+- **Portable locale formatting.** `ct_locale()` and the `fmt_*()`
+  helpers support `pt-BR` and `en-US` without changing
+  `Sys.setlocale()`. `fmt_brl()` keeps Brazilian Real formatting
+  explicit, including accounting negatives.
+- **Theme-driven geoms.** `ct_theme()` routes the main colour and
+  linewidth through ggplot2 4.x’s `from_theme()` mechanism, so unmapped
+  geoms inherit the theme without extra scale calls. The strategy,
+  finance, and editorial presets build on this theme system.
 
 ## Themes
 

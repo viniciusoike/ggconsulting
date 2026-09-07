@@ -61,3 +61,15 @@ reference:
   contents:
   - install_consulting_fonts
   - has_font
+
+- title: Example data
+  desc: >
+    Bundled datasets for demonstrating the package's themes, scales,
+    formatters, and data-aware finishing helpers.
+  contents:
+  - bu_quarterly
+  - market_share
+  - client_nps
+  - ebitda_bridge
+  - ibov_sectors
+  - br_macro

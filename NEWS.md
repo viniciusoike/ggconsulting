@@ -1,3 +1,65 @@
+# ggconsulting 0.1.1
+
+This patch release follows the bundled reference corpus into
+`theme_finance()`, teaches `ct_finish()` to mirror axes and defer to
+caller-supplied scales, records dataset provenance, and starts organised
+documentation: a gallery article, provenance notes with source credits,
+and an R-universe distribution.
+
+## Data-aware polish
+
+* `ct_finish(mirror_y = TRUE)` repeats the y-axis ticks on the opposite
+  edge of the panel, without labels, so the eye can track a level across
+  a wide panel in the absence of gridlines. It pairs with the bare axis
+  of `theme_finance()`.
+* Auto expansion in `ct_finish()` now defers to any positional scale
+  supplied by the caller, so `scale_y_continuous(labels = ...)` keeps
+  its labels instead of being silently replaced. Set the expansion in
+  the same call when you need both labels and headroom.
+
+## Themes
+
+* `theme_finance()` follows the institutional finance chart packs the
+  archetype is drawn from: humanist sans typography (`Source Sans 3`
+  with an Inter / Helvetica Neue / Arial fallback chain) instead of
+  serif, no gridlines, and y-axis ticks to read levels against. Pair
+  with `ct_finish(mirror_y = TRUE)` to repeat the ticks on the right
+  edge of wide panels.
+
+## Fonts
+
+* `install_consulting_fonts()` now installs to the per-user Windows
+  Fonts directory by default and registers the installed fonts for the
+  active R session.
+
+## Distribution and documentation
+
+* The package is available from R-universe, with source and binary
+  builds for supported platforms.
+* The README is rewritten against the current API, with a quick start
+  that demos `ct_finish()` end labels and a Why ggconsulting? summary.
+  The Codecov badge is replaced by the R-universe version badge.
+* New article "Themes and palettes": a gallery with one plot per
+  archetype preset plus the discrete and continuous scales, indexed
+  under a pkgdown Articles navbar entry. The site gains a Datasets
+  reference section.
+* Dataset provenance is recorded in `data-raw/README.md` and mirrored
+  into the dataset help pages. Beyond new disclaimers, this corrects
+  the `br_macro` description (BCB SGS series 4189 and 3696; sale-rate
+  USD/BRL; monthly source series rather than aggregated dailies) and
+  credits B3 for `ibov_sectors`. Bundled snapshots note that BCB, IBGE,
+  and B3 do not endorse the package.
+* The package has a hex logo, regenerable with
+  `data-raw/create_hexlogo.R`, shown on the package help page.
+
+## Development
+
+* `data-raw/references/` catalogues 22 institutional finance
+  references, with McKinsey- and IMF-style briefs to guide future theme
+  work.
+* Local agent and editor files (`.Rprofile`, `CLAUDE.md`, `AGENTS.md`,
+  Playwright MCP session output, `README.html`) are no longer tracked.
+
 # ggconsulting 0.1.0
 
 First public release. ggconsulting is an opinionated ggplot2 extension for

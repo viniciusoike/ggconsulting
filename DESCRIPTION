@@ -1,7 +1,7 @@
 Package: ggconsulting
 Type: Package
 Title: Executive-Grade Themes and Helpers for 'ggplot2'
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person(
       "Vinicius", "Reginatto",

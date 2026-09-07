@@ -6,6 +6,14 @@ template:
 development:
   mode: auto
 
+articles:
+- title: Articles
+  navbar: Articles
+  desc: >
+    A quick gallery of the built-in themes and palettes.
+  contents:
+  - themes-and-palettes
+
 reference:
 - title: Themes
   desc: >
@@ -62,10 +70,9 @@ reference:
   - install_consulting_fonts
   - has_font
 
-- title: Example data
+- title: Datasets
   desc: >
-    Bundled datasets for demonstrating the package's themes, scales,
-    formatters, and data-aware finishing helpers.
+    Example datasets used in documentation and gallery examples.
   contents:
   - bu_quarterly
   - market_share

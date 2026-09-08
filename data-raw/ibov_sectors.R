@@ -2,8 +2,19 @@
 # Long format: one row per (sector_index, month). Snapshot frozen at 2024-12-31.
 # Covers 2020-01 through 2024-12 (~60 months × 7 indices = ~420 rows).
 #
-# Source: B3 historical index series. Re-pulled via the `rb3` package (or
-# B3's daily index downloads); see the re-pull script at the bottom.
+# Source: B3 S.A. – Brasil, Bolsa, Balcao, historical index series, retrieved
+# via the `rb3` package. B3 is the data producer; `rb3` is a retrieval tool.
+# Official source: https://www.b3.com.br/pt_br/market-data-e-indices/
+# servicos-de-dados/market-data/historico/mercado-a-vista/series-historicas/
+# See the re-pull script at the bottom.
+#
+# The raw snapshot includes 2019-12 as a baseline for the first 2020-01
+# return. `close` is selected as the last daily observation in each month;
+# `return_m` is derived in this repository as the arithmetic monthly return.
+#
+# Disclaimer: this is a frozen, transformed snapshot, not a live or official
+# current B3 index feed. B3 does not endorse this package. Check B3's current
+# terms before refreshing or redistributing the data.
 #
 # Indices included:
 #   IBOV  Ibovespa (benchmark)

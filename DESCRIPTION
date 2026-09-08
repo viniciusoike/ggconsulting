@@ -1,7 +1,7 @@
 Package: ggconsulting
 Type: Package
 Title: Executive-Grade Themes and Helpers for 'ggplot2'
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person(
       "Vinicius", "Reginatto",
@@ -30,9 +30,12 @@ Imports:
     systemfonts (>= 1.0.0),
     utils
 Suggests:
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0),
     vdiffr,
     withr
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

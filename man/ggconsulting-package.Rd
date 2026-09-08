@@ -6,6 +6,8 @@
 \alias{ggconsulting-package}
 \title{ggconsulting: Executive-Grade Themes and Helpers for 'ggplot2'}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 An opinionated 'ggplot2' extension for executive-grade consulting output. Ships archetype themes, palettes, scale helpers, locale-aware label helpers, and a data-aware polish layer.
 }
 \seealso{

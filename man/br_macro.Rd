@@ -8,21 +8,25 @@
 A data frame with 154 rows and 6 columns:
 \describe{
 \item{date}{First day of the month (Date).}
-\item{selic}{Meta Selic, \% a.a., end-of-month (numeric).}
+\item{selic}{Selic accumulated in the month, annualized using base 252,
+\% a.a. (numeric).}
 \item{ipca_12m}{IPCA accumulated over the trailing 12 months, \%
 (numeric).}
 \item{ibc_br}{IBC-Br activity index, seasonally adjusted, 2002=100
 (numeric).}
-\item{usd_brl}{USD/BRL exchange rate (compra), BRL per USD,
+\item{usd_brl}{USD/BRL exchange rate (sale), BRL per USD,
 end-of-month (numeric).}
 \item{unemployment}{PNADC unemployment rate, \% (numeric).}
 }
 }
 \source{
-Banco Central do Brasil SGS, series 432, 13522, 24364, 1,
-and 24369. Unemployment originates with IBGE PNADC and is
-redistributed through SGS. Fetched via the \code{rbcb} package.
-Snapshot date: 2024-12-31. See \code{data-raw/br_macro.R}.
+Banco Central do Brasil, Sistema Gerenciador de Séries Temporais
+(SGS), series 4189, 13522, 24364, 3696, and 24369. Series 24369 is
+PNADC data from IBGE redistributed through SGS. Fetched via the \code{rbcb}
+package. The snapshot ends on 2024-12-31; values are rounded and
+transformed in this repository, and this is not an official current BCB
+or IBGE release. See \code{data-raw/br_macro.R} and
+\url{https://www3.bcb.gov.br/sgspub/}.
 }
 \usage{
 br_macro
@@ -34,8 +38,9 @@ per indicator. Snapshot frozen at 2024-12-31. Suitable for
 \code{\link[=theme_editorial]{theme_editorial()}} demos and \code{ct_locale("pt-BR")} formatting.
 }
 \details{
-Indicators are reported in their native units; daily series
-(\code{selic}, \code{usd_brl}) are sampled at the end of each month.
+All source series are monthly. The \code{usd_brl} series is the BCB sale
+rate at the end of the period; dates are normalized to the first day of
+each month in this snapshot.
 }
 \examples{
 head(br_macro)

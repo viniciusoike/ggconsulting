@@ -7,7 +7,7 @@ and small-multiples."><meta property="og:description" content="Monthly closing v
 (IBOV) and six B3 sector indices, covering 2020-01 through 2024-12.
 Snapshot frozen at 2024-12-31. Long format: one row per
 (sector_index, month). Suitable for theme_finance() demos
-and small-multiples."></head><body>
+and small-multiples."><meta property="og:image" content="https://viniciusoike.github.io/ggconsulting/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -15,7 +15,7 @@ and small-multiples."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ggconsulting</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,6 +24,12 @@ and small-multiples."></head><body>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Articles</h6></li>
+    <li><a class="dropdown-item" href="../articles/themes-and-palettes.html">Themes and palettes</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -35,8 +41,7 @@ and small-multiples."></head><body>
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Monthly B3 sector indices</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Monthly B3 sector indices</h1>
       <small class="dont-index">Source: <a href="https://github.com/viniciusoike/ggconsulting/blob/main/R/data.R" class="external-link"><code>R/data.R</code></a></small>
       <div class="d-none name"><code>ibov_sectors.Rd</code></div>
     </div>
@@ -74,9 +79,12 @@ IEEX, ICON, IMOB.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
-    <p>B3 historical index series, fetched via the <code>rb3</code>
-package. Snapshot date: 2024-12-31. See
-<code>data-raw/ibov_sectors.R</code>.</p>
+    <p>B3 S.A. – Brasil, Bolsa, Balcão, historical index series for the
+Ibovespa and B3 sector indices, fetched via the <code>rb3</code> package. The
+snapshot ends on 2024-12-31; <code>close</code> and <code>return_m</code> are transformed or
+derived in this repository. B3 does not endorse this package. See
+<code>data-raw/ibov_sectors.R</code> and
+<a href="https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-de-segmentos-e-setoriais/" class="external-link">https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-de-segmentos-e-setoriais/</a>.</p>
     </div>
 
     <div class="section level2">

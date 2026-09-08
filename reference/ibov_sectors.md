@@ -36,8 +36,12 @@ A data frame with ~420 rows and 4 columns:
 
 ## Source
 
-B3 historical index series, fetched via the `rb3` package. Snapshot
-date: 2024-12-31. See `data-raw/ibov_sectors.R`.
+B3 S.A. – Brasil, Bolsa, Balcão, historical index series for the
+Ibovespa and B3 sector indices, fetched via the `rb3` package. The
+snapshot ends on 2024-12-31; `close` and `return_m` are transformed or
+derived in this repository. B3 does not endorse this package. See
+`data-raw/ibov_sectors.R` and
+<https://www.b3.com.br/pt_br/market-data-e-indices/indices/indices-de-segmentos-e-setoriais/>.
 
 ## Examples
 

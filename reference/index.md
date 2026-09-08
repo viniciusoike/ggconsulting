@@ -87,10 +87,9 @@ Font installation helper and availability check.
 - [`has_font()`](https://viniciusoike.github.io/ggconsulting/reference/has_font.md)
   : Test whether a font family is available
 
-## Example data
+## Datasets
 
-Bundled datasets for demonstrating the package’s themes, scales,
-formatters, and data-aware finishing helpers.
+Example datasets used in documentation and gallery examples.
 
 - [`bu_quarterly`](https://viniciusoike.github.io/ggconsulting/reference/bu_quarterly.md)
   : Quarterly P&L for a fictional Brazilian conglomerate

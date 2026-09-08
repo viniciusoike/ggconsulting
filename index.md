@@ -72,6 +72,28 @@ it. This example supplies its own
 to get integer year breaks, so it also supplies the right-hand `expand`
 the labels need.
 
+## Why ggconsulting?
+
+- **Data-aware finishing.**
+  [`ct_finish()`](https://viniciusoike.github.io/ggconsulting/reference/ct_finish.md)
+  runs after the geom layer is built, so one addition can add value
+  labels, sort categories, highlight selected observations, label line
+  endpoints, and set geom-aware scale expansion.
+- **Portable locale formatting.**
+  [`ct_locale()`](https://viniciusoike.github.io/ggconsulting/reference/ct_locale.md)
+  and the `fmt_*()` helpers support `pt-BR` and `en-US` without changing
+  [`Sys.setlocale()`](https://rdrr.io/r/base/locales.html).
+  [`fmt_brl()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
+  keeps Brazilian Real formatting explicit, including accounting
+  negatives.
+- **Theme-driven geoms.**
+  [`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)
+  routes the main colour and linewidth through ggplot2 4.x’s
+  [`from_theme()`](https://ggplot2.tidyverse.org/reference/aes_eval.html)
+  mechanism, so unmapped geoms inherit the theme without extra scale
+  calls. The strategy, finance, and editorial presets build on this
+  theme system.
+
 ## Themes
 
 [`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)

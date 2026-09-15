@@ -4,15 +4,23 @@ Title: Executive-Grade Themes and Helpers for 'ggplot2'
 Version: 0.1.1
 Authors@R: c(
     person(
-      "Vinicius", "Reginatto",
+      "Vinicius", "Oike",
       email = "viniciusoike@gmail.com",
-      role = c("aut", "cre")
+      role = c("aut", "cre", "cph")
     )
   )
 Description: An opinionated 'ggplot2' extension for executive-grade
-    consulting output. Ships archetype themes, palettes, scale helpers,
-    locale-aware label helpers, and a data-aware polish layer.
+    consulting output, built to make slides and reports look polished
+    without per-project tweaking. Ships a set of archetype themes that
+    match common consulting deliverables (situation assessment, roadmap,
+    benchmark, deep dive) and pairs them with coordinated color
+    palettes and scale helpers. Locale-aware label functions format
+    numbers, currency, and dates for Brazilian Portuguese and English
+    audiences. A data-aware polish layer inspects the plot and applies
+    sensible finishing touches, so charts stay readable and consistent
+    across an entire engagement.
 License: MIT + file LICENSE
+Logo: man/figures/logo.png
 URL: https://github.com/viniciusoike/ggconsulting, https://viniciusoike.github.io/ggconsulting/
 BugReports: https://github.com/viniciusoike/ggconsulting/issues
 Depends:

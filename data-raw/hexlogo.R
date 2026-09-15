@@ -6,7 +6,7 @@ library(showtext)
 import::from(ggconsulting, ct_palette)
 
 colors <- c(
-  ct_palette("strategy_navy", 5)[2],
+  ct_palette("strategy_navy", 5)[1],
   ct_palette("strategy_emerald", 5)[3],
   ct_palette("strategy_slate", 5)[2],
   ct_palette("strategy_navy", 6)[5],
@@ -14,11 +14,13 @@ colors <- c(
   ct_palette("finance_classic", 6)[5]
 )
 
+colors <- colors[1:4]
+
 # Setup fonts for high-quality rendering. Avenir is a system font on macOS;
 # adjust the path if registering it fails on your platform.
 # Lato is the EKIO body font; the wordmark itself draws in Avenir.
-# font_add("IBM Plex Sans", regular = "/System/Library/Fonts/Avenir.ttc")
-sysfonts::font_add_google("IBM Plex Sans", "IBM Plex Sans")
+font_add("Georgia", regular = "/System/Library/Fonts/Georgia.ttf")
+# sysfonts::font_add_google("IBM Plex Sans", "IBM Plex Sans")
 showtext_opts(dpi = 400)
 showtext_auto()
 
@@ -56,15 +58,15 @@ sticker(
   subplot = subplot,
   s_x = 1,
   s_y = 1,
-  s_width = 1.5,
-  s_height = 1.75,
+  s_width = 2.5,
+  s_height = 2.75,
   package = "ggconsulting",
-  p_x = 0.72,
-  p_y = 1.33,
-  p_color = "#FFFFFF",
-  p_family = "IBM Plex Sans",
-  p_size = 4,
-  h_fill = "#FFFFFF",
+  p_x = 1.175,
+  p_y = 1.25,
+  p_color = "#FFFFFC",
+  p_family = "Georgia",
+  p_size = 5,
+  h_fill = "#FFFFFC",
   h_color = "#000000",
   h_size = 1.2,
   filename = "man/figures/logo.png",

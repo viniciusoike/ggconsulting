@@ -47,16 +47,16 @@ ct_palette()
 
 # Full palette
 ct_palette("strategy_navy")
-#> [1] "#051C2C" "#1F4E79" "#4B8BBE" "#9FBFD9" "#C8A064" "#646E78"
+#> [1] "#051C2C" "#153C50" "#1A5D7D" "#9FBFD9" "#C8A064" "#646E78"
 
 # First 3 colours
 ct_palette("strategy_navy", n = 3)
-#> [1] "#051C2C" "#1F4E79" "#4B8BBE"
+#> [1] "#051C2C" "#153C50" "#1A5D7D"
 
 # Interpolate to 9 colours
 ct_palette("strategy_navy", n = 9)
 #> Warning: Requested 9 colours from a palette of 6; interpolating.
 #> ℹ Consider a larger palette or a continuous scale via `scale_color_ct_c()`.
-#> [1] "#051C2C" "#153B5C" "#2A5D8A" "#4583B5" "#74A4CB" "#A4BBCA" "#BDA781"
+#> [1] "#051C2C" "#0F3042" "#16445B" "#195877" "#5C8DAA" "#A4BBCA" "#BDA781"
 #> [8] "#A28D6B" "#646E78"
 ```

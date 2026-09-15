@@ -3,7 +3,7 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   themes-and-palettes: themes-and-palettes.html
-last_built: 2026-09-08T02:41Z
+last_built: 2026-09-15T17:34Z
 urls:
   reference: https://viniciusoike.github.io/ggconsulting/reference
   article: https://viniciusoike.github.io/ggconsulting/articles

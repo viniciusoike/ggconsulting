@@ -17,8 +17,8 @@ colors <- c(
 # Setup fonts for high-quality rendering. Avenir is a system font on macOS;
 # adjust the path if registering it fails on your platform.
 # Lato is the EKIO body font; the wordmark itself draws in Avenir.
-# font_add("IBM Plex Sans", regular = "/System/Library/Fonts/Avenir.ttc")
-sysfonts::font_add_google("IBM Plex Sans", "IBM Plex Sans")
+font_add("Georgia", regular = "/System/Library/Fonts/Georgia.ttc")
+# sysfonts::font_add_google("IBM Plex Sans", "IBM Plex Sans")
 showtext_opts(dpi = 400)
 showtext_auto()
 
@@ -61,10 +61,10 @@ sticker(
   package = "ggconsulting",
   p_x = 0.72,
   p_y = 1.33,
-  p_color = "#FFFFFF",
-  p_family = "IBM Plex Sans",
+  p_color = "#FFFFFC",
+  p_family = "Georgia",
   p_size = 4,
-  h_fill = "#FFFFFF",
+  h_fill = "#FFFFFC",
   h_color = "#000000",
   h_size = 1.2,
   filename = "man/figures/logo.png",

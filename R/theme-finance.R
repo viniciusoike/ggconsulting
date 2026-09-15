@@ -33,17 +33,19 @@
 #' p <- ggplot(economics, aes(date, unemploy)) +
 #'   geom_line() +
 #'   theme_finance()
-theme_finance <- function(main_color = NULL,
-                          density = "tight",
-                          context = "report",
-                          ...) {
+theme_finance <- function(
+  main_color = NULL,
+  density = "tight",
+  context = "report",
+  ...
+) {
   th <- ct_theme(
-    palette       = "finance_classic",
-    font          = "Source Sans 3",
+    palette = "finance_classic",
+    font = "Source Sans 3",
     font_fallback = c("Inter", "Helvetica Neue", "Arial", "sans"),
-    density       = density,
-    context       = context,
-    main_color    = main_color,
+    density = density,
+    context = context,
+    main_color = main_color,
     ...
   )
 

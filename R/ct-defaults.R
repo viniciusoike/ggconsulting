@@ -52,8 +52,10 @@ ct_unset_defaults <- function() {
     return(invisible(NULL))
   }
   .ct_env$originals <- list(
-    geom_point_size =
-      utils::getFromNamespace("GeomPoint", "ggplot2")$default_aes$size
+    geom_point_size = utils::getFromNamespace(
+      "GeomPoint",
+      "ggplot2"
+    )$default_aes$size
   )
   .ct_env$captured <- TRUE
   invisible(NULL)

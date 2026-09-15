@@ -14,9 +14,10 @@ p_facet_macro <- ggplot(macro_long, aes(date, value)) +
   ct_line() +
   facet_wrap(vars(series), scales = "free_y") +
   labs(
-    title    = "Brazilian macro snapshot",
+    title = "Brazilian macro snapshot",
     subtitle = "Five headline indicators, free y per panel",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_strategy(base_size = 10)
 p_facet_macro
@@ -27,9 +28,10 @@ p_facet_sectors <- ggplot(ibov_sectors, aes(date, close)) +
   ct_line() +
   facet_wrap(vars(sector_index), scales = "free_y") +
   labs(
-    title    = "B3 sector indices",
+    title = "B3 sector indices",
     subtitle = "Monthly close; free y per panel",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_finance()
 p_facet_sectors
@@ -39,7 +41,7 @@ p_facet_sectors
 bu_long <- bu_quarterly |>
   pivot_longer(
     cols = c(revenue_brl, ebitda_brl),
-    names_to  = "metric",
+    names_to = "metric",
     values_to = "value"
   )
 
@@ -48,9 +50,10 @@ p_facet_grid <- ggplot(bu_long, aes(quarter, value)) +
   facet_grid(metric ~ business_unit, scales = "free_y") +
   scale_y_continuous(labels = fmt_brl(decimals = 0)) +
   labs(
-    title    = "Quarterly revenue and EBITDA by business unit",
+    title = "Quarterly revenue and EBITDA by business unit",
     subtitle = "facet_grid(metric ~ business_unit, scales = \"free_y\")",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_strategy(base_size = 9, density = "tight")
 p_facet_grid
@@ -61,9 +64,10 @@ p_facet_finance_tight <- ggplot(macro_long, aes(date, value)) +
   ct_line() +
   facet_wrap(vars(series), scales = "free_y", ncol = 3) +
   labs(
-    title    = "Macro panel — finance, tight density",
+    title = "Macro panel — finance, tight density",
     subtitle = "theme_finance() defaults: density = tight, context = report",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_finance()
 p_facet_finance_tight

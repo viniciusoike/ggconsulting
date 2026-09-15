@@ -2,11 +2,19 @@
 
 # Internal store. Each entry is a character vector of hex colours, with
 # index 1 acting as the palette's "main" colour.
+#
+# Provenance rules: anchors and accents come from the reference corpus in
+# data-raw/references/briefs/; mid-tones are derived from those anchors
+# (fixed-weight blends, lightness-checked) so no colour is imported from an
+# external system (Tailwind, Chakra, PowerBI, coolors, MS Office, Pantone,
+# Flat UI, and the like).
 .ct_palettes <- list(
+  # anchors: McKinsey dark (briefs/mckinsey.md); mid-tones: anchor-to-cyan
+  # blends desaturated to the corpus muted rule; accent: owned gold.
   strategy_navy = c(
     "#051C2C",
-    "#1F4E79",
-    "#4B8BBE",
+    "#153C50",
+    "#1A5D7D",
     "#9FBFD9",
     "#C8A064",
     "#646E78"
@@ -19,24 +27,30 @@
     "#C8A064",
     "#646E78"
   ),
+  # ramp: blends of the owned crimson shades; [2] replaces the US-flag
+  # "Old Glory Red" (#B22234).
   strategy_crimson = c(
     "#7A1F2B",
-    "#B22234",
+    "#9B343B",
     "#D75A5A",
     "#E8B5B5",
     "#3D5A6B",
     "#646E78"
   ),
+  # ramp anchor: owned azure[2] darkened; replaces a colour that matched
+  # Pantone Classic Blue 2020 (#0F4C81).
   strategy_azure = c(
-    "#0F4C81",
+    "#124B7F",
     "#1A6BB6",
     "#5FA3DC",
     "#B0D4F1",
     "#E8743C",
     "#646E78"
   ),
+  # ramp anchor: blend of the strategy anchor toward the owned tail grey;
+  # replaces a colour that matched Flat UI's "Midnight Blue".
   strategy_slate = c(
-    "#2C3E50",
+    "#30414E",
     "#4F6D8A",
     "#7BA4C4",
     "#C5D5E3",
@@ -83,12 +97,16 @@
     "#4A6B5C",
     "#5C5550"
   ),
+  # rebuilt from the editorial corpus (briefs/ft.md sampled table): FT
+  # burgundy/rust/red ramp, a cream-washed tint of the red, FT teal as the
+  # counter-hue accent, owned warm-grey tail. Replaces a palette that
+  # matched coolors.co's 5-colour charcoal/persian-green/saffron set.
   editorial_oxide = c(
-    "#264653",
-    "#2A9D8F",
-    "#E9C46A",
-    "#F4A261",
-    "#E76F51",
+    "#74172F",
+    "#AF4D3A",
+    "#E15A60",
+    "#F2ADA9",
+    "#98CCB5",
     "#5C5550"
   )
 )
@@ -134,7 +152,9 @@ ct_palette <- function(palette = NULL, n = NULL, reverse = FALSE) {
   }
 
   pal <- .resolve_palette(palette)
-  if (reverse) pal <- rev(pal)
+  if (reverse) {
+    pal <- rev(pal)
+  }
 
   if (is.null(n)) {
     return(pal)
@@ -157,8 +177,11 @@ ct_palette <- function(palette = NULL, n = NULL, reverse = FALSE) {
 # Palette resolver ----
 
 .resolve_palette <- function(palette) {
-  if (is.character(palette) && length(palette) == 1L &&
-      palette %in% names(.ct_palettes)) {
+  if (
+    is.character(palette) &&
+      length(palette) == 1L &&
+      palette %in% names(.ct_palettes)
+  ) {
     return(.ct_palettes[[palette]])
   }
   if (is.character(palette)) {

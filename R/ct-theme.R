@@ -137,9 +137,9 @@ ct_theme <- function(
 # Named grounds sampled from the reference briefs: cream is the FT page
 # ground, warm_grey the Economist figure ground.
 .ct_papers <- c(
-  cream     = "#FFF1E5",
+  cream = "#FFF1E5",
   warm_grey = "#F0EFEB",
-  white     = "#FFFFFF"
+  white = "#FFFFFF"
 )
 
 .resolve_paper <- function(paper, call = rlang::caller_env()) {
@@ -163,10 +163,13 @@ ct_theme <- function(
     error = function(e) FALSE
   )
   if (!ok) {
-    cli::cli_abort(c(
-      "{.arg paper} {.val {paper}} is not a colour R recognises.",
-      "i" = "Use a hex string, an {.fn colors} name, or one of {.val {names(.ct_papers)}}."
-    ), call = call)
+    cli::cli_abort(
+      c(
+        "{.arg paper} {.val {paper}} is not a colour R recognises.",
+        "i" = "Use a hex string, an {.fn colors} name, or one of {.val {names(.ct_papers)}}."
+      ),
+      call = call
+    )
   }
   paper
 }

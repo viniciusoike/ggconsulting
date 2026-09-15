@@ -16,7 +16,13 @@ test_that(".font_urls() returns named list with all 5 families", {
   urls <- .font_urls()
   expect_type(urls, "list")
   expect_named(urls)
-  expected <- c("Inter", "Source Sans 3", "Lato", "Source Serif 4", "IBM Plex Sans")
+  expected <- c(
+    "Inter",
+    "Source Sans 3",
+    "Lato",
+    "Source Serif 4",
+    "IBM Plex Sans"
+  )
   expect_true(all(expected %in% names(urls)))
   for (family in names(urls)) {
     expect_type(urls[[family]], "character")
@@ -99,7 +105,10 @@ test_that(".resolve_font() returns the primary when it is installed", {
 })
 
 test_that(".resolve_font() falls through to the first available fallback", {
-  expect_equal(.resolve_font("NotARealFont12345", c("NopeAlsoFake999", "serif")), "serif")
+  expect_equal(
+    .resolve_font("NotARealFont12345", c("NopeAlsoFake999", "serif")),
+    "serif"
+  )
 })
 
 test_that(".resolve_font() returns the last fallback when nothing resolves", {

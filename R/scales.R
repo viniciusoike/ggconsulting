@@ -37,7 +37,7 @@ NULL
 scale_color_ct <- function(palette = "strategy_navy", reverse = FALSE, ...) {
   ggplot2::discrete_scale(
     aesthetics = "colour",
-    palette    = .ct_discrete_palette(palette, reverse),
+    palette = .ct_discrete_palette(palette, reverse),
     ...
   )
 }
@@ -51,7 +51,7 @@ scale_colour_ct <- scale_color_ct
 scale_fill_ct <- function(palette = "strategy_navy", reverse = FALSE, ...) {
   ggplot2::discrete_scale(
     aesthetics = "fill",
-    palette    = .ct_discrete_palette(palette, reverse),
+    palette = .ct_discrete_palette(palette, reverse),
     ...
   )
 }
@@ -60,7 +60,9 @@ scale_fill_ct <- function(palette = "strategy_navy", reverse = FALSE, ...) {
 #' @export
 scale_color_ct_c <- function(palette = "strategy_navy", direction = 1, ...) {
   cols <- .resolve_palette(palette)
-  if (identical(direction, -1)) cols <- rev(cols)
+  if (identical(direction, -1)) {
+    cols <- rev(cols)
+  }
   ggplot2::scale_color_gradientn(colours = cols, ...)
 }
 
@@ -72,7 +74,9 @@ scale_colour_ct_c <- scale_color_ct_c
 #' @export
 scale_fill_ct_c <- function(palette = "strategy_navy", direction = 1, ...) {
   cols <- .resolve_palette(palette)
-  if (identical(direction, -1)) cols <- rev(cols)
+  if (identical(direction, -1)) {
+    cols <- rev(cols)
+  }
   ggplot2::scale_fill_gradientn(colours = cols, ...)
 }
 
@@ -80,7 +84,9 @@ scale_fill_ct_c <- function(palette = "strategy_navy", direction = 1, ...) {
 
 .ct_discrete_palette <- function(palette, reverse = FALSE) {
   pal <- .resolve_palette(palette)
-  if (reverse) pal <- rev(pal)
+  if (reverse) {
+    pal <- rev(pal)
+  }
   n_pal <- length(pal)
 
   function(n) {

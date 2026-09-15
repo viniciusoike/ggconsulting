@@ -54,23 +54,28 @@
 #'   geom_col() +
 #'   ct_finish(values = TRUE, sort = "desc", label_fmt = "brl", highlight = "D") +
 #'   theme_strategy()
-ct_finish <- function(values     = FALSE,
-                      sort       = NULL,
-                      label_fmt  = NULL,
-                      highlight  = NULL,
-                      end_labels = FALSE,
-                      end_points = FALSE,
-                      axis_y     = NULL,
-                      mirror_y   = FALSE,
-                      expand     = "auto",
-                      muted_color = "#A8A4A0") {
+ct_finish <- function(
+  values = FALSE,
+  sort = NULL,
+  label_fmt = NULL,
+  highlight = NULL,
+  end_labels = FALSE,
+  end_points = FALSE,
+  axis_y = NULL,
+  mirror_y = FALSE,
+  expand = "auto",
+  muted_color = "#A8A4A0"
+) {
   if (!is.null(sort) && !sort %in% c("asc", "desc")) {
     cli::cli_abort(
       "{.arg sort} must be {.val NULL}, {.val asc}, or {.val desc}; got {.val {sort}}."
     )
   }
-  if (!isTRUE(end_labels) && !isFALSE(end_labels) &&
-      !identical(end_labels, "first_facet")) {
+  if (
+    !isTRUE(end_labels) &&
+      !isFALSE(end_labels) &&
+      !identical(end_labels, "first_facet")
+  ) {
     cli::cli_abort(
       "{.arg end_labels} must be {.val TRUE}, {.val FALSE}, or {.val first_facet}."
     )
@@ -83,15 +88,15 @@ ct_finish <- function(values     = FALSE,
 
   structure(
     list(
-      values      = values,
-      sort        = sort,
-      label_fmt   = .resolve_label_fmt(label_fmt),
-      highlight   = highlight,
-      end_labels  = end_labels,
-      end_points  = isTRUE(end_points),
-      axis_y      = axis_y,
-      mirror_y    = isTRUE(mirror_y),
-      expand      = expand,
+      values = values,
+      sort = sort,
+      label_fmt = .resolve_label_fmt(label_fmt),
+      highlight = highlight,
+      end_labels = end_labels,
+      end_points = isTRUE(end_points),
+      axis_y = axis_y,
+      mirror_y = isTRUE(mirror_y),
+      expand = expand,
       muted_color = muted_color
     ),
     class = "ct_finish"
@@ -109,31 +114,45 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
   }
 
   if (!is.null(object$highlight)) {
-    plot <- .ct_apply_highlight(plot, geom_info, object$highlight, object$muted_color)
+    plot <- .ct_apply_highlight(
+      plot,
+      geom_info,
+      object$highlight,
+      object$muted_color
+    )
   }
 
-  if (isTRUE(object$values) ||
+  if (
+    isTRUE(object$values) ||
       (identical(object$values, "auto") &&
-       geom_info$type %in% c("GeomCol", "GeomBar"))) {
+        geom_info$type %in% c("GeomCol", "GeomBar"))
+  ) {
     plot <- .ct_add_value_labels(plot, geom_info, object$label_fmt)
   }
 
   # End labels set their own, wider, x expansion. Track whether they did,
   # so auto expansion does not add a second x scale over the top of it.
   x_scaled <- FALSE
-  if (!isFALSE(object$end_labels) &&
-      geom_info$type %in% c("GeomLine", "GeomPath")) {
+  if (
+    !isFALSE(object$end_labels) &&
+      geom_info$type %in% c("GeomLine", "GeomPath")
+  ) {
     plot <- .ct_add_end_labels(
       plot,
       geom_info,
       first_facet = identical(object$end_labels, "first_facet"),
-      end_points  = object$end_points
+      end_points = object$end_points
     )
     x_scaled <- .has_x_scale(plot)
   }
 
   if (!identical(object$expand, FALSE)) {
-    plot <- .ct_apply_expansion(plot, geom_info, object$expand, skip_x = x_scaled)
+    plot <- .ct_apply_expansion(
+      plot,
+      geom_info,
+      object$expand,
+      skip_x = x_scaled
+    )
   }
 
   if (!is.null(object$axis_y)) {
@@ -149,7 +168,7 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
       ggplot2::guides(
         y.sec = ggplot2::guide_axis(
           theme = ggplot2::theme(
-            axis.text.y.left  = ggplot2::element_blank(),
+            axis.text.y.left = ggplot2::element_blank(),
             axis.text.y.right = ggplot2::element_blank()
           )
         )
@@ -176,14 +195,17 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
         "i" = "Use one of {.val {known}} or pass a function."
       ))
     }
-    return(switch(fmt,
-      brl    = fmt_brl(),
+    return(switch(
+      fmt,
+      brl = fmt_brl(),
       number = fmt_number(),
-      pct    = fmt_pct(),
-      delta  = fmt_delta()
+      pct = fmt_pct(),
+      delta = fmt_delta()
     ))
   }
-  cli::cli_abort("{.arg label_fmt} must be {.val NULL}, a known shortcut, or a function.")
+  cli::cli_abort(
+    "{.arg label_fmt} must be {.val NULL}, a known shortcut, or a function."
+  )
 }
 
 .detect_first_geom <- function(plot) {
@@ -212,14 +234,18 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
 }
 
 .ct_apply_sort <- function(plot, geom_info, direction) {
-  if (is.null(geom_info$layer)) return(plot)
+  if (is.null(geom_info$layer)) {
+    return(plot)
+  }
   x_var <- .aes_var(plot, geom_info$layer, "x")
   y_var <- .aes_var(plot, geom_info$layer, "y")
   d <- plot$data
   if (is.null(x_var) || is.null(y_var) || is.null(d) || nrow(d) == 0L) {
     return(plot)
   }
-  if (!is.numeric(d[[y_var]])) return(plot)
+  if (!is.numeric(d[[y_var]])) {
+    return(plot)
+  }
 
   agg <- stats::aggregate(
     d[[y_var]],
@@ -236,14 +262,25 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
 }
 
 .ct_apply_highlight <- function(plot, geom_info, highlight, muted_color) {
-  if (is.null(geom_info$layer)) return(plot)
+  if (is.null(geom_info$layer)) {
+    return(plot)
+  }
   x_var <- .aes_var(plot, geom_info$layer, "x")
   d <- plot$data
-  if (is.null(x_var) || is.null(d)) return(plot)
+  if (is.null(x_var) || is.null(d)) {
+    return(plot)
+  }
 
-  aes_target <- if (geom_info$type %in% c("GeomCol", "GeomBar")) "fill" else "colour"
+  aes_target <- if (geom_info$type %in% c("GeomCol", "GeomBar")) {
+    "fill"
+  } else {
+    "colour"
+  }
   main_color <- attr(plot$theme, "ct_main_color")
-  if (is.null(main_color)) main_color <- "#1F4E79"
+  # Fallback matches ct_theme()'s default main colour (strategy_navy[1]).
+  if (is.null(main_color)) {
+    main_color <- .ct_palettes$strategy_navy[[1]]
+  }
 
   values <- unique(as.character(d[[x_var]]))
   highlight_chr <- as.character(highlight)
@@ -263,28 +300,41 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
 }
 
 .ct_add_value_labels <- function(plot, geom_info, label_fmt) {
-  if (is.null(geom_info$layer)) return(plot)
+  if (is.null(geom_info$layer)) {
+    return(plot)
+  }
   y_var <- .aes_var(plot, geom_info$layer, "y")
-  if (is.null(y_var)) return(plot)
+  if (is.null(y_var)) {
+    return(plot)
+  }
 
   vjust <- if (geom_info$type %in% c("GeomCol", "GeomBar")) -0.4 else -0.8
   fmt <- label_fmt
-  plot + ggplot2::geom_text(
-    ggplot2::aes(label = fmt(.data[[y_var]])),
-    vjust = vjust,
-    size  = 3
-  )
+  plot +
+    ggplot2::geom_text(
+      ggplot2::aes(label = fmt(.data[[y_var]])),
+      vjust = vjust,
+      size = 3
+    )
 }
 
-.ct_add_end_labels <- function(plot,
-                               geom_info,
-                               first_facet = FALSE,
-                               end_points = FALSE) {
-  if (is.null(geom_info$layer)) return(plot)
+.ct_add_end_labels <- function(
+  plot,
+  geom_info,
+  first_facet = FALSE,
+  end_points = FALSE
+) {
+  if (is.null(geom_info$layer)) {
+    return(plot)
+  }
   x_var <- .aes_var(plot, geom_info$layer, "x")
   group_var <- .aes_var(plot, geom_info$layer, "colour")
-  if (is.null(group_var)) group_var <- .aes_var(plot, geom_info$layer, "group")
-  if (is.null(x_var) || is.null(group_var)) return(plot)
+  if (is.null(group_var)) {
+    group_var <- .aes_var(plot, geom_info$layer, "group")
+  }
+  if (is.null(x_var) || is.null(group_var)) {
+    return(plot)
+  }
 
   d <- plot$data
   x_col <- d[[x_var]]
@@ -295,9 +345,12 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
     ))
   }
 
-  ends <- do.call(rbind, lapply(split(d, d[[group_var]]), function(grp) {
-    grp[which.max(grp[[x_var]]), , drop = FALSE]
-  }))
+  ends <- do.call(
+    rbind,
+    lapply(split(d, d[[group_var]]), function(grp) {
+      grp[which.max(grp[[x_var]]), , drop = FALSE]
+    })
+  )
 
   if (isTRUE(first_facet)) {
     ends <- .pin_to_first_panel(ends, plot$facet, d)
@@ -357,7 +410,9 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
 .pin_to_first_panel <- function(ends, facet, data) {
   vars <- .facet_vars(facet)
   for (v in vars) {
-    if (!v %in% names(ends) || !v %in% names(data)) next
+    if (!v %in% names(ends) || !v %in% names(data)) {
+      next
+    }
     ends[[v]] <- .first_level(data[[v]])
   }
   ends
@@ -404,12 +459,19 @@ ggplot_add.ct_finish <- function(object, plot, object_name, ...) {
     if (.has_scale(plot, "y")) {
       return(plot)
     }
-    return(plot + ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.15))))
+    return(
+      plot +
+        ggplot2::scale_y_continuous(
+          expand = ggplot2::expansion(mult = c(0, 0.15))
+        )
+    )
   }
   if (isTRUE(skip_x) || .has_scale(plot, "x")) {
     return(plot)
   }
-  if (geom_info$type %in% c("GeomLine", "GeomPath") && !is.null(geom_info$layer)) {
+  if (
+    geom_info$type %in% c("GeomLine", "GeomPath") && !is.null(geom_info$layer)
+  ) {
     x_var <- .aes_var(plot, geom_info$layer, "x")
     if (!is.null(x_var) && !is.null(plot$data)) {
       x_col <- plot$data[[x_var]]

@@ -22,15 +22,19 @@
 #'   theme_editorial()
 theme_editorial <- function(main_color = NULL, ...) {
   th <- ct_theme(
-    palette       = "editorial_warm",
-    font          = "Source Serif 4",
+    palette = "editorial_warm",
+    font = "Source Serif 4",
     font_fallback = c("Georgia", "Times New Roman", "serif"),
-    main_color    = main_color,
+    main_color = main_color,
     ...
   )
 
-  th + ggplot2::theme(
-    plot.title    = ggplot2::element_text(size = ggplot2::rel(1.15), lineheight = 1),
-    plot.subtitle = ggplot2::element_text(face = "italic")
-  )
+  th +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(
+        size = ggplot2::rel(1.15),
+        lineheight = 1
+      ),
+      plot.subtitle = ggplot2::element_text(face = "italic")
+    )
 }

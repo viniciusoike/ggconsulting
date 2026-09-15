@@ -6,26 +6,74 @@
 # breaks on Windows CI).
 .ct_locales <- list(
   "pt-BR" = list(
-    big_mark        = ".",
-    decimal_mark    = ",",
+    big_mark = ".",
+    decimal_mark = ",",
     currency_symbol = "R$",
-    currency_space  = TRUE,
-    negative_style  = "minus",
-    month_abbr = c("jan", "fev", "mar", "abr", "mai", "jun",
-                   "jul", "ago", "set", "out", "nov", "dez"),
-    month_full = c("janeiro", "fevereiro", "mar\u00e7o", "abril", "maio", "junho",
-                   "julho", "agosto", "setembro", "outubro", "novembro", "dezembro")
+    currency_space = TRUE,
+    negative_style = "minus",
+    month_abbr = c(
+      "jan",
+      "fev",
+      "mar",
+      "abr",
+      "mai",
+      "jun",
+      "jul",
+      "ago",
+      "set",
+      "out",
+      "nov",
+      "dez"
+    ),
+    month_full = c(
+      "janeiro",
+      "fevereiro",
+      "mar\u00e7o",
+      "abril",
+      "maio",
+      "junho",
+      "julho",
+      "agosto",
+      "setembro",
+      "outubro",
+      "novembro",
+      "dezembro"
+    )
   ),
   "en-US" = list(
-    big_mark        = ",",
-    decimal_mark    = ".",
+    big_mark = ",",
+    decimal_mark = ".",
     currency_symbol = "$",
-    currency_space  = FALSE,
-    negative_style  = "minus",
-    month_abbr = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
-    month_full = c("January", "February", "March", "April", "May", "June",
-                   "July", "August", "September", "October", "November", "December")
+    currency_space = FALSE,
+    negative_style = "minus",
+    month_abbr = c(
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ),
+    month_full = c(
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    )
   )
 )
 

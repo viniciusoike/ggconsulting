@@ -12,9 +12,10 @@ library(ggconsulting)
 p_line_finance <- ggplot(br_macro, aes(date, ipca_12m)) +
   ct_line() +
   labs(
-    title    = "IPCA, 12-month accumulated",
+    title = "IPCA, 12-month accumulated",
     subtitle = "Headline inflation, Brazil",
-    x = NULL, y = "%",
+    x = NULL,
+    y = "%",
     caption = "Source: BCB SGS 13522"
   ) +
   theme_finance()
@@ -22,13 +23,18 @@ p_line_finance
 
 # Multi-series, discrete color, strategy ----
 
-p_line_sectors <- ggplot(ibov_sectors, aes(date, close, colour = sector_index)) +
+p_line_sectors <- ggplot(
+  ibov_sectors,
+  aes(date, close, colour = sector_index)
+) +
   ct_line() +
   scale_color_ct("strategy_navy") +
   labs(
-    title    = "B3 sector indices",
+    title = "B3 sector indices",
     subtitle = "Monthly close, 2020-01 to 2024-12",
-    x = NULL, y = "Index level", colour = NULL
+    x = NULL,
+    y = "Index level",
+    colour = NULL
   ) +
   theme_strategy()
 p_line_sectors
@@ -39,14 +45,18 @@ ibov_subset <- ibov_sectors |>
   filter(sector_index %in% c("IBOV", "IFNC", "ICON", "IMOB")) |>
   mutate(date_num = as.numeric(date))
 
-p_line_ends <- ggplot(ibov_subset, aes(date_num, close, colour = sector_index)) +
+p_line_ends <- ggplot(
+  ibov_subset,
+  aes(date_num, close, colour = sector_index)
+) +
   ct_line() +
   scale_color_ct("strategy_navy") +
   ct_finish(end_labels = TRUE) +
   labs(
-    title    = "Sector indices with end-of-series labels",
+    title = "Sector indices with end-of-series labels",
     subtitle = "ct_finish(end_labels = TRUE) requires numeric x",
-    x = NULL, y = "Index level"
+    x = NULL,
+    y = "Index level"
   ) +
   theme_strategy() +
   theme(legend.position = "none")
@@ -59,9 +69,11 @@ p_line_point <- ggplot(client_nps, aes(quarter, nps, colour = segment)) +
   ct_point() +
   scale_color_ct("editorial_warm") +
   labs(
-    title    = "Net Promoter Score by client segment",
+    title = "Net Promoter Score by client segment",
     subtitle = "Quarterly survey, 2022 – 2024",
-    x = NULL, y = "NPS", colour = NULL
+    x = NULL,
+    y = "NPS",
+    colour = NULL
   ) +
   theme_editorial()
 p_line_point

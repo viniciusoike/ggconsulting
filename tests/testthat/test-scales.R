@@ -1,5 +1,5 @@
 test_that("scale_color_ct returns a ScaleDiscrete", {
-  expect_s3_class(scale_color_ct(),  "ScaleDiscrete")
+  expect_s3_class(scale_color_ct(), "ScaleDiscrete")
   expect_s3_class(scale_colour_ct(), "ScaleDiscrete")
 })
 
@@ -8,7 +8,7 @@ test_that("scale_fill_ct returns a ScaleDiscrete", {
 })
 
 test_that("scale_color_ct_c returns a ScaleContinuous", {
-  expect_s3_class(scale_color_ct_c(),  "ScaleContinuous")
+  expect_s3_class(scale_color_ct_c(), "ScaleContinuous")
   expect_s3_class(scale_colour_ct_c(), "ScaleContinuous")
 })
 

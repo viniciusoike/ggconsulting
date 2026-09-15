@@ -7,7 +7,11 @@ test_that("ct_finish(values = TRUE) adds a geom_text layer on geom_col", {
   p <- ggplot2::ggplot(d, ggplot2::aes(g, v)) +
     ggplot2::geom_col() +
     ct_finish(values = TRUE)
-  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  has_text <- vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomText"),
+    logical(1)
+  )
   expect_true(any(has_text))
 })
 
@@ -105,7 +109,11 @@ test_that("ct_finish(end_labels = TRUE) on numeric geom_line adds geom_text + x 
   p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = g)) +
     ggplot2::geom_line() +
     ct_finish(end_labels = TRUE)
-  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  has_text <- vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomText"),
+    logical(1)
+  )
   expect_true(any(has_text))
 
   has_x_scale <- any(vapply(
@@ -126,7 +134,11 @@ test_that("ct_finish(end_labels = TRUE) accepts a Date x and keeps date labels",
     ggplot2::geom_line() +
     ct_finish(end_labels = TRUE)
 
-  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  has_text <- vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomText"),
+    logical(1)
+  )
   expect_true(any(has_text))
 
   # A continuous x scale here would render day numbers instead of dates.
@@ -143,7 +155,11 @@ test_that("ct_finish(end_labels = TRUE) accepts a POSIXct x", {
   p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = g)) +
     ggplot2::geom_line() +
     ct_finish(end_labels = TRUE)
-  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  has_text <- vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomText"),
+    logical(1)
+  )
   expect_true(any(has_text))
 })
 
@@ -246,7 +262,11 @@ test_that("end_labels is skipped without a grouping aesthetic", {
   p <- ggplot2::ggplot(d, ggplot2::aes(x, y)) +
     ggplot2::geom_line() +
     ct_finish(end_labels = TRUE)
-  has_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  has_text <- vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomText"),
+    logical(1)
+  )
   expect_false(any(has_text))
 })
 
@@ -303,7 +323,11 @@ make_faceted <- function() {
 }
 
 text_layer_data <- function(p) {
-  i <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1)))
+  i <- which(vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomText"),
+    logical(1)
+  ))
   ggplot2::ggplot_build(p)$data[[i[1]]]
 }
 
@@ -363,9 +387,14 @@ test_that("end_labels = 'first_facet' behaves like TRUE without facets", {
 test_that(".facet_vars() reads wrap, grid, and null facets", {
   d <- make_faceted()
   base <- ggplot2::ggplot(d, ggplot2::aes(x, y)) + ggplot2::geom_line()
-  expect_equal(.facet_vars((base + ggplot2::facet_wrap(~region))$facet), "region")
   expect_equal(
-    .facet_vars((base + ggplot2::facet_grid(rows = ggplot2::vars(region)))$facet),
+    .facet_vars((base + ggplot2::facet_wrap(~region))$facet),
+    "region"
+  )
+  expect_equal(
+    .facet_vars(
+      (base + ggplot2::facet_grid(rows = ggplot2::vars(region)))$facet
+    ),
     "region"
   )
   expect_length(.facet_vars(base$facet), 0L)
@@ -390,10 +419,18 @@ test_that("end_points adds one point layer under the labels", {
     ggplot2::geom_line() +
     ct_finish(end_labels = TRUE, end_points = TRUE)
 
-  is_point <- vapply(p$layers, function(l) inherits(l$geom, "GeomPoint"), logical(1))
+  is_point <- vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomPoint"),
+    logical(1)
+  )
   expect_equal(sum(is_point), 1L)
 
-  is_text <- vapply(p$layers, function(l) inherits(l$geom, "GeomText"), logical(1))
+  is_text <- vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomText"),
+    logical(1)
+  )
   expect_lt(which(is_point)[1], which(is_text)[1])
   expect_equal(nrow(ggplot2::ggplot_build(p)$data[[which(is_point)[1]]]), 4L)
 })
@@ -403,7 +440,11 @@ test_that("end_points is off by default", {
   p <- ggplot2::ggplot(d, ggplot2::aes(x, y, colour = series)) +
     ggplot2::geom_line() +
     ct_finish(end_labels = TRUE)
-  expect_false(any(vapply(p$layers, function(l) inherits(l$geom, "GeomPoint"), logical(1))))
+  expect_false(any(vapply(
+    p$layers,
+    function(l) inherits(l$geom, "GeomPoint"),
+    logical(1)
+  )))
 })
 
 # Axis position ----
@@ -505,7 +546,10 @@ test_that("mirror_y draws a second y axis and leaves the primary labelled", {
   }
 
   expect_s3_class(right_axis(base + ct_finish()), "zeroGrob")
-  expect_false(inherits(right_axis(base + ct_finish(mirror_y = TRUE)), "zeroGrob"))
+  expect_false(inherits(
+    right_axis(base + ct_finish(mirror_y = TRUE)),
+    "zeroGrob"
+  ))
 
   g <- ggplot2::ggplotGrob(base + ct_finish(mirror_y = TRUE))
   expect_false(
@@ -532,6 +576,12 @@ test_that("mirror_y composes with axis_y = 'right'", {
     ggplot2::geom_line() +
     ct_finish(mirror_y = TRUE, axis_y = "right")
   g <- ggplot2::ggplotGrob(p)
-  expect_false(inherits(g$grobs[[which(g$layout$name == "axis-l")]], "zeroGrob"))
-  expect_false(inherits(g$grobs[[which(g$layout$name == "axis-r")]], "zeroGrob"))
+  expect_false(inherits(
+    g$grobs[[which(g$layout$name == "axis-l")]],
+    "zeroGrob"
+  ))
+  expect_false(inherits(
+    g$grobs[[which(g$layout$name == "axis-r")]],
+    "zeroGrob"
+  ))
 })

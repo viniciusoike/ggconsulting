@@ -19,9 +19,10 @@ p_fmt_brl <- ggplot(bu_totals, aes(business_unit, revenue_brl)) +
   ct_col() +
   scale_y_continuous(labels = fmt_brl(decimals = 0)) +
   labs(
-    title    = "fmt_brl() axis labels",
+    title = "fmt_brl() axis labels",
     subtitle = "pt-BR marks: comma decimal, period thousands",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_strategy()
 p_fmt_brl
@@ -37,9 +38,11 @@ p_fmt_pct <- ggplot(share_evol, aes(year, share, colour = company)) +
   scale_color_ct("strategy_navy") +
   scale_y_continuous(labels = fmt_pct(decimals = 0)) +
   labs(
-    title    = "Player A vs Player B market share",
+    title = "Player A vs Player B market share",
     subtitle = "fmt_pct() converts fraction → \"40%\"",
-    x = NULL, y = NULL, colour = NULL
+    x = NULL,
+    y = NULL,
+    colour = NULL
   ) +
   theme_strategy()
 p_fmt_pct
@@ -60,9 +63,11 @@ p_fmt_delta <- ggplot(nps_delta, aes(quarter, delta, colour = segment)) +
   scale_y_continuous(labels = fmt_delta(decimals = 0, suffix = "")) +
   geom_hline(yintercept = 0, linewidth = 0.3, colour = "#888888") +
   labs(
-    title    = "Quarterly NPS change by segment",
+    title = "Quarterly NPS change by segment",
     subtitle = "fmt_delta() prefixes signed values (suffix disabled here)",
-    x = NULL, y = "Δ NPS", colour = NULL
+    x = NULL,
+    y = "Δ NPS",
+    colour = NULL
   ) +
   theme_editorial()
 p_fmt_delta
@@ -76,9 +81,10 @@ p_fmt_month_pt <- ggplot(ibov_2024, aes(date, close)) +
   ct_line() +
   scale_x_date(breaks = ibov_2024$date, labels = fmt_month(locale = "pt-BR")) +
   labs(
-    title    = "IBOV monthly close, 2024",
+    title = "IBOV monthly close, 2024",
     subtitle = "fmt_month(locale = \"pt-BR\"): jan, fev, mar…",
-    x = NULL, y = "Index level"
+    x = NULL,
+    y = "Index level"
   ) +
   theme_finance()
 p_fmt_month_pt
@@ -91,9 +97,10 @@ p_fmt_locale_en <- ggplot(bu_totals, aes(business_unit, revenue_brl)) +
   ct_col() +
   scale_y_continuous(labels = fmt_currency(decimals = 0, locale = "en-US")) +
   labs(
-    title    = "fmt_currency() in en-US locale",
+    title = "fmt_currency() in en-US locale",
     subtitle = "$ + period decimal + comma thousands",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_strategy()
 p_fmt_locale_en
@@ -102,9 +109,10 @@ p_fmt_locale_pt <- ggplot(bu_totals, aes(business_unit, revenue_brl)) +
   ct_col() +
   scale_y_continuous(labels = fmt_currency(decimals = 0, locale = "pt-BR")) +
   labs(
-    title    = "fmt_currency() in pt-BR locale",
+    title = "fmt_currency() in pt-BR locale",
     subtitle = "R$ + comma decimal + period thousands",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_strategy()
 p_fmt_locale_pt

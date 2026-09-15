@@ -20,6 +20,7 @@ Description: An opinionated 'ggplot2' extension for executive-grade
     sensible finishing touches, so charts stay readable and consistent
     across an entire engagement.
 License: MIT + file LICENSE
+Logo: man/figures/logo.png
 URL: https://github.com/viniciusoike/ggconsulting, https://viniciusoike.github.io/ggconsulting/
 BugReports: https://github.com/viniciusoike/ggconsulting/issues
 Depends:

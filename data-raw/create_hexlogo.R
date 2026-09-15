@@ -39,7 +39,7 @@ showtext_auto()
 # Select colors from ggconsulting palettes ----
 
 colors_showcase <- c(
-  ct_palette("strategy_navy")[2],     # main brand color
+  ct_palette("strategy_navy")[2], # main brand color
   ct_palette("strategy_azure")[3],
   ct_palette("editorial_warm")[2],
   ct_palette("strategy_emerald")[3],
@@ -91,7 +91,7 @@ sticker(
   p_family = "Poppins",
   p_size = 5,
   h_fill = "#FFFFFF",
-  h_color = "#1F4E79",
+  h_color = "#051C2C",
   h_size = 0.5,
   filename = "man/figures/logo.png",
   dpi = 300,
@@ -113,7 +113,7 @@ sticker(
   p_color = "#FFFFFF",
   p_family = "Poppins",
   p_size = 5,
-  h_fill = "#1F4E79",
+  h_fill = "#051C2C",
   h_color = "#000000",
   h_size = 1,
   filename = "man/figures/logo_dark.png",
@@ -129,19 +129,27 @@ dim <- image_info(p)
 
 pp <- p |>
   image_fill(
-    color = "transparent", refcolor = "white", fuzz = 4,
+    color = "transparent",
+    refcolor = "white",
+    fuzz = 4,
     point = paste0("+1+1")
   ) |>
   image_fill(
-    color = "transparent", refcolor = "white", fuzz = 4,
+    color = "transparent",
+    refcolor = "white",
+    fuzz = 4,
     point = paste0("+", dim$width - 2, "+1")
   ) |>
   image_fill(
-    color = "transparent", refcolor = "white", fuzz = 4,
+    color = "transparent",
+    refcolor = "white",
+    fuzz = 4,
     point = paste0("+1+", dim$height - 2)
   ) |>
   image_fill(
-    color = "transparent", refcolor = "white", fuzz = 4,
+    color = "transparent",
+    refcolor = "white",
+    fuzz = 4,
     point = paste0("+", dim$width - 2, "+", dim$height - 2)
   )
 

@@ -14,14 +14,15 @@ base_line <- function() {
   ggplot(br_macro, aes(date, ipca_12m)) +
     ct_line() +
     labs(
-      title    = "IPCA, 12-month accumulated",
+      title = "IPCA, 12-month accumulated",
       subtitle = "Same data, different archetype theme",
-      x = NULL, y = "%"
+      x = NULL,
+      y = "%"
     )
 }
 
-p_theme_line_strategy  <- base_line() + theme_strategy()
-p_theme_line_finance   <- base_line() + theme_finance()
+p_theme_line_strategy <- base_line() + theme_strategy()
+p_theme_line_finance <- base_line() + theme_finance()
 p_theme_line_editorial <- base_line() + theme_editorial()
 
 p_theme_line_strategy
@@ -39,14 +40,15 @@ base_bar <- function() {
     ct_col() +
     scale_y_continuous(labels = fmt_brl(decimals = 0)) +
     labs(
-      title    = "Total revenue by business unit",
+      title = "Total revenue by business unit",
       subtitle = "Same data, different archetype theme",
-      x = NULL, y = NULL
+      x = NULL,
+      y = NULL
     )
 }
 
-p_theme_bar_strategy  <- base_bar() + theme_strategy()
-p_theme_bar_finance   <- base_bar() + theme_finance()
+p_theme_bar_strategy <- base_bar() + theme_strategy()
+p_theme_bar_finance <- base_bar() + theme_finance()
 p_theme_bar_editorial <- base_bar() + theme_editorial()
 
 p_theme_bar_strategy
@@ -64,12 +66,12 @@ base_compact <- function() {
 }
 
 p_ctx_presentation <- base_compact() + theme_strategy(context = "presentation")
-p_ctx_report       <- base_compact() + theme_strategy(context = "report")
-p_ctx_screen       <- base_compact() + theme_strategy(context = "screen")
+p_ctx_report <- base_compact() + theme_strategy(context = "report")
+p_ctx_screen <- base_compact() + theme_strategy(context = "screen")
 
 p_density_normal <- base_compact() + theme_strategy(density = "normal")
-p_density_tight  <- base_compact() + theme_strategy(density = "tight")
-p_density_loose  <- base_compact() + theme_strategy(density = "loose")
+p_density_tight <- base_compact() + theme_strategy(density = "tight")
+p_density_loose <- base_compact() + theme_strategy(density = "loose")
 
 p_ctx_presentation
 p_ctx_report

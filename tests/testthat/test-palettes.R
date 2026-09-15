@@ -27,7 +27,10 @@ test_that("ct_palette(name) returns the full palette", {
 })
 
 test_that("ct_palette(n) subsets from the front when n <= palette size", {
-  expect_equal(ct_palette("strategy_navy", n = 3), .ct_palettes$strategy_navy[1:3])
+  expect_equal(
+    ct_palette("strategy_navy", n = 3),
+    .ct_palettes$strategy_navy[1:3]
+  )
   expect_no_warning(ct_palette("strategy_navy", n = 6))
 })
 
@@ -40,7 +43,10 @@ test_that("ct_palette(n) interpolates with a warning when n exceeds palette size
 test_that("ct_palette(reverse = TRUE) flips before subsetting", {
   pal <- .ct_palettes$strategy_navy
   expect_equal(ct_palette("strategy_navy", reverse = TRUE), rev(pal))
-  expect_equal(ct_palette("strategy_navy", n = 2, reverse = TRUE), rev(pal)[1:2])
+  expect_equal(
+    ct_palette("strategy_navy", n = 2, reverse = TRUE),
+    rev(pal)[1:2]
+  )
 })
 
 test_that("ct_palette() coerces n to integer", {
@@ -55,7 +61,10 @@ test_that("ct_palette() accepts a raw hex vector as the palette", {
 # .resolve_palette() ----
 
 test_that(".resolve_palette() maps a known name to its colours", {
-  expect_equal(.resolve_palette("finance_classic"), .ct_palettes$finance_classic)
+  expect_equal(
+    .resolve_palette("finance_classic"),
+    .ct_palettes$finance_classic
+  )
 })
 
 test_that(".resolve_palette() passes an unrecognised character vector through", {

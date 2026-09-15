@@ -15,3 +15,5 @@
 ^\.Rprofile$
 ^Rplots\.pdf$
 ^\.playwright-mcp$
+^doc$
+^Meta$

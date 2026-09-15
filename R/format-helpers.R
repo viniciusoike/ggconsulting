@@ -53,8 +53,8 @@ fmt_number <- function(decimals = 0, locale = NULL) {
     loc <- .locale_data(locale)
     scales::number(
       x,
-      accuracy     = .accuracy_from_decimals(decimals),
-      big.mark     = loc$big_mark,
+      accuracy = .accuracy_from_decimals(decimals),
+      big.mark = loc$big_mark,
       decimal.mark = loc$decimal_mark
     )
   }
@@ -62,41 +62,60 @@ fmt_number <- function(decimals = 0, locale = NULL) {
 
 #' @rdname ct_formatters
 #' @export
-fmt_brl <- function(decimals = 2,
-                    style = c("minus", "accounting"),
-                    locale = NULL) {
+fmt_brl <- function(
+  decimals = 2,
+  style = c("minus", "accounting"),
+  locale = NULL
+) {
   style <- match.arg(style)
   loc <- .locale_data(if (is.null(locale)) "pt-BR" else locale)
   function(x) {
-    .format_currency(x, "R$", space = TRUE, decimals = decimals,
-                     loc = loc, style = style)
+    .format_currency(
+      x,
+      "R$",
+      space = TRUE,
+      decimals = decimals,
+      loc = loc,
+      style = style
+    )
   }
 }
 
 #' @rdname ct_formatters
 #' @export
-fmt_currency <- function(decimals = 2,
-                         style = c("minus", "accounting"),
-                         locale = NULL) {
+fmt_currency <- function(
+  decimals = 2,
+  style = c("minus", "accounting"),
+  locale = NULL
+) {
   style <- match.arg(style)
   loc <- .locale_data(locale)
   function(x) {
-    .format_currency(x, loc$currency_symbol, space = isTRUE(loc$currency_space),
-                     decimals = decimals, loc = loc, style = style)
+    .format_currency(
+      x,
+      loc$currency_symbol,
+      space = isTRUE(loc$currency_space),
+      decimals = decimals,
+      loc = loc,
+      style = style
+    )
   }
 }
 
 #' @rdname ct_formatters
 #' @export
-fmt_pct <- function(decimals = 1, scale = 100, locale = NULL,
-                    accuracy = NULL) {
+fmt_pct <- function(decimals = 1, scale = 100, locale = NULL, accuracy = NULL) {
   function(x) {
     loc <- .locale_data(locale)
     scales::percent(
       x,
-      scale        = scale,
-      accuracy     = if (is.null(accuracy)) .accuracy_from_decimals(decimals) else accuracy,
-      big.mark     = loc$big_mark,
+      scale = scale,
+      accuracy = if (is.null(accuracy)) {
+        .accuracy_from_decimals(decimals)
+      } else {
+        accuracy
+      },
+      big.mark = loc$big_mark,
       decimal.mark = loc$decimal_mark
     )
   }
@@ -110,13 +129,11 @@ fmt_delta <- function(decimals = 1, suffix = "pp", locale = NULL) {
     abs_x <- abs(x)
     formatted <- scales::number(
       abs_x,
-      accuracy     = .accuracy_from_decimals(decimals),
-      big.mark     = loc$big_mark,
+      accuracy = .accuracy_from_decimals(decimals),
+      big.mark = loc$big_mark,
       decimal.mark = loc$decimal_mark
     )
-    sign <- ifelse(is.na(x), "",
-                   ifelse(x < 0, "-",
-                          ifelse(x > 0, "+", "")))
+    sign <- ifelse(is.na(x), "", ifelse(x < 0, "-", ifelse(x > 0, "+", "")))
     paste0(sign, formatted, suffix)
   }
 }
@@ -146,8 +163,8 @@ fmt_month <- function(format = c("abbr", "full"), locale = NULL) {
   abs_x <- abs(x)
   formatted <- scales::number(
     abs_x,
-    accuracy     = .accuracy_from_decimals(decimals),
-    big.mark     = loc$big_mark,
+    accuracy = .accuracy_from_decimals(decimals),
+    big.mark = loc$big_mark,
     decimal.mark = loc$decimal_mark
   )
   gap <- if (isTRUE(space)) "\u00a0" else ""

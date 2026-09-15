@@ -81,5 +81,8 @@ test_that("ct_theme(paper = ...) keeps the palette attributes", {
 
 test_that("archetypes forward paper to ct_theme()", {
   expect_equal(theme_editorial(paper = "cream")$plot.background$fill, "#FFF1E5")
-  expect_equal(theme_strategy(paper = "warm_grey")$plot.background$fill, "#F0EFEB")
+  expect_equal(
+    theme_strategy(paper = "warm_grey")$plot.background$fill,
+    "#F0EFEB"
+  )
 })

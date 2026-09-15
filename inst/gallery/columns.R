@@ -27,9 +27,10 @@ p_col_simple <- ggplot(bu_totals, aes(business_unit, revenue_brl)) +
   ct_col() +
   scale_y_continuous(labels = fmt_brl(decimals = 0)) +
   labs(
-    title    = "Total revenue by business unit",
+    title = "Total revenue by business unit",
     subtitle = "2021Q1 – 2024Q4, R$ MM",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_strategy()
 p_col_simple
@@ -46,9 +47,10 @@ p_col_quarter <- ggplot(quarter_totals, aes(quarter_lbl, revenue_brl)) +
   ct_col() +
   scale_y_continuous(labels = fmt_brl(decimals = 0)) +
   labs(
-    title    = "Quarterly revenue",
+    title = "Quarterly revenue",
     subtitle = "Conglomerate consolidated, R$ MM",
-    x = NULL, y = NULL
+    x = NULL,
+    y = NULL
   ) +
   theme_strategy() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -66,9 +68,11 @@ p_col_stacked <- ggplot(bu_year, aes(year, revenue_brl, fill = business_unit)) +
   scale_fill_ct("strategy_navy") +
   scale_y_continuous(labels = fmt_brl(decimals = 0)) +
   labs(
-    title    = "Annual revenue stacked by business unit",
+    title = "Annual revenue stacked by business unit",
     subtitle = "R$ MM",
-    x = NULL, y = NULL, fill = NULL
+    x = NULL,
+    y = NULL,
+    fill = NULL
   ) +
   theme_strategy()
 p_col_stacked
@@ -79,13 +83,18 @@ bu_2024 <- bu_quarterly |>
   filter(format(quarter, "%Y") == "2024") |>
   mutate(quarter_lbl = quarter_label(quarter))
 
-p_col_dodged <- ggplot(bu_2024, aes(quarter_lbl, revenue_brl, fill = business_unit)) +
+p_col_dodged <- ggplot(
+  bu_2024,
+  aes(quarter_lbl, revenue_brl, fill = business_unit)
+) +
   geom_col(width = 0.8, position = position_dodge2(preserve = "single")) +
   scale_fill_ct("strategy_navy") +
   scale_y_continuous(labels = fmt_brl(decimals = 0)) +
   labs(
-    title    = "2024 quarterly revenue by BU",
-    x = NULL, y = NULL, fill = NULL
+    title = "2024 quarterly revenue by BU",
+    x = NULL,
+    y = NULL,
+    fill = NULL
   ) +
   theme_strategy()
 p_col_dodged

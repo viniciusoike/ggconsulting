@@ -46,26 +46,47 @@ has_font <- function(name) {
   base <- "https://github.com/google/fonts/raw/main/ofl"
   list(
     "Inter" = c(
-      "Inter.ttf"        = paste0(base, "/inter/Inter%5Bopsz,wght%5D.ttf"),
-      "Inter-Italic.ttf" = paste0(base, "/inter/Inter-Italic%5Bopsz,wght%5D.ttf")
+      "Inter.ttf" = paste0(base, "/inter/Inter%5Bopsz,wght%5D.ttf"),
+      "Inter-Italic.ttf" = paste0(
+        base,
+        "/inter/Inter-Italic%5Bopsz,wght%5D.ttf"
+      )
     ),
     "Source Sans 3" = c(
-      "SourceSans3.ttf"        = paste0(base, "/sourcesans3/SourceSans3%5Bwght%5D.ttf"),
-      "SourceSans3-Italic.ttf" = paste0(base, "/sourcesans3/SourceSans3-Italic%5Bwght%5D.ttf")
+      "SourceSans3.ttf" = paste0(
+        base,
+        "/sourcesans3/SourceSans3%5Bwght%5D.ttf"
+      ),
+      "SourceSans3-Italic.ttf" = paste0(
+        base,
+        "/sourcesans3/SourceSans3-Italic%5Bwght%5D.ttf"
+      )
     ),
     "Lato" = c(
       "Lato-Regular.ttf" = paste0(base, "/lato/Lato-Regular.ttf"),
-      "Lato-Bold.ttf"    = paste0(base, "/lato/Lato-Bold.ttf"),
-      "Lato-Italic.ttf"  = paste0(base, "/lato/Lato-Italic.ttf"),
-      "Lato-Light.ttf"   = paste0(base, "/lato/Lato-Light.ttf")
+      "Lato-Bold.ttf" = paste0(base, "/lato/Lato-Bold.ttf"),
+      "Lato-Italic.ttf" = paste0(base, "/lato/Lato-Italic.ttf"),
+      "Lato-Light.ttf" = paste0(base, "/lato/Lato-Light.ttf")
     ),
     "Source Serif 4" = c(
-      "SourceSerif4.ttf"        = paste0(base, "/sourceserif4/SourceSerif4%5Bopsz,wght%5D.ttf"),
-      "SourceSerif4-Italic.ttf" = paste0(base, "/sourceserif4/SourceSerif4-Italic%5Bopsz,wght%5D.ttf")
+      "SourceSerif4.ttf" = paste0(
+        base,
+        "/sourceserif4/SourceSerif4%5Bopsz,wght%5D.ttf"
+      ),
+      "SourceSerif4-Italic.ttf" = paste0(
+        base,
+        "/sourceserif4/SourceSerif4-Italic%5Bopsz,wght%5D.ttf"
+      )
     ),
     "IBM Plex Sans" = c(
-      "IBMPlexSans.ttf"        = paste0(base, "/ibmplexsans/IBMPlexSans%5Bwdth,wght%5D.ttf"),
-      "IBMPlexSans-Italic.ttf" = paste0(base, "/ibmplexsans/IBMPlexSans-Italic%5Bwdth,wght%5D.ttf")
+      "IBMPlexSans.ttf" = paste0(
+        base,
+        "/ibmplexsans/IBMPlexSans%5Bwdth,wght%5D.ttf"
+      ),
+      "IBMPlexSans-Italic.ttf" = paste0(
+        base,
+        "/ibmplexsans/IBMPlexSans-Italic%5Bwdth,wght%5D.ttf"
+      )
     )
   )
 }
@@ -212,9 +233,10 @@ install_consulting_fonts <- function(fonts = NULL, dest = NULL, quiet = FALSE) {
 # Platform font directory ----
 .default_font_dir <- function() {
   sys <- Sys.info()[["sysname"]]
-  switch(sys,
-    Darwin  = path.expand("~/Library/Fonts"),
-    Linux   = path.expand("~/.local/share/fonts"),
+  switch(
+    sys,
+    Darwin = path.expand("~/Library/Fonts"),
+    Linux = path.expand("~/.local/share/fonts"),
     # Per-user font directory (Windows 10 1809+). Files written here
     # persist across sessions; session registration still happens in
     # the installer, since Windows does not index this folder until

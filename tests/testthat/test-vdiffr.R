@@ -26,12 +26,17 @@ test_that("vdiffr: finance col layout", {
   p <- ggplot2::ggplot(d, ggplot2::aes(business_unit, revenue_brl)) +
     ggplot2::geom_col() +
     ct_theme(
-      palette = "finance_classic", font = "sans",
-      density = "tight", context = "report"
+      palette = "finance_classic",
+      font = "sans",
+      density = "tight",
+      context = "report"
     ) +
     ggplot2::theme(
-      plot.title         = ggplot2::element_text(face = "plain"),
-      panel.grid.major.y = ggplot2::element_line(colour = "#EEEEEE", linewidth = 0.25),
+      plot.title = ggplot2::element_text(face = "plain"),
+      panel.grid.major.y = ggplot2::element_line(
+        colour = "#EEEEEE",
+        linewidth = 0.25
+      ),
       panel.grid.major.x = ggplot2::element_blank()
     )
   vdiffr::expect_doppelganger("finance-col-layout", p)
@@ -43,12 +48,17 @@ test_that("vdiffr: finance line layout", {
   p <- ggplot2::ggplot(d, ggplot2::aes(date, close)) +
     ggplot2::geom_line() +
     ct_theme(
-      palette = "finance_classic", font = "sans",
-      density = "tight", context = "report"
+      palette = "finance_classic",
+      font = "sans",
+      density = "tight",
+      context = "report"
     ) +
     ggplot2::theme(
-      plot.title         = ggplot2::element_text(face = "plain"),
-      panel.grid.major.y = ggplot2::element_line(colour = "#EEEEEE", linewidth = 0.25),
+      plot.title = ggplot2::element_text(face = "plain"),
+      panel.grid.major.y = ggplot2::element_line(
+        colour = "#EEEEEE",
+        linewidth = 0.25
+      ),
       panel.grid.major.x = ggplot2::element_blank()
     )
   vdiffr::expect_doppelganger("finance-line-layout", p)
@@ -61,7 +71,10 @@ test_that("vdiffr: editorial col layout", {
     ggplot2::geom_col() +
     ct_theme(palette = "editorial_warm", font = "sans") +
     ggplot2::theme(
-      plot.title    = ggplot2::element_text(size = ggplot2::rel(1.15), lineheight = 1),
+      plot.title = ggplot2::element_text(
+        size = ggplot2::rel(1.15),
+        lineheight = 1
+      ),
       plot.subtitle = ggplot2::element_text(face = "italic")
     )
   vdiffr::expect_doppelganger("editorial-col-layout", p)
@@ -74,7 +87,10 @@ test_that("vdiffr: editorial line layout", {
     ggplot2::geom_line() +
     ct_theme(palette = "editorial_warm", font = "sans") +
     ggplot2::theme(
-      plot.title    = ggplot2::element_text(size = ggplot2::rel(1.15), lineheight = 1),
+      plot.title = ggplot2::element_text(
+        size = ggplot2::rel(1.15),
+        lineheight = 1
+      ),
       plot.subtitle = ggplot2::element_text(face = "italic")
     )
   vdiffr::expect_doppelganger("editorial-line-layout", p)
@@ -92,7 +108,9 @@ test_that("vdiffr: ct_finish values + sort layout", {
 
 test_that("vdiffr: ct_finish end_labels layout", {
   skip_on_cran()
-  d <- market_share[market_share$company %in% c("Player A", "Player B", "Player C"), ]
+  d <- market_share[
+    market_share$company %in% c("Player A", "Player B", "Player C"),
+  ]
   p <- ggplot2::ggplot(d, ggplot2::aes(year, share, colour = company)) +
     ggplot2::geom_line() +
     ct_finish(end_labels = TRUE) +
@@ -119,12 +137,22 @@ test_that("vdiffr: ct_finish end_labels first_facet layout", {
   skip_on_cran()
   # Small multiples in the FT mould: every panel carries the same two
   # series over the same x range, so one set of labels serves all of them.
-  d <- bu_quarterly[bu_quarterly$business_unit %in% c("Industrial", "Consumer"), ]
+  d <- bu_quarterly[
+    bu_quarterly$business_unit %in% c("Industrial", "Consumer"),
+  ]
   long <- rbind(
-    data.frame(quarter = d$quarter, bu = d$business_unit,
-               metric = "Revenue", value = d$revenue_brl),
-    data.frame(quarter = d$quarter, bu = d$business_unit,
-               metric = "COGS", value = d$cogs_brl)
+    data.frame(
+      quarter = d$quarter,
+      bu = d$business_unit,
+      metric = "Revenue",
+      value = d$revenue_brl
+    ),
+    data.frame(
+      quarter = d$quarter,
+      bu = d$business_unit,
+      metric = "COGS",
+      value = d$cogs_brl
+    )
   )
   p <- ggplot2::ggplot(long, ggplot2::aes(quarter, value, colour = metric)) +
     ggplot2::geom_line() +
@@ -211,7 +239,9 @@ test_that("vdiffr: ct_finish values + sort font", {
 test_that("vdiffr: ct_finish end_labels font", {
   skip_on_cran()
   skip_if_not(has_font("Inter"))
-  d <- market_share[market_share$company %in% c("Player A", "Player B", "Player C"), ]
+  d <- market_share[
+    market_share$company %in% c("Player A", "Player B", "Player C"),
+  ]
   p <- ggplot2::ggplot(d, ggplot2::aes(year, share, colour = company)) +
     ggplot2::geom_line() +
     ct_finish(end_labels = TRUE) +

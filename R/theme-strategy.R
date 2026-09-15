@@ -22,8 +22,8 @@
 #'   theme_strategy()
 theme_strategy <- function(main_color = NULL, ...) {
   ct_theme(
-    palette    = "strategy_navy",
-    font       = "Inter",
+    palette = "strategy_navy",
+    font = "Inter",
     main_color = main_color,
     ...
   )

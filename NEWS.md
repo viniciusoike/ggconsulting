@@ -1,3 +1,22 @@
+# ggconsulting (development version)
+
+## Development
+
+* Removed colours that were exact matches of external systems: the
+  `editorial_oxide` palette is rebuilt from the FT reference samples
+  (burgundy/rust/red ramp with a teal accent) instead of the coolors.co
+  charcoal-green-saffron set it had copied; `strategy_navy` mid-tones are
+  now anchor-derived muted blues instead of the PowerPoint default dark
+  blue and the Python logo blue; `strategy_slate[1]` and `strategy_azure[1]`
+  replace colours that matched Flat UI's Midnight Blue and Pantone Classic
+  Blue 2020; `strategy_crimson[2]` replaces the US flag's Old Glory Red.
+  The hex logo border follows the new strategy navy. Palette-derivation
+  rules are documented in `R/palettes.R`.
+* Dropped the repostatus WIP badge from the README; the lifecycle
+  experimental badge stays.
+* Removed the Codecov coverage workflow; uploads had been inert without
+  a repo token, and the coverage badge was already gone from the README.
+
 # ggconsulting 0.1.1
 
 This patch release follows the bundled reference corpus into

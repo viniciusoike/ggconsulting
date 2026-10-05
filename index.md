@@ -30,10 +30,6 @@ pak::pak("viniciusoike/ggconsulting")
 
 library(ggplot2)
 library(ggconsulting)
-#> ✔ ggconsulting set ggplot2 aesthetic defaults
-#> ℹ Opt out: `ct_unset_defaults()` or `options(ggconsulting.autoload = FALSE)`
-#> ℹ Column width / linewidth: use `ct_col()` / `ct_line()`, or apply a
-#>   `theme_*()` archetype for linewidth via `from_theme()`
 
 players <- subset(market_share, company != "Others")
 
@@ -177,110 +173,6 @@ Reverse that order and highlights fall back to a hardcoded navy.
 `end_labels` also accepts `"first_facet"`, which pins every label to the
 first panel instead of the panel each series happens to end in.
 
-## Palettes and scales
-
-Palettes come in three families keyed to the archetypes, with several
-options in each. Every palette holds six colours, and the first is the
-main colour that
-[`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)
-routes through `element_geom(ink = )`.
-
-- [`ct_palette()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette.md)
-  returns a palette’s colours, or lists the available names when called
-  with no arguments.
-- [`scale_colour_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
-  and
-  [`scale_fill_ct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
-  map discrete data onto a palette. They interpolate and warn once the
-  data needs more levels than the palette holds.
-- [`scale_colour_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
-  and
-  [`scale_fill_ct_c()`](https://viniciusoike.github.io/ggconsulting/reference/ct_scales.md)
-  cover continuous data, with `direction = -1` to reverse.
-- [`ct_palette_show()`](https://viniciusoike.github.io/ggconsulting/reference/ct_palette_show.md)
-  previews one palette, a custom hex vector, or every shipped palette at
-  once.
-
-American and British spellings are both exported.
-
-## Locale-aware labels
-
-[`ct_locale()`](https://viniciusoike.github.io/ggconsulting/reference/ct_locale.md)
-switches the active locale between `"pt-BR"` and `"en-US"` for the
-session. It writes to `options(ggconsulting.locale)` and never touches
-[`Sys.setlocale()`](https://rdrr.io/r/base/locales.html), so output
-matches across Windows, Linux, and macOS. The package carries its own
-month names rather than reading `LC_TIME`.
-
-``` r
-
-fmt_number()(1234567.8)
-#> [1] "1.234.568"
-fmt_brl()(c(1234.5, -890))
-#> [1] "R$ 1.234,50" "-R$ 890,00"
-fmt_month()(as.Date("2024-03-01"))
-#> [1] "mar"
-
-ct_locale("en-US")
-fmt_number()(1234567.8)
-#> [1] "1,234,568"
-fmt_month()(as.Date("2024-03-01"))
-#> [1] "Mar"
-```
-
-[`fmt_number()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md),
-[`fmt_pct()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md),
-[`fmt_delta()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md),
-and
-[`fmt_currency()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
-all follow the active locale.
-[`fmt_brl()`](https://viniciusoike.github.io/ggconsulting/reference/ct_formatters.md)
-always renders Brazilian Real with `R$` and a non-breaking space
-whatever the locale, and takes `style = "accounting"` for negatives in
-parentheses. Each returns a function, so they drop straight into the
-`labels` argument of a scale.
-
-## Geoms and defaults
-
-[`ct_col()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md),
-[`ct_line()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md),
-and
-[`ct_point()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md)
-wrap their ggplot2 counterparts with different defaults for `width`,
-`linewidth`, and `size`. Everything else passes through.
-
-Attaching the package also calls
-[`ct_set_defaults()`](https://viniciusoike.github.io/ggconsulting/reference/ct_defaults.md),
-which routes a small set of aesthetic defaults through
-[`update_geom_defaults()`](https://ggplot2.tidyverse.org/reference/update_defaults.html).
-Turn it off with `options(ggconsulting.autoload = FALSE)` before
-loading, or call
-[`ct_unset_defaults()`](https://viniciusoike.github.io/ggconsulting/reference/ct_defaults.md)
-mid-session to restore the ggplot2 originals.
-
-One gotcha carries over from ggplot2.
-[`ct_col()`](https://viniciusoike.github.io/ggconsulting/reference/ct_geoms.md)’s
-`width` counts in x-axis units, so on a Date axis it means 0.8 *days*
-and the bars render as slivers. Convert x to a factor or an index for
-bar charts.
-
-## Fonts
-
-[`has_font()`](https://viniciusoike.github.io/ggconsulting/reference/has_font.md)
-reports whether a family is available, checking both installed and
-session-registered fonts.
-[`install_consulting_fonts()`](https://viniciusoike.github.io/ggconsulting/reference/install_consulting_fonts.md)
-fetches the defaults from Google Fonts. It asks before writing to your
-home directory unless `options(ggconsulting.font_consent = TRUE)` is
-set.
-
-Themes degrade gracefully.
-[`ct_theme()`](https://viniciusoike.github.io/ggconsulting/reference/ct_theme.md)
-walks `font` then `font_fallback` and takes the first family present, so
-a missing Inter lands on Helvetica Neue, Arial, or the generic sans
-rather than failing.
-
-## Documentation
-
-The function reference and further examples live at
+The full story — palettes and scales, locale-aware formatters, geom
+defaults, and fonts — lives in the package website:
 <https://viniciusoike.github.io/ggconsulting/>.

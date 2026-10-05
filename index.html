@@ -16,8 +16,8 @@
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Executive-Grade Themes and Helpers for ggplot2">
-<meta name="description" content="An opinionated ggplot2 extension for executive-grade consulting output. Ships archetype themes, palettes, scale helpers, locale-aware label helpers, and a data-aware polish layer.">
-<meta property="og:description" content="An opinionated ggplot2 extension for executive-grade consulting output. Ships archetype themes, palettes, scale helpers, locale-aware label helpers, and a data-aware polish layer.">
+<meta name="description" content="An opinionated ggplot2 extension for executive-grade consulting output, built to make slides and reports look polished without per-project tweaking. Ships a set of archetype themes that match common consulting deliverables (situation assessment, roadmap, benchmark, deep dive) and pairs them with coordinated color palettes and scale helpers. Locale-aware label functions format numbers, currency, and dates for Brazilian Portuguese and English audiences. A data-aware polish layer inspects the plot and applies sensible finishing touches, so charts stay readable and consistent across an entire engagement.">
+<meta property="og:description" content="An opinionated ggplot2 extension for executive-grade consulting output, built to make slides and reports look polished without per-project tweaking. Ships a set of archetype themes that match common consulting deliverables (situation assessment, roadmap, benchmark, deep dive) and pairs them with coordinated color palettes and scale helpers. Locale-aware label functions format numbers, currency, and dates for Brazilian Portuguese and English audiences. A data-aware polish layer inspects the plot and applies sensible finishing touches, so charts stay readable and consistent across an entire engagement.">
 <meta property="og:image" content="https://viniciusoike.github.io/ggconsulting/logo.png">
 </head>
 <body>
@@ -62,7 +62,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="ggconsulting">ggconsulting<a class="anchor" aria-label="anchor" href="#ggconsulting"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="ggconsulting-">ggconsulting <a class="anchor" aria-label="anchor" href="#ggconsulting-"></a>
 </h1>
 </div>
 <!-- badges: start -->
@@ -84,10 +84,6 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/viniciusoike/ggconsulting" class="external-link">ggconsulting</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ ggconsulting set ggplot2 aesthetic defaults</span></span>
-<span><span class="co">#&gt; ℹ Opt out: `ct_unset_defaults()` or `options(ggconsulting.autoload = FALSE)`</span></span>
-<span><span class="co">#&gt; ℹ Column width / linewidth: use `ct_col()` / `ct_line()`, or apply a</span></span>
-<span><span class="co">#&gt;   `theme_*()` archetype for linewidth via `from_theme()`</span></span>
 <span></span>
 <span><span class="va">players</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">market_share</span>, <span class="va">company</span> <span class="op">!=</span> <span class="st">"Others"</span><span class="op">)</span></span>
 <span></span>
@@ -177,59 +173,7 @@
 <p><img src="reference/figures/README-columns-1.png" alt="" width="100%"></p>
 <p><code>highlight</code> reads the main colour from the theme, so add the theme before <code><a href="reference/ct_finish.html">ct_finish()</a></code>. Reverse that order and highlights fall back to a hardcoded navy.</p>
 <p><code>end_labels</code> also accepts <code>"first_facet"</code>, which pins every label to the first panel instead of the panel each series happens to end in.</p>
-</div>
-<div class="section level2">
-<h2 id="palettes-and-scales">Palettes and scales<a class="anchor" aria-label="anchor" href="#palettes-and-scales"></a>
-</h2>
-<p>Palettes come in three families keyed to the archetypes, with several options in each. Every palette holds six colours, and the first is the main colour that <code><a href="reference/ct_theme.html">ct_theme()</a></code> routes through <code>element_geom(ink = )</code>.</p>
-<ul>
-<li>
-<code><a href="reference/ct_palette.html">ct_palette()</a></code> returns a palette’s colours, or lists the available names when called with no arguments.</li>
-<li>
-<code><a href="reference/ct_scales.html">scale_colour_ct()</a></code> and <code><a href="reference/ct_scales.html">scale_fill_ct()</a></code> map discrete data onto a palette. They interpolate and warn once the data needs more levels than the palette holds.</li>
-<li>
-<code><a href="reference/ct_scales.html">scale_colour_ct_c()</a></code> and <code><a href="reference/ct_scales.html">scale_fill_ct_c()</a></code> cover continuous data, with <code>direction = -1</code> to reverse.</li>
-<li>
-<code><a href="reference/ct_palette_show.html">ct_palette_show()</a></code> previews one palette, a custom hex vector, or every shipped palette at once.</li>
-</ul>
-<p>American and British spellings are both exported.</p>
-</div>
-<div class="section level2">
-<h2 id="locale-aware-labels">Locale-aware labels<a class="anchor" aria-label="anchor" href="#locale-aware-labels"></a>
-</h2>
-<p><code><a href="reference/ct_locale.html">ct_locale()</a></code> switches the active locale between <code>"pt-BR"</code> and <code>"en-US"</code> for the session. It writes to <code>options(ggconsulting.locale)</code> and never touches <code><a href="https://rdrr.io/r/base/locales.html" class="external-link">Sys.setlocale()</a></code>, so output matches across Windows, Linux, and macOS. The package carries its own month names rather than reading <code>LC_TIME</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/ct_formatters.html">fmt_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fl">1234567.8</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "1.234.568"</span></span>
-<span><span class="fu"><a href="reference/ct_formatters.html">fmt_brl</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1234.5</span>, <span class="op">-</span><span class="fl">890</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "R$ 1.234,50" "-R$ 890,00"</span></span>
-<span><span class="fu"><a href="reference/ct_formatters.html">fmt_month</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2024-03-01"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "mar"</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/ct_locale.html">ct_locale</a></span><span class="op">(</span><span class="st">"en-US"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/ct_formatters.html">fmt_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fl">1234567.8</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "1,234,568"</span></span>
-<span><span class="fu"><a href="reference/ct_formatters.html">fmt_month</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2024-03-01"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Mar"</span></span></code></pre></div>
-<p><code><a href="reference/ct_formatters.html">fmt_number()</a></code>, <code><a href="reference/ct_formatters.html">fmt_pct()</a></code>, <code><a href="reference/ct_formatters.html">fmt_delta()</a></code>, and <code><a href="reference/ct_formatters.html">fmt_currency()</a></code> all follow the active locale. <code><a href="reference/ct_formatters.html">fmt_brl()</a></code> always renders Brazilian Real with <code>R$</code> and a non-breaking space whatever the locale, and takes <code>style = "accounting"</code> for negatives in parentheses. Each returns a function, so they drop straight into the <code>labels</code> argument of a scale.</p>
-</div>
-<div class="section level2">
-<h2 id="geoms-and-defaults">Geoms and defaults<a class="anchor" aria-label="anchor" href="#geoms-and-defaults"></a>
-</h2>
-<p><code><a href="reference/ct_geoms.html">ct_col()</a></code>, <code><a href="reference/ct_geoms.html">ct_line()</a></code>, and <code><a href="reference/ct_geoms.html">ct_point()</a></code> wrap their ggplot2 counterparts with different defaults for <code>width</code>, <code>linewidth</code>, and <code>size</code>. Everything else passes through.</p>
-<p>Attaching the package also calls <code><a href="reference/ct_defaults.html">ct_set_defaults()</a></code>, which routes a small set of aesthetic defaults through <code><a href="https://ggplot2.tidyverse.org/reference/update_defaults.html" class="external-link">update_geom_defaults()</a></code>. Turn it off with <code>options(ggconsulting.autoload = FALSE)</code> before loading, or call <code><a href="reference/ct_defaults.html">ct_unset_defaults()</a></code> mid-session to restore the ggplot2 originals.</p>
-<p>One gotcha carries over from ggplot2. <code><a href="reference/ct_geoms.html">ct_col()</a></code>’s <code>width</code> counts in x-axis units, so on a Date axis it means 0.8 <em>days</em> and the bars render as slivers. Convert x to a factor or an index for bar charts.</p>
-</div>
-<div class="section level2">
-<h2 id="fonts">Fonts<a class="anchor" aria-label="anchor" href="#fonts"></a>
-</h2>
-<p><code><a href="reference/has_font.html">has_font()</a></code> reports whether a family is available, checking both installed and session-registered fonts. <code><a href="reference/install_consulting_fonts.html">install_consulting_fonts()</a></code> fetches the defaults from Google Fonts. It asks before writing to your home directory unless <code>options(ggconsulting.font_consent = TRUE)</code> is set.</p>
-<p>Themes degrade gracefully. <code><a href="reference/ct_theme.html">ct_theme()</a></code> walks <code>font</code> then <code>font_fallback</code> and takes the first family present, so a missing Inter lands on Helvetica Neue, Arial, or the generic sans rather than failing.</p>
-</div>
-<div class="section level2">
-<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
-</h2>
-<p>The function reference and further examples live at <a href="https://viniciusoike.github.io/ggconsulting/" class="uri">https://viniciusoike.github.io/ggconsulting/</a>.</p>
+<p>The full story — palettes and scales, locale-aware formatters, geom defaults, and fonts — lives in the package website: <a href="https://viniciusoike.github.io/ggconsulting/" class="uri">https://viniciusoike.github.io/ggconsulting/</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -259,7 +203,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Vinicius Reginatto <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Vinicius Oike <br><small class="roles"> Author, maintainer, copyright holder </small>   </li>
 </ul>
 </div>
 
@@ -270,7 +214,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Vinicius Reginatto.</p>
+  <p>Developed by Vinicius Oike.</p>
 </div>
 
 <div class="pkgdown-footer-right">
